@@ -41,6 +41,8 @@ public class SquidSwapEditor extends AppCompatActivity{
     private LinearLayout main;
     private Button zoom_in,zoom_out,image_apply,reset_btn;
     private TextView zoom_indi;
+    private boolean is_highlight;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +58,8 @@ public class SquidSwapEditor extends AppCompatActivity{
         image_apply = (Button)findViewById(R.id.apply_changes);
         reset_btn = (Button)findViewById(R.id.img_selection_reset);
         zoom_indi = (TextView) findViewById(R.id.zoom_indication);
+        is_highlight = false;
+
 
         Intent src = getIntent();
         chosen = src.getStringExtra("chosen_uri");
@@ -78,6 +82,12 @@ public class SquidSwapEditor extends AppCompatActivity{
                         can.set_scales(old_x + 1,old_y + 1);
                         zoom_indi.setText(can.get_scale_x()+"X");
                         can.invalidate();
+
+                        if(can.get_scale_x() == 5){
+                            zoom_in.setEnabled(false);
+                        }else{
+                            zoom_out.setEnabled(true);
+                        }
                     }
                 }
             });
@@ -92,6 +102,12 @@ public class SquidSwapEditor extends AppCompatActivity{
                         can.set_scales(old_x - 1,old_y - 1);
                         zoom_indi.setText(can.get_scale_x()+"X");
                         can.invalidate();
+
+                        if(can.get_scale_x() == 1){
+                            zoom_out.setEnabled(false);
+                        }else{
+                            zoom_in.setEnabled(true);
+                        }
                     }
                 }
             });
@@ -107,6 +123,7 @@ public class SquidSwapEditor extends AppCompatActivity{
                 @Override
                 public void onClick(View view) {
                     can.set_scales(1,1);
+                    zoom_out.setEnabled(false);
                     zoom_indi.setText(can.get_scale_x()+"X");
                     can.invalidate();
                 }
@@ -117,12 +134,21 @@ public class SquidSwapEditor extends AppCompatActivity{
             can.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View view, MotionEvent motionEvent) {
+                    Long time = motionEvent.getEventTime() - motionEvent.getDownTime();
+
+                    if(time > 4000){
+                        is_highlight = true;
+                    }
+
+                    System.out.println(is_highlight);
+
                     switch(motionEvent.getAction()){
                         case MotionEvent.ACTION_DOWN:
                                 can.rect.set_start(motionEvent.getX(),motionEvent.getY());
                             break;
                         case MotionEvent.ACTION_UP:
                                 can.rect.set_end(motionEvent.getX(),motionEvent.getY());
+                                is_highlight = false;
                             break;
                         case MotionEvent.ACTION_MOVE:
                                 can.rect.set_end(motionEvent.getX(),motionEvent.getY());

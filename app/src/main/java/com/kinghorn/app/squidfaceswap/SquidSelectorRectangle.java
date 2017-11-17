@@ -1,5 +1,7 @@
 package com.kinghorn.app.squidfaceswap;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 /**
@@ -22,6 +24,13 @@ public class SquidSelectorRectangle {
     public void set_end(float x,float y){
         this.end_x = x;
         this.end_y = y;
+    }
+
+    public void wipe_quord(){
+        this.start_x = 0;
+        this.end_x = 0;
+        this.start_y = 0;
+        this.end_y = 0;
     }
 
     public void log_update(){
