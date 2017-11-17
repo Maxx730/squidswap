@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Squid Faceswap</string>
+    <string name="title_activity_squid_swap_main">SquidSwapMain</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+
+
+    <string name="choose_btn_one">First</string>
+    <string name="choose_btn_two">Second</string>
+
+    <string name="first_content_text">Choose First Image</string>
+    <string name="second_content_text">Choose Second Image</string>
+
+    <string name="title_activity_squid_swap_editor">SquidSwapEditor</string>
+</resources>
