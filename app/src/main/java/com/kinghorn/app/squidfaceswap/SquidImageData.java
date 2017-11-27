@@ -2,6 +2,8 @@ package com.kinghorn.app.squidfaceswap;
 
 import android.graphics.Bitmap;
 
+import java.io.File;
+
 /**
  * Created by ddcjkinghorn on 11/17/17.
  */
@@ -10,11 +12,15 @@ import android.graphics.Bitmap;
     //the original bitmap, where the user highlighted to switch
     //and the actual data to switch.
 public class SquidImageData {
-    private Bitmap orig_img;
-    private Bitmap data_change;
-    private SquidSelectorRectangle rect_data;
 
-    public SquidImageData(Bitmap o, Bitmap c, SquidSelectorRectangle r){
+    private File save_file;
+
+    public SquidImageData(){
+        save_file = new File("testfile.png");
+    }
+
+    //Saves the data to a given directory.
+    public void save_data(){
 
     }
 }

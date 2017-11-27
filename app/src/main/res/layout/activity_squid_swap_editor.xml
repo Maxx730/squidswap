@@ -1,9 +1,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/editor_window"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
     tools:context="com.kinghorn.app.squidfaceswap.SquidSwapEditor">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
@@ -16,65 +16,132 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:weightSum="0"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/checkered_background"
+        android:orientation="vertical"
+        android:visibility="visible"
+        android:weightSum="0">
 
         <LinearLayout
+            android:id="@+id/image_main_tools"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="51dp"
+            android:background="@color/black_overlay"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/zoom_indication"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_width="57dp"
+                android:layout_height="54dp"
+                android:layout_marginTop="0dp"
+                android:padding="0dp"
+                android:paddingTop="0dp"
                 android:text="1X"
                 android:textAlignment="center"
-                android:textColor="#FFF" />
+                android:textColor="#FFF"
+                android:textSize="22sp" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/img_scale_inc"
-                android:layout_width="wrap_content"
+                android:layout_width="29dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="+" />
+                android:adjustViewBounds="false"
+                android:alpha="1"
+                android:background="@android:color/black"
+                android:padding="10dp"
+                android:theme="@style/AlertDialog.AppCompat"
+                app:srcCompat="@drawable/ic_zoom_in_black_24dp" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/img_scale_dec"
-                android:layout_width="wrap_content"
+                android:layout_width="29dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="-" />
+                android:alpha=".5"
+                android:background="@android:color/black"
+                android:padding="10dp"
+                app:srcCompat="@drawable/ic_zoom_out_black_24dp" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/img_selection_reset"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Reset" />
+                android:layout_height="54dp"
+                android:layout_weight="0.77"
+                android:alpha="0"
+                android:background="@android:color/background_dark"
+                android:padding="10dp"
+                app:srcCompat="@drawable/ic_standard_image_size_black_24dp" />
+
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/image_extra_tools"
+            android:layout_width="match_parent"
+            android:layout_height="51dp"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/imageButton8"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/black"
+                app:srcCompat="@drawable/ic_crop_black_24dp" />
+
+            <ImageButton
+                android:id="@+id/imageButton7"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/black"
+                app:srcCompat="@drawable/ic_rotate_left_black_24dp" />
+
+            <ImageButton
+                android:id="@+id/imageButton6"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/black"
+                app:srcCompat="@drawable/ic_rotate_right_black_24dp" />
+        </LinearLayout>
+
+        <RelativeLayout
             android:id="@+id/canvas_window"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="0.67"
-            android:orientation="vertical"></LinearLayout>
+            android:orientation="vertical"></RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/apply_changes"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Apply" />
+            <ImageButton
+                android:id="@+id/acc_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@android:color/black"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_image_crop_success_24dp" />
+
+            <ImageButton
+                android:id="@+id/can_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@android:color/black"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_close_image_crop_24dp" />
+
         </LinearLayout>
     </LinearLayout>
 

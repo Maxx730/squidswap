@@ -1,5 +1,7 @@
 package com.kinghorn.app.squidfaceswap;
 
+import android.graphics.Rect;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
@@ -15,6 +17,8 @@ public class SquidSelectorRectangle {
 
     public float end_x;
     public float end_y;
+
+    public Rect last_selection;
 
     public void set_start(float x,float y){
         this.start_x = x;
