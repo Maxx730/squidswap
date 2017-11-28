@@ -28,6 +28,12 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_squid_swap_editor"
             android:theme="@style/FullscreenTheme"></activity>
+        <activity
+            android:name=".SquidSwapSettings"
+            android:configChanges="orientation|keyboardHidden|screenSize"></activity>
+        <activity
+            android:name=".SquidAboutLayout"
+            android:configChanges="orientation|keyboardHidden|screenSize"></activity>
     </application>
 
 </manifest>

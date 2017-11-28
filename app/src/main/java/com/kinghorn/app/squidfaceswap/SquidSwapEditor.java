@@ -38,7 +38,7 @@ public class SquidSwapEditor extends AppCompatActivity{
     private SquidCanvas can;
     private RelativeLayout main;
     private Button image_apply;
-    private ImageButton can_btn,acc_btn,zoom_in,zoom_out,reset_btn;
+    private ImageButton can_btn,acc_btn,zoom_in,zoom_out,reset_btn,rot_left,rot_right,crop_btn;
     private TextView zoom_indi;
     private SquidSelector select;
     private SquidFileService file_serv;
@@ -58,6 +58,9 @@ public class SquidSwapEditor extends AppCompatActivity{
         file_serv = new SquidFileService();
         acc_btn = (ImageButton) findViewById(R.id.acc_button);
         can_btn = (ImageButton) findViewById(R.id.can_btn);
+        rot_left = (ImageButton) findViewById(R.id.rotate_left_btn);
+        rot_right = (ImageButton) findViewById(R.id.rotate_right_btn);
+
 
         //Grab info from the selected image.
         Intent src = getIntent();
@@ -85,6 +88,20 @@ public class SquidSwapEditor extends AppCompatActivity{
                 }
             });
 
+            rot_left.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    can.rotate_image(-90f);
+                }
+            });
+
+            rot_right.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    can.rotate_image(90f);
+                }
+            });
+
             //Cancel logic if the user does not want to keep the data for the
             //cropped or worked image etc.
             can_btn.setOnClickListener(new View.OnClickListener() {
@@ -96,6 +113,7 @@ public class SquidSwapEditor extends AppCompatActivity{
 
                     can.image_back();
                     select.has_data = false;
+                    toggle_alpha(true);
                 }
             });
 
@@ -183,6 +201,8 @@ public class SquidSwapEditor extends AppCompatActivity{
 
                                 can_btn.setVisibility(View.VISIBLE);
                                 acc_btn.setVisibility(View.VISIBLE);
+
+                                toggle_alpha(false);
                             }else{
                                 //If the user has already selected something then we want to ask if this is what they wanted to save
                                 //if they say no we want to revert the cached data and go back to the main scene.
@@ -216,5 +236,23 @@ public class SquidSwapEditor extends AppCompatActivity{
     private boolean check_cached_data(){
 
         return true;
+    }
+
+    //
+    private void toggle_alpha(boolean tog){
+        if(tog){
+            can.set_scales(1,1);
+
+            zoom_in.setAlpha(1f);
+            zoom_out.setAlpha(.5f);
+            rot_right.setAlpha(1f);
+            rot_left.setAlpha(1f);
+        }else{
+
+            zoom_in.setAlpha(.5f);
+            zoom_out.setAlpha(.5f);
+            rot_right.setAlpha(.5f);
+            rot_left.setAlpha(.5f);
+        }
     }
 }

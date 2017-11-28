@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -127,5 +128,22 @@ public class SquidCanvas extends View{
 
 
         invalidate();
+    }
+
+    //Rotates the Bitmap that is drawn onto the canvas.
+    public void rotate_image(float ang){
+        float rot = getRotation();
+
+        setRotation(rot + ang);
+        invalidate();
+    }
+
+    public float get_center_x(Bitmap img){
+
+        return img.getWidth() / 2;
+    }
+
+    public float get_center_y(Bitmap img){
+        return img.getHeight() / 2;
     }
 }

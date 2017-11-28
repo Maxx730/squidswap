@@ -1,5 +1,6 @@
 package com.kinghorn.app.squidfaceswap;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -60,5 +61,9 @@ public class SquidFileService {
             e.printStackTrace();
         }
 
+    }
+
+    public Bitmap load_drawable(Context con, int drawable_id){
+        return BitmapFactory.decodeResource(con.getResources(),drawable_id);
     }
 }
