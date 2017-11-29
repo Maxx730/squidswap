@@ -41,7 +41,6 @@ public class SquidSwapMain extends AppCompatActivity {
     private InputStream input;
     private int SQUID_SWAP_PERMISIONS;
     private RelativeLayout select_one,select_two;
-    private SquidSelectorRectangle rect;
     private Intent to_edit;
     private ImageButton open_settings;
     private View mContentView;
@@ -53,9 +52,6 @@ public class SquidSwapMain extends AppCompatActivity {
 
             try{
                 input = getApplicationContext().getContentResolver().openInputStream(u);
-
-                System.out.println("file loaded, sending on to editor");
-                System.out.println(data.getData().toString());
                 to_edit.putExtra("chosen_uri",data.getData().toString());
                 startActivity(to_edit);
             }catch(FileNotFoundException e){
@@ -71,8 +67,6 @@ public class SquidSwapMain extends AppCompatActivity {
         check_permissions();
 
         FIRST_FILE = 1;
-
-        this.rect = new SquidSelectorRectangle();
         to_edit = new Intent(this,SquidSwapEditor.class);
 
         intent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -99,7 +93,6 @@ public class SquidSwapMain extends AppCompatActivity {
         img_choose_one.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("first button clicked");
                 startActivityForResult(intent, FIRST_FILE);
             }
         });
@@ -111,13 +104,10 @@ public class SquidSwapMain extends AppCompatActivity {
             public boolean onTouch(View view, MotionEvent motionEvent) {
                switch(motionEvent.getAction()){
                    case MotionEvent.ACTION_DOWN:
-                       rect.set_start(motionEvent.getX(),motionEvent.getY());
                        break;
                    case MotionEvent.ACTION_MOVE:
-                       rect.set_end(motionEvent.getX(),motionEvent.getY());
                        break;
                }
-               rect.log_update();
                 return false;
             }
         });

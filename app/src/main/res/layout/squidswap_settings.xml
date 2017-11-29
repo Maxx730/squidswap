@@ -39,12 +39,21 @@
             android:layout_gravity="end"
             android:padding="8dp"
             app:srcCompat="@drawable/ic_close_image_crop_24dp" />
+
     </LinearLayout>
 
     <ListView
         android:id="@+id/squid_settings_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="199dp"
         android:background="@android:color/black" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@android:color/black"
+        app:srcCompat="@drawable/hero" />
 
 </LinearLayout>

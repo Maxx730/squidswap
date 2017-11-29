@@ -31,9 +31,6 @@
         <activity
             android:name=".SquidSwapSettings"
             android:configChanges="orientation|keyboardHidden|screenSize"></activity>
-        <activity
-            android:name=".SquidAboutLayout"
-            android:configChanges="orientation|keyboardHidden|screenSize"></activity>
     </application>
 
 </manifest>

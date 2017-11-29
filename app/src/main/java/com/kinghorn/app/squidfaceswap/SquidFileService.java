@@ -19,8 +19,6 @@ public class SquidFileService {
     private FileOutputStream out;
     private File save, newDir;
     private String dir_string;
-    private Bitmap cropped;
-    private Runnable save_thread;
 
     public SquidFileService(){
         dir_string = Environment.getExternalStorageDirectory().toString();

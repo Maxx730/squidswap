@@ -1,268 +1,106 @@
 package com.kinghorn.app.squidfaceswap;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.media.Image;
 import android.net.Uri;
-import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import java.io.File;
+import java.io.BufferedInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.util.Random;
 
-/**
- * An example full-screen activity that shows and hides the system UI (i.e.
- * status bar and navigation/system bar) with user interaction.
- */
 public class SquidSwapEditor extends AppCompatActivity{
-    private Bitmap bit;
-    private String chosen;
-    private Uri path;
-    private InputStream stream;
-    private SquidCanvas can;
-    private RelativeLayout main;
-    private Button image_apply;
-    private ImageButton can_btn,acc_btn,zoom_in,zoom_out,reset_btn,rot_left,rot_right,crop_btn,cancel_btn;
-    private TextView zoom_indi;
-    private SquidSelector select;
-    private SquidFileService file_serv;
+    public SquidBitmapData focused;
+    public SquidCanvas can;
+    public SquidSelector sel;
+    public RelativeLayout window;
 
+    //Keeps track of which part of the app we are currently working with.
+    public String editor_status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_squid_swap_editor);
-        //Create all of the elements and views from the layout xml.
-        main = (RelativeLayout) findViewById(R.id.canvas_window);
-        zoom_in = (ImageButton)findViewById(R.id.img_scale_inc);
-        zoom_out = (ImageButton)findViewById(R.id.img_scale_dec);
-        reset_btn = (ImageButton)findViewById(R.id.img_selection_reset);
-        zoom_indi = (TextView) findViewById(R.id.zoom_indication);
-        file_serv = new SquidFileService();
-        acc_btn = (ImageButton) findViewById(R.id.acc_button);
-        can_btn = (ImageButton) findViewById(R.id.can_btn);
-        rot_left = (ImageButton) findViewById(R.id.rotate_left_btn);
-        rot_right = (ImageButton) findViewById(R.id.rotate_right_btn);
-        cancel_btn = (ImageButton) findViewById(R.id.editor_cancel);
 
+        //Find the canvas window.
+        window = (RelativeLayout) findViewById(R.id.canvas_window);
 
-        //Grab info from the selected image.
-        Intent src = getIntent();
-        chosen = src.getStringExtra("chosen_uri");
-        path = Uri.parse(chosen);
+        //Initialize our focused object with our canvas tools needed.
+        focused = new SquidBitmapData(getApplicationContext());
+        //Now that it has been initialized we want to set the first image to focus.
 
+        //Make sure we can get to the file with a try catch.
         try{
-            //Create the bitmap image that was chosen to put into the
-            //image drawing canvas.
-            BitmapFactory.Options op = new BitmapFactory.Options();
-            stream = getContentResolver().openInputStream(path);
-            bit = BitmapFactory.decodeStream(stream,null,op);
+            focused.set_bitmap(open_first());
 
-            //Create both of our canvases.
-            select = new SquidSelector(getApplicationContext());
-            can = new SquidCanvas(getApplicationContext(),bit,op,select);
+            //Once we have the file, then we want to send it into the first canvas.
+            can = new SquidCanvas(getApplicationContext(),focused);
+            sel = new SquidSelector(getApplicationContext());
 
-            //Save the image to the gallery (for not) and then open up the next image to swap something to.
-            acc_btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    System.out.println("Saving cropped image...");
+            //Add the canvas view to the window.
+            window.addView(can);
+            window.addView(sel);
 
-
-                }
-            });
-
-            rot_left.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    can.rotate_image(-90f);
-                }
-            });
-
-            rot_right.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    can.rotate_image(90f);
-                }
-            });
-
-            cancel_btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent back = new Intent(getApplicationContext(),SquidSwapMain.class);
-                    startActivity(back);
-                }
-            });
-
-            //Cancel logic if the user does not want to keep the data for the
-            //cropped or worked image etc.
-            can_btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    System.out.println("Canceling selection...");
-                    can_btn.setVisibility(View.GONE);
-                    acc_btn.setVisibility(View.GONE);
-
-                    can.image_back();
-                    select.has_data = false;
-                    toggle_alpha(true);
-                }
-            });
-
-            zoom_in.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(can.get_scale_x() < 5 && can.get_scale_y() < 5){
-                        int old_x = can.get_scale_x();
-                        int old_y = can.get_scale_y();
-
-                        can.set_scales(old_x + 1,old_y + 1);
-                        zoom_indi.setText(can.get_scale_x()+"X");
-                        can.invalidate();
-
-                        if(can.get_scale_x() == 5){
-                            zoom_in.setEnabled(false);
-                            zoom_in.setAlpha(.5f);
-                        }else{
-                            zoom_out.setEnabled(true);
-                            zoom_out.setAlpha(1f);
-                        }
-                    }
-                }
-            });
-
-            zoom_out.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(can.get_scale_x() > 1 && can.get_scale_y() > 1){
-                        int old_x = can.get_scale_x();
-                        int old_y = can.get_scale_y();
-
-                        can.set_scales(old_x - 1,old_y - 1);
-                        zoom_indi.setText(can.get_scale_x()+"X");
-                        can.invalidate();
-
-                        if(can.get_scale_x() == 1){
-                            zoom_out.setEnabled(false);
-                            zoom_out.setAlpha(.5f);
-                        }else{
-                            zoom_in.setEnabled(true);
-                            zoom_in.setAlpha(1f);
-                        }
-                    }
-                }
-            });
-
-            reset_btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    can.set_scales(1,1);
-                    zoom_out.setEnabled(false);
-                    zoom_in.setEnabled(true);
-                    zoom_indi.setText(can.get_scale_x()+"X");
-                    can.invalidate();
-                }
-            });
-
-            main.addView(can);
-            main.addView(select);
-
-            select.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-
-                    switch(motionEvent.getAction()){
-                        case MotionEvent.ACTION_DOWN:
-                            select.drawing = true;
-                            select.rect.set_start(motionEvent.getX(),motionEvent.getY());
-                            select.rect.set_end(motionEvent.getX(),motionEvent.getY());
-                            break;
-                        case MotionEvent.ACTION_UP:
-                            select.drawing = false;
-                            System.out.println("Beggining of saving image.");
-                            //file_serv.save_image(can.return_bmp_data());
-
-                            select.rect.set_end(motionEvent.getX(),motionEvent.getY());
-
-                            //Only redraw the new image if the the user hasnt already selected something.
-                            if(!select.has_data){
-                                //First we should display the data in the canvas to make sure this is the image the user wanted to capture.
-                                can.set_img(can.return_bmp_data());
-                                //After the initial selection set the has data value to true.
-                                select.has_data = true;
-
-                                can_btn.setVisibility(View.VISIBLE);
-                                acc_btn.setVisibility(View.VISIBLE);
-
-                                toggle_alpha(false);
-                            }else{
-                                //If the user has already selected something then we want to ask if this is what they wanted to save
-                                //if they say no we want to revert the cached data and go back to the main scene.
-
-                            }
-
-                            break;
-                        case MotionEvent.ACTION_MOVE:
-                            if(!select.has_data){
-                                select.rect.set_end(motionEvent.getX(),motionEvent.getY());
-                                System.out.println("Start X:"+select.rect.start_x+" End X:"+select.rect.end_x+" Start Y:"+select.rect.start_y+" End Y:"+select.rect.end_y);
-                            }else{
-
-                            }
-
-                            break;
-                    }
-
-                    select.invalidate();
-                    return true;
-                }
-            });
-
-        }catch(FileNotFoundException e) {
-            e.printStackTrace();
+            //Initialize selection touch events.
+            init_selector(sel);
+        }catch(FileNotFoundException e){
+            System.out.println("ERROR: Chosen file does not seem to exist!");
         }
     }
 
-    //Function that will run a check everytime this activity is loaded to check if there has
-    //be data already cached to be used on a different image.
-    private boolean check_cached_data(){
+    //Function will check and return a bitmap if the image was sent along with the intent.
+    private Bitmap open_first() throws FileNotFoundException {
+        Intent in = getIntent();
+        String path = in.getStringExtra("chosen_uri");
+        InputStream i = getContentResolver().openInputStream(Uri.parse(path));
+        Bitmap b = BitmapFactory.decodeStream(i);
 
-        return true;
+        return b;
     }
 
-    //
-    private void toggle_alpha(boolean tog){
-        if(tog){
-            can.set_scales(1,1);
+    //Initialize the on touch listener for the selection object.
+    private void init_selector(final SquidSelector s){
+        s.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch(motionEvent.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+                        if(!s.has_data){
+                            s.drawing = true;
+                            s.set_start_values(motionEvent.getX(),motionEvent.getY());
+                            s.set_end_values(motionEvent.getX(),motionEvent.getY());
+                        }
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        if(!s.has_data){
+                            s.drawing = false;
+                            s.set_end_values(motionEvent.getX(),motionEvent.getY());
+                            //Logic goes here for grabing the bitmap from the canvas.
+                            //Send the hashmap from the selection over to the canvas.
+                            focused.undo_bit = focused.bit;
+                            focused.set_bitmap(can.select_data(s.select_values()));
+                            s.has_data = true;
+                            //Now we want the middle canvas to redraw with the new image.
+                            can.invalidate();
+                        }
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        if(!s.has_data){
+                            s.set_end_values(motionEvent.getX(),motionEvent.getY());
+                        }
+                        break;
+                }
 
-            zoom_in.setAlpha(1f);
-            zoom_out.setAlpha(.5f);
-            rot_right.setAlpha(1f);
-            rot_left.setAlpha(1f);
-        }else{
-
-            zoom_in.setAlpha(.5f);
-            zoom_out.setAlpha(.5f);
-            rot_right.setAlpha(.5f);
-            rot_left.setAlpha(.5f);
-        }
+                s.invalidate();
+                return true;
+            }
+        });
     }
+
 }

@@ -6,19 +6,24 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.View;
 
+import java.util.HashMap;
+
 public class SquidSelector extends View {
 
     private Paint selection_paint;
-    public SquidSelectorRectangle rect;
-    public boolean drawing,has_data;
+    //Hashmap of start and end points.
+    private HashMap selection_data;
+    //Boolean for when the user is or is not pressing the screen.
+    public boolean drawing;
+    public boolean has_data;
 
     public SquidSelector(Context con){
         super(con);
 
+        selection_data = new HashMap();
         drawing = false;
         has_data = false;
 
-        rect = new SquidSelectorRectangle();
         selection_paint = new Paint();
         selection_paint.setStrokeWidth(6f);
         selection_paint.setStyle(Paint.Style.STROKE);
@@ -29,15 +34,32 @@ public class SquidSelector extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        if(drawing && !has_data){
-            canvas.drawRect(rect.start_x,rect.start_y,rect.end_x,rect.end_y,selection_paint);
-        }else{
-            System.out.println("Not drawing cropping selector since the tool already has data being cached...");
+        //If the user does have their finger down then we want to paint to the screen.
+        if(drawing){
+            canvas.drawRect((float) selection_data.get("start_x"),(float) selection_data.get("start_y"),(float) selection_data.get("end_x"),(float) selection_data.get("end_y"),selection_paint);
         }
     }
 
-    //Funtion that will render the classic white square with corners for selecting data from within in an image.
-    private void draw_selection(){
+    //Sets the values for the hashmap used for where to draw onto the canvas.
+    public void set_start_values(float x,float y){
+        selection_data.put("start_x",x);
+        selection_data.put("start_y",y);
+    }
+
+    //Sets the values for the hashmap used for where to draw onto the canvas.
+    public void set_end_values(float x,float y){
+        selection_data.put("end_x",x);
+        selection_data.put("end_y",y);
+    }
+
+    //Get the selection values after the selection has occured.
+    public HashMap select_values(){
+        return selection_data;
+    }
+
+    //Checks the values of the start and end points and reverses them if need be
+    //to properly draw the rectangle.
+    private void convert_direction(){
 
     }
 }

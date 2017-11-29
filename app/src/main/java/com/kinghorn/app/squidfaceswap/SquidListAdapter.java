@@ -43,7 +43,15 @@ public class SquidListAdapter extends ArrayAdapter {
         View v = convertView;
 
         LayoutInflater infl = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        v = infl.inflate(R.layout.squidswap_menu_layout,null);
+
+        switch(it.get(position).typ){
+            case "Toggle":
+                v = infl.inflate(R.layout.squidswap_menu_toggle,null);
+                break;
+            case "Link":
+                v = infl.inflate(R.layout.squidswap_menu_layout,null);
+                break;
+        }
 
         TextView label = v.findViewById(R.id.textView);
         ImageView icon = (ImageView) v.findViewById(R.id.menu_icon);
