@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.view.View;
 import android.widget.Toast;
@@ -63,7 +64,12 @@ public class SquidFileService {
 
     }
 
-    public Bitmap load_drawable(Context con, int drawable_id){
-        return BitmapFactory.decodeResource(con.getResources(),drawable_id);
+    public Drawable load_drawable(Context con, int drawable_id){
+        System.out.println("Loading icon from drawable...");
+        System.out.println(Integer.toString(drawable_id));
+
+        Drawable d = con.getResources().getDrawable(drawable_id);
+
+        return d;
     }
 }

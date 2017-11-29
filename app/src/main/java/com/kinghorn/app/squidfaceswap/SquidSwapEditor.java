@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
@@ -38,7 +39,7 @@ public class SquidSwapEditor extends AppCompatActivity{
     private SquidCanvas can;
     private RelativeLayout main;
     private Button image_apply;
-    private ImageButton can_btn,acc_btn,zoom_in,zoom_out,reset_btn,rot_left,rot_right,crop_btn;
+    private ImageButton can_btn,acc_btn,zoom_in,zoom_out,reset_btn,rot_left,rot_right,crop_btn,cancel_btn;
     private TextView zoom_indi;
     private SquidSelector select;
     private SquidFileService file_serv;
@@ -60,6 +61,7 @@ public class SquidSwapEditor extends AppCompatActivity{
         can_btn = (ImageButton) findViewById(R.id.can_btn);
         rot_left = (ImageButton) findViewById(R.id.rotate_left_btn);
         rot_right = (ImageButton) findViewById(R.id.rotate_right_btn);
+        cancel_btn = (ImageButton) findViewById(R.id.editor_cancel);
 
 
         //Grab info from the selected image.
@@ -99,6 +101,14 @@ public class SquidSwapEditor extends AppCompatActivity{
                 @Override
                 public void onClick(View view) {
                     can.rotate_image(90f);
+                }
+            });
+
+            cancel_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent back = new Intent(getApplicationContext(),SquidSwapMain.class);
+                    startActivity(back);
                 }
             });
 

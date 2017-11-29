@@ -25,12 +25,12 @@ public class SquidSwapSettings extends AppCompatActivity {
         ArrayList<SquidMenuItem> menu_items = new ArrayList<SquidMenuItem>();
 
         list = (ListView) findViewById(R.id.squid_settings_list);
-        adapt = new SquidListAdapter(this,R.layout.squidswap_list_about,menu_items);
+        adapt = new SquidListAdapter(this,R.layout.squidswap_menu_layout,menu_items);
         ex = (ImageView) findViewById(R.id.settings_back);
         file = new SquidFileService();
 
-        menu_items.add(0,new SquidMenuItem(this,"Autosave Thumbnails",file.load_drawable(this,R.drawable.ic_rotate_left_black_24dp),new Intent(this,SquidSwapMain.class)));
-        menu_items.add(1,new SquidMenuItem(this,"About",file.load_drawable(this,R.drawable.ic_chevron_right_black_24dp),new Intent(this,SquidAboutLayout.class)));
+        menu_items.add(0,new SquidMenuItem(this,"Autosave Thumbnails",file.load_drawable(this,R.drawable.ic_save_black_24dp),new Intent(this,SquidSwapMain.class)));
+        menu_items.add(1,new SquidMenuItem(this,"About",file.load_drawable(this,R.drawable.ic_info_black_24dp),new Intent(this,SquidAboutLayout.class)));
 
         ex.setOnClickListener(new View.OnClickListener() {
             @Override

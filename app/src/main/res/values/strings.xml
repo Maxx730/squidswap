@@ -12,4 +12,6 @@
     <string name="second_content_text">Choose Second Image</string>
 
     <string name="title_activity_squid_swap_editor">SquidSwapEditor</string>
+
+    <string name="app_title">Squid Swap</string>
 </resources>

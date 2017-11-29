@@ -35,13 +35,13 @@
                 android:id="@+id/zoom_indication"
                 android:layout_width="57dp"
                 android:layout_height="54dp"
-                android:layout_marginTop="0dp"
+                android:layout_marginTop="15dp"
                 android:padding="0dp"
                 android:paddingTop="0dp"
                 android:text="1X"
                 android:textAlignment="center"
                 android:textColor="#FFF"
-                android:textSize="22sp" />
+                android:textSize="18sp" />
 
             <ImageButton
                 android:id="@+id/img_scale_inc"
@@ -74,6 +74,22 @@
                 android:background="@android:color/background_dark"
                 android:padding="10dp"
                 app:srcCompat="@drawable/ic_standard_image_size_black_24dp" />
+
+            <ImageButton
+                android:id="@+id/imageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/background_dark"
+                app:srcCompat="@drawable/ic_file_download_black_24dp" />
+
+            <ImageButton
+                android:id="@+id/editor_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/black_overlay"
+                app:srcCompat="@drawable/ic_close_image_crop_24dp" />
 
         </LinearLayout>
 

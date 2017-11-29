@@ -79,6 +79,7 @@ public class SquidSwapMain extends AppCompatActivity {
         intent.setType("image/*");
 
         setContentView(R.layout.activity_squid_swap_main);
+        setTitle(R.string.app_title);
 
         mContentView = findViewById(R.id.fullscreen_content);
 
