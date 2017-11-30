@@ -59,7 +59,40 @@ public class SquidSelector extends View {
 
     //Checks the values of the start and end points and reverses them if need be
     //to properly draw the rectangle.
-    private void convert_direction(){
+    public void convert_direction(){
+        HashMap hash = new HashMap();
+
+        float start_x = (float) selection_data.get("start_x");
+        float start_y = (float) selection_data.get("start_y");
+        float end_x = (float) selection_data.get("end_x");
+        float end_y = (float) selection_data.get("end_y");
+
+        if(end_x < start_x){
+            float tmp = start_x;
+
+            start_x = end_x;
+            end_x = tmp;
+        }
+
+        if(end_y < start_y){
+            float tmp = start_y;
+
+            start_y = end_y;
+            end_y = tmp;
+        }
+
+        hash.put("start_x",start_x);
+        hash.put("start_y",start_y);
+        hash.put("end_x",end_x);
+        hash.put("end_y",end_y);
+
+        selection_data = hash;
+    }
+
+    //Check the size of the selction area and deny it if it is
+    //too small to even display anything.
+    public void check_size(){
 
     }
+
 }

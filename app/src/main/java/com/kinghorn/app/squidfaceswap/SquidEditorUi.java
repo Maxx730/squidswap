@@ -13,6 +13,7 @@ public class SquidEditorUi {
 
     private static SquidBitmapData dat;
     private static SquidSelector sel;
+    private static SquidSwapEditor ed;
     private static Context c;
 
     //UI Elements that we will be using below here.
@@ -20,10 +21,11 @@ public class SquidEditorUi {
     public LinearLayout crop_btns;
 
     //Constructor.
-    public SquidEditorUi(Context con,View mainview,SquidBitmapData d,SquidSelector s){
+    public SquidEditorUi(Context con,View mainview,SquidBitmapData d,SquidSelector s,SquidSwapEditor e){
         dat = d;
         c = con;
         sel = s;
+        ed = e;
 
         //Inflate the layout we are referring to.
         crop_btns = (LinearLayout) mainview.findViewById(R.id.crop_btns);
@@ -62,6 +64,16 @@ public class SquidEditorUi {
                 sel.has_data = false;
                 dat.set_bitmap(dat.undo_bit);
                 toggle_crop_btn_display(View.GONE);
+            }
+        });
+
+        crop_veri.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                intent.setType("image/*");
+
+                ed.start_gal(intent);
             }
         });
     }

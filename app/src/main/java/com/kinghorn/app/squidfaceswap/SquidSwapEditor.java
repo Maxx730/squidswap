@@ -13,16 +13,38 @@ import android.widget.RelativeLayout;
 import java.io.BufferedInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.net.URI;
 
 public class SquidSwapEditor extends AppCompatActivity{
     public SquidBitmapData focused;
     public SquidCanvas can;
     public SquidSelector sel;
+    public SquidBaseImage bas;
     public RelativeLayout window;
     public SquidEditorUi edit;
 
     //Keeps track of which part of the app we are currently working with.
     public String editor_status;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //Set the selected image from the gallery and set it to the background image canvas.
+        if(resultCode == RESULT_OK && data != null){
+            Uri path = data.getData();
+            //Make sure the file exists.
+            try {
+                InputStream in = getContentResolver().openInputStream(path);
+                Bitmap b = BitmapFactory.decodeStream(in);
+
+                bas.set_image(b);
+            } catch (FileNotFoundException e) {
+                System.out.println("Sorry the selected file was not found.");
+            }
+
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +55,7 @@ public class SquidSwapEditor extends AppCompatActivity{
         window = (RelativeLayout) findViewById(R.id.canvas_window);
         //Initialize our focused object with our canvas tools needed.
         focused = new SquidBitmapData(getApplicationContext());
+        bas = new SquidBaseImage(getApplicationContext());
         //Now that it has been initialized we want to set the first image to focus.
 
         //Make sure we can get to the file with a try catch.
@@ -42,8 +65,9 @@ public class SquidSwapEditor extends AppCompatActivity{
             //Once we have the file, then we want to send it into the first canvas.
             can = new SquidCanvas(getApplicationContext(),focused);
             sel = new SquidSelector(getApplicationContext());
-            edit = new SquidEditorUi(getApplicationContext(),getWindow().getDecorView(),focused,sel);
+            edit = new SquidEditorUi(getApplicationContext(),getWindow().getDecorView(),focused,sel,this);
             //Add the canvas view to the window.
+            window.addView(bas);
             window.addView(can);
             window.addView(sel);
 
@@ -83,6 +107,7 @@ public class SquidSwapEditor extends AppCompatActivity{
                             s.set_end_values(motionEvent.getX(),motionEvent.getY());
                             //Logic goes here for grabing the bitmap from the canvas.
                             //Send the hashmap from the selection over to the canvas.
+                            s.convert_direction();
                             focused.undo_bit = focused.bit;
                             focused.set_bitmap(can.select_data(s.select_values()));
                             s.has_data = true;
@@ -104,4 +129,8 @@ public class SquidSwapEditor extends AppCompatActivity{
         });
     }
 
+    //Takes an  intent to choose from the gallery and starts the intent.
+    public void start_gal(Intent in){
+        startActivityForResult(in,1);
+    }
 }
