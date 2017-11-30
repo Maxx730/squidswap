@@ -25,10 +25,27 @@
         android:layout_alignParentStart="true">
 
         <LinearLayout
+            android:id="@+id/editor_hints"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/black"
+            android:gravity="bottom"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Crop Selection"
+                android:textColor="@android:color/background_light" />
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/image_main_tools"
             android:layout_width="match_parent"
             android:layout_height="51dp"
-            android:background="@color/black_overlay"
+            android:background="@color/black_back"
             android:orientation="horizontal">
 
             <TextView
@@ -50,7 +67,7 @@
                 android:layout_weight="1"
                 android:adjustViewBounds="false"
                 android:alpha="1"
-                android:background="@android:color/black"
+                android:background="@color/black_back"
                 android:padding="10dp"
                 android:theme="@style/AlertDialog.AppCompat"
                 app:srcCompat="@drawable/ic_zoom_in_black_24dp" />
@@ -61,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:alpha=".5"
-                android:background="@android:color/black"
+                android:background="@color/black_back"
                 android:padding="10dp"
                 app:srcCompat="@drawable/ic_zoom_out_black_24dp" />
 
@@ -80,7 +97,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@android:color/background_dark"
+                android:background="@color/black_back"
                 app:srcCompat="@drawable/ic_file_download_black_24dp" />
 
             <ImageButton
@@ -97,7 +114,8 @@
             android:id="@+id/image_extra_tools"
             android:layout_width="match_parent"
             android:layout_height="51dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <ImageButton
                 android:id="@+id/imageButton8"
@@ -129,7 +147,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="0.67"
-            android:orientation="vertical"></RelativeLayout>
+            android:gravity="bottom"
+            android:orientation="vertical">
+
+        </RelativeLayout>
 
         <LinearLayout
             android:id="@+id/crop_btns"

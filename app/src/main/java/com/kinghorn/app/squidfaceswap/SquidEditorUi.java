@@ -2,6 +2,7 @@ package com.kinghorn.app.squidfaceswap;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +18,7 @@ public class SquidEditorUi {
     private static Context c;
 
     //UI Elements that we will be using below here.
-    public ImageButton crop_veri,crop_canc,close_editor;
+    public ImageButton crop_veri,crop_canc,close_editor,zoom_in,zoom_out;
     public LinearLayout crop_btns;
 
     //Constructor.
@@ -34,10 +35,13 @@ public class SquidEditorUi {
         crop_veri = (ImageButton) mainview.findViewById(R.id.acc_button);
         crop_canc = (ImageButton) mainview.findViewById(R.id.can_btn);
         close_editor = (ImageButton) mainview.findViewById(R.id.editor_cancel);
+        zoom_in = (ImageButton) mainview.findViewById(R.id.img_scale_inc);
+        zoom_out = (ImageButton) mainview.findViewById(R.id.img_scale_dec);
 
-        //Set the listeners.
+        //Set the listeners
         crop_btn_listen();
         editor_listeners();
+        set_scaling();
     }
 
     //Toggle the display of the crop buttons based on the value given.
@@ -82,6 +86,23 @@ public class SquidEditorUi {
     public void main_menu(){
         Intent in = new Intent(c,SquidSwapMain.class);
         c.startActivity(in);
+    }
+
+    //Logic for the scaling buttons.
+    public void set_scaling(){
+        zoom_in.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                view.setBackgroundColor(Color.RED);
+            }
+        });
+
+        zoom_out.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                view.setBackgroundColor(Color.RED);
+            }
+        });
     }
 
 }
