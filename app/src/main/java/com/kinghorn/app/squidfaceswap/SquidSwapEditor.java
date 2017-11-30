@@ -20,6 +20,7 @@ public class SquidSwapEditor extends AppCompatActivity{
     public SquidCanvas can;
     public SquidSelector sel;
     public SquidBaseImage bas;
+    public SquidMovementHandler mov;
     public RelativeLayout window;
     public SquidEditorUi edit;
 
@@ -39,6 +40,7 @@ public class SquidSwapEditor extends AppCompatActivity{
                 Bitmap b = BitmapFactory.decodeStream(in);
 
                 bas.set_image(b);
+                mov.setVisibility(View.VISIBLE);
             } catch (FileNotFoundException e) {
                 System.out.println("Sorry the selected file was not found.");
             }
@@ -66,10 +68,16 @@ public class SquidSwapEditor extends AppCompatActivity{
             can = new SquidCanvas(getApplicationContext(),focused);
             sel = new SquidSelector(getApplicationContext());
             edit = new SquidEditorUi(getApplicationContext(),getWindow().getDecorView(),focused,sel,this);
+            mov = new SquidMovementHandler(getApplicationContext(),can,focused);
+
             //Add the canvas view to the window.
             window.addView(bas);
             window.addView(can);
             window.addView(sel);
+            window.addView(mov);
+
+            //Hide the movement canvas that will be the top most, but we need to be able to select.
+            mov.setVisibility(View.GONE);
 
             //Initialize selection touch events.
             init_selector(sel);

@@ -11,11 +11,13 @@ import android.view.View;
 public class SquidMovementHandler extends View {
 
     private SquidCanvas canvas;
+    private SquidBitmapData dat;
     private Paint brush;
 
-    public SquidMovementHandler(Context context,SquidCanvas can) {
+    public SquidMovementHandler(Context context,SquidCanvas can,SquidBitmapData d) {
         super(context);
 
+        dat = d;
         canvas = can;
 
         brush = new Paint();
@@ -31,11 +33,36 @@ public class SquidMovementHandler extends View {
         invalidate();
     }
 
-
-
     //Draws the movement indicator onto a canvas.
     public void draw_movement_indicator(Canvas c){
         //We need to take a point such as a mouse event and them
         //calculate the corners based on the point that is touched.
+        float width = dat.width;
+        float height = dat.height;
+        float cwidth = c.getWidth();
+        float cheight = c.getHeight();
+
+        float startx = (cwidth - width) / 2;
+        float starty = (cheight - height) / 2;
+
+        //Draws top left
+        c.drawLine(startx,starty,startx + (width / 4),starty,brush);
+        c.drawLine(startx,starty,startx,starty + (height / 4),brush);
+
+        //Draws bottom left
+        c.drawLine(startx,starty + height,startx + (width / 4),starty + height,brush);
+        c.drawLine(startx,starty + height,startx,(starty + height) - (height / 4),brush);
+
+        //Draws top right
+        c.drawLine(startx + width,starty,(startx + width) - (width / 4),starty,brush);
+        c.drawLine(startx + width,starty,startx + width,starty + (height / 4),brush);
+
+        //Draws bottom right
+        c.drawLine(startx + width,starty + height,(startx + width) - (width / 4),starty + height,brush);
+        c.drawLine(startx + width,starty + height,startx + width,(starty + height) - (height / 4),brush);
+
+        //Draw center cross
+        c.drawLine((startx + (width / 2)) + (width / 8),starty + (height / 2),(startx + (width / 2)) - (width / 8),starty + (height / 2),brush);
+        c.drawLine(startx + (width / 2),((starty + (height / 2)) + (height / 8)),startx + (width / 2),((starty + (height / 2)) - (height / 8)),brush);
     }
 }
