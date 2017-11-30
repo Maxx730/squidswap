@@ -19,6 +19,7 @@ public class SquidSwapEditor extends AppCompatActivity{
     public SquidCanvas can;
     public SquidSelector sel;
     public RelativeLayout window;
+    public SquidEditorUi edit;
 
     //Keeps track of which part of the app we are currently working with.
     public String editor_status;
@@ -30,7 +31,6 @@ public class SquidSwapEditor extends AppCompatActivity{
 
         //Find the canvas window.
         window = (RelativeLayout) findViewById(R.id.canvas_window);
-
         //Initialize our focused object with our canvas tools needed.
         focused = new SquidBitmapData(getApplicationContext());
         //Now that it has been initialized we want to set the first image to focus.
@@ -42,7 +42,7 @@ public class SquidSwapEditor extends AppCompatActivity{
             //Once we have the file, then we want to send it into the first canvas.
             can = new SquidCanvas(getApplicationContext(),focused);
             sel = new SquidSelector(getApplicationContext());
-
+            edit = new SquidEditorUi(getApplicationContext(),getWindow().getDecorView(),focused,sel);
             //Add the canvas view to the window.
             window.addView(can);
             window.addView(sel);
@@ -88,6 +88,7 @@ public class SquidSwapEditor extends AppCompatActivity{
                             s.has_data = true;
                             //Now we want the middle canvas to redraw with the new image.
                             can.invalidate();
+                            edit.toggle_crop_btn_display(View.VISIBLE);
                         }
                         break;
                     case MotionEvent.ACTION_MOVE:

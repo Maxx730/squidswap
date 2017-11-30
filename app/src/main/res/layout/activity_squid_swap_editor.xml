@@ -132,9 +132,11 @@
             android:orientation="vertical"></RelativeLayout>
 
         <LinearLayout
+            android:id="@+id/crop_btns"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <ImageButton
                 android:id="@+id/acc_button"
@@ -144,7 +146,7 @@
                 android:background="@android:color/black"
                 android:paddingBottom="10dp"
                 android:paddingTop="10dp"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:srcCompat="@drawable/ic_image_crop_success_24dp" />
 
             <ImageButton
@@ -155,7 +157,7 @@
                 android:background="@android:color/black"
                 android:paddingBottom="10dp"
                 android:paddingTop="10dp"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:srcCompat="@drawable/ic_close_image_crop_24dp" />
 
         </LinearLayout>
