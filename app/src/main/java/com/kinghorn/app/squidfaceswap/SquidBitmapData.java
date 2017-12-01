@@ -13,7 +13,10 @@ public class SquidBitmapData {
     private Context context;
 
     //Data directly related to the bitmap object.
-    public int x,y,scale_x,scale_y;
+    public float x;
+    public float y;
+    public int scale_x;
+    public int scale_y;
     public float width,height;
 
     //The actual bitmap data for the image.

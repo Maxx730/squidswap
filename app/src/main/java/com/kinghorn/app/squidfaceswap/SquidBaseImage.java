@@ -14,11 +14,17 @@ public class SquidBaseImage extends View {
 
     public SquidBaseImage(Context context) {
         super(context);
+
+        setDrawingCacheEnabled(true);
+        setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
     }
 
     //Create optional constructor.
     public SquidBaseImage(Context context,Bitmap base){
         super(context);
+
+        setDrawingCacheEnabled(true);
+        setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
 
         set_image(base);
     }
@@ -37,4 +43,9 @@ public class SquidBaseImage extends View {
         invalidate();
     }
 
+    public Bitmap get_base(){
+        Bitmap b = getDrawingCache();
+        System.out.println(b.toString());
+        return getDrawingCache();
+    }
 }

@@ -23,6 +23,7 @@ public class SquidSwapEditor extends AppCompatActivity{
     public SquidMovementHandler mov;
     public RelativeLayout window;
     public SquidEditorUi edit;
+    public SquidFileService fil;
 
     //Keeps track of which part of the app we are currently working with.
     public String editor_status;
@@ -41,6 +42,9 @@ public class SquidSwapEditor extends AppCompatActivity{
 
                 bas.set_image(b);
                 mov.setVisibility(View.VISIBLE);
+                edit.toggle_crop_btn_display(View.GONE);
+                edit.toggle_plac_btn_display(View.VISIBLE);
+                can.CENTER_IMAGE = false;
             } catch (FileNotFoundException e) {
                 System.out.println("Sorry the selected file was not found.");
             }
@@ -67,8 +71,9 @@ public class SquidSwapEditor extends AppCompatActivity{
             //Once we have the file, then we want to send it into the first canvas.
             can = new SquidCanvas(getApplicationContext(),focused);
             sel = new SquidSelector(getApplicationContext());
-            edit = new SquidEditorUi(getApplicationContext(),getWindow().getDecorView(),focused,sel,this);
+            fil = new SquidFileService(can,bas,sel);
             mov = new SquidMovementHandler(getApplicationContext(),can,focused);
+            edit = new SquidEditorUi(getApplicationContext(),getWindow().getDecorView(),focused,sel,this,fil);
 
             //Add the canvas view to the window.
             window.addView(bas);
@@ -132,6 +137,31 @@ public class SquidSwapEditor extends AppCompatActivity{
                 }
 
                 s.invalidate();
+                return true;
+            }
+        });
+
+        //When the movement handler canvas is displaying, we want to capture events on where
+        //to move the image, we also are going to want to tell the image canvas not to center the image.
+        mov.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch(motionEvent.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+                            focused.x = motionEvent.getX() - (focused.width / 2);
+                            focused.y = motionEvent.getY() - (focused.height / 2);
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        focused.x = motionEvent.getX() - (focused.width / 2);
+                        focused.y = motionEvent.getY() - (focused.height / 2);
+                        break;
+                    case MotionEvent.ACTION_UP:
+
+                        break;
+                }
+
+                mov.invalidate();
+                can.invalidate();
                 return true;
             }
         });

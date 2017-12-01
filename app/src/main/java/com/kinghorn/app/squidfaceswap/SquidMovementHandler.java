@@ -42,8 +42,8 @@ public class SquidMovementHandler extends View {
         float cwidth = c.getWidth();
         float cheight = c.getHeight();
 
-        float startx = (cwidth - width) / 2;
-        float starty = (cheight - height) / 2;
+        float startx = dat.x;
+        float starty = dat.y;
 
         //Draws top left
         c.drawLine(startx,starty,startx + (width / 4),starty,brush);

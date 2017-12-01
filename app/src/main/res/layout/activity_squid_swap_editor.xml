@@ -25,23 +25,6 @@
         android:layout_alignParentStart="true">
 
         <LinearLayout
-            android:id="@+id/editor_hints"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/black"
-            android:gravity="bottom"
-            android:orientation="horizontal"
-            android:padding="10dp">
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Crop Selection"
-                android:textColor="@android:color/background_light" />
-        </LinearLayout>
-
-        <LinearLayout
             android:id="@+id/image_main_tools"
             android:layout_width="match_parent"
             android:layout_height="51dp"
@@ -151,6 +134,52 @@
             android:orientation="vertical">
 
         </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/tool_hints"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/black_back"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/hintText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="Tools hints go here..."
+                android:textColor="@android:color/background_light" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/placement_btns"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <ImageButton
+                android:id="@+id/placement_success"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@android:color/black"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:visibility="visible"
+                app:srcCompat="@drawable/ic_image_crop_success_24dp" />
+
+            <ImageButton
+                android:id="@+id/placement_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@android:color/black"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:visibility="visible"
+                app:srcCompat="@drawable/ic_close_image_crop_24dp" />
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/crop_btns"

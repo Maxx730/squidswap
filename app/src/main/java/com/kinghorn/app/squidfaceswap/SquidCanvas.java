@@ -13,6 +13,8 @@ public class SquidCanvas extends View{
     private Context cn;
     private SquidBitmapData foc;
 
+    public boolean CENTER_IMAGE = true;
+
     public SquidCanvas(Context con,SquidBitmapData f){
         super(con);
         cn = con;
@@ -37,9 +39,12 @@ public class SquidCanvas extends View{
             vals.put("height",foc.height);
             vals.put("canvas",canvas);
 
-            HashMap dat = return_center(vals);
-
-            canvas.drawBitmap(foc.bit, (float) dat.get("x"), (float) dat.get("y"), null);
+            if(CENTER_IMAGE){
+                HashMap dat = return_center(vals);
+                canvas.drawBitmap(foc.bit, (float) dat.get("x"), (float) dat.get("y"), null);
+            }else{
+                canvas.drawBitmap(foc.bit, (float) foc.x, (float) foc.y, null);
+            }
         }
     }
 
@@ -50,7 +55,7 @@ public class SquidCanvas extends View{
         float w = (float) source.get("width");
         float h = (float) source.get("height");
 
-        HashMap re = new HashMap();
+        HashMap re = new HashMap<String,Float>();
 
         re.put("x",(c.getWidth() - w) / 2);
         re.put("y",(c.getHeight() - h) / 2);

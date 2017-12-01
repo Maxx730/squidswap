@@ -15,21 +15,24 @@ public class SquidEditorUi {
     private static SquidBitmapData dat;
     private static SquidSelector sel;
     private static SquidSwapEditor ed;
+    private static SquidFileService fil;
     private static Context c;
 
     //UI Elements that we will be using below here.
-    public ImageButton crop_veri,crop_canc,close_editor,zoom_in,zoom_out;
-    public LinearLayout crop_btns;
+    public ImageButton crop_veri,crop_canc,close_editor,zoom_in,zoom_out,placement_suc,placement_can;
+    public LinearLayout crop_btns,plac_btns;
 
     //Constructor.
-    public SquidEditorUi(Context con,View mainview,SquidBitmapData d,SquidSelector s,SquidSwapEditor e){
+    public SquidEditorUi(Context con,View mainview,SquidBitmapData d,SquidSelector s,SquidSwapEditor e,SquidFileService f){
         dat = d;
         c = con;
         sel = s;
         ed = e;
+        fil = f;
 
         //Inflate the layout we are referring to.
         crop_btns = (LinearLayout) mainview.findViewById(R.id.crop_btns);
+        plac_btns = (LinearLayout) mainview.findViewById(R.id.placement_btns);
 
         //Grab the crop buttons and set the click events.
         crop_veri = (ImageButton) mainview.findViewById(R.id.acc_button);
@@ -37,9 +40,11 @@ public class SquidEditorUi {
         close_editor = (ImageButton) mainview.findViewById(R.id.editor_cancel);
         zoom_in = (ImageButton) mainview.findViewById(R.id.img_scale_inc);
         zoom_out = (ImageButton) mainview.findViewById(R.id.img_scale_dec);
+        placement_suc = (ImageButton) mainview.findViewById(R.id.placement_success);
+        placement_can = (ImageButton) mainview.findViewById(R.id.placement_cancel);
 
         //Set the listeners
-        crop_btn_listen();
+        init_btn_listen();
         editor_listeners();
         set_scaling();
     }
@@ -47,6 +52,10 @@ public class SquidEditorUi {
     //Toggle the display of the crop buttons based on the value given.
     public void toggle_crop_btn_display(int val){
         crop_btns.setVisibility(val);
+    }
+
+    public void toggle_plac_btn_display(int val){
+        plac_btns.setVisibility(val);
     }
 
     //General button touch listeners.
@@ -61,7 +70,7 @@ public class SquidEditorUi {
     }
 
     //Cropping phase button listeners.
-    public void crop_btn_listen(){
+    public void init_btn_listen(){
         crop_canc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,6 +87,22 @@ public class SquidEditorUi {
                 intent.setType("image/*");
 
                 ed.start_gal(intent);
+            }
+        });
+
+        //Once the user has verified where they want the placement to be, we need to combine
+        //the bitmaps for the back and from layers and then give them a preview.
+        placement_suc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fil.generate_preview();
+            }
+        });
+
+        placement_can.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
             }
         });
     }

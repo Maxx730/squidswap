@@ -27,7 +27,7 @@ public class SquidSwapSettings extends AppCompatActivity {
         list = (ListView) findViewById(R.id.squid_settings_list);
         adapt = new SquidListAdapter(this,R.layout.squidswap_menu_layout,menu_items);
         ex = (ImageView) findViewById(R.id.settings_back);
-        file = new SquidFileService();
+
 
         menu_items.add(0,new SquidMenuItem(this,"Autosave Thumbnails",file.load_drawable(this,R.drawable.ic_save_black_24dp),new Intent(this,SquidSwapMain.class),"Toggle"));
         menu_items.add(0,new SquidMenuItem(this,"Save High Resolution Photos",file.load_drawable(this,R.drawable.ic_save_black_24dp),new Intent(this,SquidSwapMain.class),"Toggle"));

@@ -3,6 +3,7 @@ package com.kinghorn.app.squidfaceswap;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
@@ -19,9 +20,16 @@ public class SquidFileService {
     private FileOutputStream out;
     private File save, newDir;
     private String dir_string;
+    private SquidCanvas can;
+    private SquidBaseImage bas;
+    private SquidSelector sel;
 
-    public SquidFileService(){
+    public SquidFileService(SquidCanvas c,SquidBaseImage b,SquidSelector s){
         dir_string = Environment.getExternalStorageDirectory().toString();
+
+        can = c;
+        bas = b;
+        sel = s;
 
         //Make the directory to house the squidswap photos.
         newDir = new File(dir_string + "/squidswap");
@@ -60,6 +68,22 @@ public class SquidFileService {
             e.printStackTrace();
         }
 
+    }
+
+    //Takes in the bitmap data for both of the canvases and returns the data for
+    //the final image before asking the user if they want to save it.
+    public void generate_preview(){
+        //Grab the data from both canvases.
+        Bitmap base = bas.get_base();
+        Bitmap hov = can.getDrawingCache();
+        Bitmap fin = Bitmap.createBitmap(bas.getWidth(),bas.getHeight(), Bitmap.Config.ARGB_8888);
+
+        Canvas c = new Canvas(fin);
+
+        c.drawBitmap(base,0,0,null);
+        c.drawBitmap(hov,0,0,null);
+
+        save_image(fin);
     }
 
     public Drawable load_drawable(Context con, int drawable_id){
