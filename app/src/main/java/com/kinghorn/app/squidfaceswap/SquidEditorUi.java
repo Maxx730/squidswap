@@ -96,6 +96,7 @@ public class SquidEditorUi {
             @Override
             public void onClick(View view) {
                 fil.generate_preview();
+
             }
         });
 

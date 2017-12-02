@@ -23,6 +23,12 @@ public class SquidFileService {
     private SquidCanvas can;
     private SquidBaseImage bas;
     private SquidSelector sel;
+    private static Context c;
+
+    //Constructor for using the file service to load stuff.
+    public SquidFileService(Context con){
+        c = con;
+    }
 
     public SquidFileService(SquidCanvas c,SquidBaseImage b,SquidSelector s){
         dir_string = Environment.getExternalStorageDirectory().toString();
@@ -86,10 +92,13 @@ public class SquidFileService {
         save_image(fin);
     }
 
-    public Drawable load_drawable(Context con, int drawable_id){
-        System.out.println("Loading icon from drawable...");
-        System.out.println(Integer.toString(drawable_id));
+    //Tells the system to refresh the media gallery so the photos will
+    //show up after they are saved.
+    public void refresh_media(){
 
+    }
+
+    public Drawable load_drawable(Context con, int drawable_id){
         Drawable d = con.getResources().getDrawable(drawable_id);
 
         return d;

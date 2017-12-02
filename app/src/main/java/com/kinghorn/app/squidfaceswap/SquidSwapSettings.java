@@ -22,6 +22,8 @@ public class SquidSwapSettings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.squidswap_settings);
 
+        file = new SquidFileService(getApplicationContext());
+
         ArrayList<SquidMenuItem> menu_items = new ArrayList<SquidMenuItem>();
 
         list = (ListView) findViewById(R.id.squid_settings_list);
