@@ -22,7 +22,7 @@ public class SquidMovementHandler extends View {
 
         brush = new Paint();
         brush.setColor(Color.WHITE);
-        brush.setStrokeWidth(6);
+        brush.setStrokeWidth(3);
     }
 
     @Override

@@ -71,9 +71,9 @@ public class SquidSwapEditor extends AppCompatActivity{
             //Once we have the file, then we want to send it into the first canvas.
             can = new SquidCanvas(getApplicationContext(),focused);
             sel = new SquidSelector(getApplicationContext());
-            fil = new SquidFileService(can,bas,sel);
+            fil = new SquidFileService(can,bas,sel,focused);
             mov = new SquidMovementHandler(getApplicationContext(),can,focused);
-            edit = new SquidEditorUi(getApplicationContext(),getWindow().getDecorView(),focused,sel,this,fil);
+            edit = new SquidEditorUi(getApplicationContext(),getWindow().getDecorView(),focused,sel,this,fil,can);
 
             //Add the canvas view to the window.
             window.addView(bas);

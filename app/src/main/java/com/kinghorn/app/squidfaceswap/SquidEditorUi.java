@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
+import android.widget.Toast;
 
 //Class that handles button clicks etc.
 public class SquidEditorUi {
@@ -16,19 +18,22 @@ public class SquidEditorUi {
     private static SquidSelector sel;
     private static SquidSwapEditor ed;
     private static SquidFileService fil;
+    private static SquidCanvas can;
     private static Context c;
 
     //UI Elements that we will be using below here.
     public ImageButton crop_veri,crop_canc,close_editor,zoom_in,zoom_out,placement_suc,placement_can;
     public LinearLayout crop_btns,plac_btns;
+    public SeekBar fade_seek;
 
     //Constructor.
-    public SquidEditorUi(Context con,View mainview,SquidBitmapData d,SquidSelector s,SquidSwapEditor e,SquidFileService f){
+    public SquidEditorUi(Context con,View mainview,SquidBitmapData d,SquidSelector s,SquidSwapEditor e,SquidFileService f,SquidCanvas vas){
         dat = d;
         c = con;
         sel = s;
         ed = e;
         fil = f;
+        can = vas;
 
         //Inflate the layout we are referring to.
         crop_btns = (LinearLayout) mainview.findViewById(R.id.crop_btns);
@@ -42,6 +47,8 @@ public class SquidEditorUi {
         zoom_out = (ImageButton) mainview.findViewById(R.id.img_scale_dec);
         placement_suc = (ImageButton) mainview.findViewById(R.id.placement_success);
         placement_can = (ImageButton) mainview.findViewById(R.id.placement_cancel);
+
+        fade_seek = (SeekBar) mainview.findViewById(R.id.fading_seeker);
 
         //Set the listeners
         init_btn_listen();
@@ -76,6 +83,8 @@ public class SquidEditorUi {
             public void onClick(View view) {
                 sel.has_data = false;
                 dat.set_bitmap(dat.undo_bit);
+                dat.scale_x = 1;
+                dat.scale_y = 1;
                 toggle_crop_btn_display(View.GONE);
             }
         });
@@ -95,7 +104,9 @@ public class SquidEditorUi {
         placement_suc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fil.generate_preview();
+                if(fil.generate_preview()){
+                    Toast.makeText(c,"Saved Image",Toast.LENGTH_SHORT);
+                }
 
             }
         });
@@ -103,6 +114,27 @@ public class SquidEditorUi {
         placement_can.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+            }
+        });
+
+        //Fading seekbar event listener.
+        fade_seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                if(i > 0){
+                    can.fade_val = i;
+                    can.invalidate();
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
 
             }
         });
@@ -119,14 +151,22 @@ public class SquidEditorUi {
         zoom_in.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                view.setBackgroundColor(Color.RED);
+                if(dat.scale_x < 5 && dat.scale_y < 5){
+                    dat.scale_x += .5;
+                    dat.scale_y += .5;
+                    can.invalidate();
+                }
             }
         });
 
         zoom_out.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                view.setBackgroundColor(Color.RED);
+                if(dat.scale_x > 1 && dat.scale_y > 1){
+                    dat.scale_x -= .5;
+                    dat.scale_y -= .5;
+                    can.invalidate();
+                }
             }
         });
     }

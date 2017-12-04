@@ -15,8 +15,8 @@ public class SquidBitmapData {
     //Data directly related to the bitmap object.
     public float x;
     public float y;
-    public int scale_x;
-    public int scale_y;
+    public float scale_x;
+    public float scale_y;
     public float width,height;
 
     //The actual bitmap data for the image.
@@ -25,6 +25,8 @@ public class SquidBitmapData {
     //Constructor.
     public SquidBitmapData(Context con) {
         context = con;
+        this.scale_x = 1;
+        this.scale_y = 1;
     }
 
     //Set new values for the bitmap data object.
@@ -41,8 +43,5 @@ public class SquidBitmapData {
 
         width = b.getWidth();
         height = b.getHeight();
-
-        scale_x = 1;
-        scale_y = 1;
     }
 }

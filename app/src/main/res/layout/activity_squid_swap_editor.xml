@@ -125,6 +125,31 @@
                 app:srcCompat="@drawable/ic_rotate_right_black_24dp" />
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/fading_slider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/black"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/fading_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingBottom="7dp"
+                android:text="Fading Amount"
+                android:textColor="@android:color/background_light" />
+
+            <SeekBar
+                android:id="@+id/fading_seeker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:progressDrawable="@drawable/blur_seeker" />
+        </LinearLayout>
+
         <RelativeLayout
             android:id="@+id/canvas_window"
             android:layout_width="match_parent"

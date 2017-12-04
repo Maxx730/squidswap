@@ -22,7 +22,7 @@ public class SquidSwapSettings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.squidswap_settings);
 
-        file = new SquidFileService(getApplicationContext());
+        file = new SquidFileService(getApplicationContext(),null);
 
         ArrayList<SquidMenuItem> menu_items = new ArrayList<SquidMenuItem>();
 

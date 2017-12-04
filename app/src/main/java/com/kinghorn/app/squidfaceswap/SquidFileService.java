@@ -23,19 +23,21 @@ public class SquidFileService {
     private SquidCanvas can;
     private SquidBaseImage bas;
     private SquidSelector sel;
+    private SquidBitmapData dat;
     private static Context c;
 
     //Constructor for using the file service to load stuff.
-    public SquidFileService(Context con){
+    public SquidFileService(Context con,SquidSelector s){
         c = con;
+        sel = s;
     }
 
-    public SquidFileService(SquidCanvas c,SquidBaseImage b,SquidSelector s){
+    public SquidFileService(SquidCanvas c,SquidBaseImage b,SquidSelector s,SquidBitmapData d){
         dir_string = Environment.getExternalStorageDirectory().toString();
-
         can = c;
         bas = b;
         sel = s;
+        dat = d;
 
         //Make the directory to house the squidswap photos.
         newDir = new File(dir_string + "/squidswap");
@@ -68,8 +70,6 @@ public class SquidFileService {
             //Once the output stream has been initialized we want to saved the file
             //to the given location.
             image_data.compress(Bitmap.CompressFormat.PNG,100,out);
-            System.out.println("Image has been saved to the SquidSwap directory!");
-
         }catch(FileNotFoundException e){
             e.printStackTrace();
         }
@@ -78,18 +78,19 @@ public class SquidFileService {
 
     //Takes in the bitmap data for both of the canvases and returns the data for
     //the final image before asking the user if they want to save it.
-    public void generate_preview(){
+    public boolean generate_preview(){
         //Grab the data from both canvases.
         Bitmap base = bas.get_base();
-        Bitmap hov = can.getDrawingCache();
+        Bitmap hov = can.select_data(sel.select_values());
         Bitmap fin = Bitmap.createBitmap(bas.getWidth(),bas.getHeight(), Bitmap.Config.ARGB_8888);
 
         Canvas c = new Canvas(fin);
 
         c.drawBitmap(base,0,0,null);
-        c.drawBitmap(hov,0,0,null);
+        c.drawBitmap(hov,dat.x,dat.y,null);
 
         save_image(fin);
+        return true;
     }
 
     //Tells the system to refresh the media gallery so the photos will

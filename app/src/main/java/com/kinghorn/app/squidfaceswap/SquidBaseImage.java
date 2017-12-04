@@ -12,6 +12,8 @@ public class SquidBaseImage extends View {
 
     private Bitmap base_image;
 
+    public int orig_width,orig_height;
+
     public SquidBaseImage(Context context) {
         super(context);
 

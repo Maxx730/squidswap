@@ -2,7 +2,17 @@ package com.kinghorn.app.squidfaceswap;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.ComposeShader;
+import android.graphics.LinearGradient;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.RadialGradient;
+import android.graphics.Shader;
+import android.graphics.drawable.shapes.OvalShape;
 import android.view.View;
 
 import java.util.HashMap;
@@ -12,8 +22,10 @@ import java.util.HashMap;
 public class SquidCanvas extends View{
     private Context cn;
     private SquidBitmapData foc;
+    public int fade_val = 50;
 
     public boolean CENTER_IMAGE = true;
+    public boolean DEBUG_CAN = true;
 
     public SquidCanvas(Context con,SquidBitmapData f){
         super(con);
@@ -31,19 +43,20 @@ public class SquidCanvas extends View{
 
         //If the focused image has any data then write the data to the canvas.
         if (foc.bit != null) {
+            Bitmap scale = Bitmap.createScaledBitmap(foc.bit,Math.round(foc.bit.getWidth() * foc.scale_x),Math.round(foc.bit.getHeight() * foc.scale_y),true);
             //Use a hashmap to send our data to a function to return the values needed to place
             //the image in the center.
             HashMap vals = new HashMap();
 
-            vals.put("width",foc.width);
-            vals.put("height",foc.height);
+            vals.put("width",(float) foc.bit.getWidth() * foc.scale_x);
+            vals.put("height",(float) foc.bit.getHeight() * foc.scale_y);
             vals.put("canvas",canvas);
 
             if(CENTER_IMAGE){
-                HashMap dat = return_center(vals);
-                canvas.drawBitmap(foc.bit, (float) dat.get("x"), (float) dat.get("y"), null);
+                HashMap cent = return_center(vals);
+                canvas.drawBitmap(foc.bit,(float) cent.get("x"),(float) cent.get("y"),null);
             }else{
-                canvas.drawBitmap(foc.bit, (float) foc.x, (float) foc.y, null);
+                canvas.drawBitmap(get_faded_img(),foc.x,foc.y,null);
             }
         }
     }
@@ -71,4 +84,23 @@ public class SquidCanvas extends View{
 
         return cropped;
     }
+
+    private Bitmap get_faded_img(){
+        Bitmap orig = foc.bit;
+        Bitmap b = Bitmap.createBitmap(orig.getWidth(),orig.getHeight(),Bitmap.Config.ARGB_8888);
+
+        Canvas c = new Canvas(b);
+        Paint p = new Paint();
+
+        c.drawBitmap(orig,0,0,p);
+
+        p.setAntiAlias(true);
+        p.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
+        p.setShader(new RadialGradient(foc.bit.getWidth()/2,foc.bit.getHeight()/2,(foc.bit.getWidth()/4) + (fade_val * 4),Color.TRANSPARENT,Color.BLACK,Shader.TileMode.CLAMP));
+
+        c.drawCircle(foc.bit.getWidth() / 2,foc.bit.getHeight() / 2,foc.bit.getWidth(),p);
+
+        return b;
+    }
+
 }
