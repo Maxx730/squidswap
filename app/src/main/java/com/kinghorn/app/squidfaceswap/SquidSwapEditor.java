@@ -122,7 +122,9 @@ public class SquidSwapEditor extends AppCompatActivity{
                             s.set_start_values(motionEvent.getX(),motionEvent.getY());
                             s.set_end_values(motionEvent.getX(),motionEvent.getY());
                         }else if(s.cropping){
-
+                            s.drawing = true;
+                            s.set_start_values(motionEvent.getX(),motionEvent.getY());
+                            s.set_end_values(motionEvent.getX(),motionEvent.getY());
                         }
                         break;
                     case MotionEvent.ACTION_UP:
@@ -143,14 +145,14 @@ public class SquidSwapEditor extends AppCompatActivity{
                                 edit.toggle_crop_btn_display(View.VISIBLE);
                             }
                         }else if(s.cropping){
-
+                            //Now we want the middle canvas to redraw with the new image.
+                            can.invalidate();
+                            edit.hint_text.setText("Does this look ok?");
                         }
                         break;
                     case MotionEvent.ACTION_MOVE:
-                        if(!s.has_data){
+                        if(!s.has_data || s.cropping){
                             s.set_end_values(motionEvent.getX(),motionEvent.getY());
-                        }else if(s.cropping){
-
                         }
                         break;
                 }

@@ -12,6 +12,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RadialGradient;
 import android.graphics.Shader;
+import android.graphics.SweepGradient;
 import android.graphics.drawable.shapes.OvalShape;
 import android.view.View;
 
@@ -22,7 +23,7 @@ import java.util.HashMap;
 public class SquidCanvas extends View{
     private Context cn;
     private SquidBitmapData foc;
-    public int fade_val = 50;
+    public int fade_val = 5;
 
     public boolean CENTER_IMAGE = true;
     public boolean DEBUG_CAN = true;
@@ -93,14 +94,21 @@ public class SquidCanvas extends View{
 
         Canvas c = new Canvas(b);
         Paint p = new Paint();
+        Paint p_top = new Paint();
 
         c.drawBitmap(orig,0,0,p);
 
-        p.setAntiAlias(true);
-        p.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
-        p.setShader(new RadialGradient(foc.bit.getWidth()/2,foc.bit.getHeight()/2,(foc.bit.getWidth()/4) + (fade_val * 4),Color.TRANSPARENT,Color.BLACK,Shader.TileMode.CLAMP));
+        System.out.println((float)0.8f/fade_val);
 
-        c.drawCircle(foc.bit.getWidth() / 2,foc.bit.getHeight() / 2,foc.bit.getWidth(),p);
+        p.setAntiAlias(true);
+        p_top.setAntiAlias(true);
+        p.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
+        p_top.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
+        p.setShader(new LinearGradient(0,0,foc.bit.getWidth(),0,new int[]{Color.BLACK,Color.TRANSPARENT,Color.TRANSPARENT,Color.BLACK},new float[]{0.0f,(float)0.8f/fade_val,(1f - ((float)0.8f/fade_val)),1f}, Shader.TileMode.CLAMP));
+        p_top.setShader(new LinearGradient(0,0,0,foc.bit.getHeight(),new int[]{Color.BLACK,Color.TRANSPARENT,Color.TRANSPARENT,Color.BLACK},new float[]{0.0f,(float)0.8f/fade_val,(1f - ((float)0.8f/fade_val)),1f}, Shader.TileMode.CLAMP));
+
+        c.drawCircle(foc.bit.getWidth() / 4,foc.bit.getHeight() / 4,foc.bit.getWidth() + 200,p);
+        c.drawCircle(foc.bit.getWidth() / 4,foc.bit.getHeight() / 4,foc.bit.getWidth() + 200,p_top);
 
         return b;
     }

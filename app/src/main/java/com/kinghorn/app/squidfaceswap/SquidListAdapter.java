@@ -2,6 +2,7 @@ package com.kinghorn.app.squidfaceswap;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
@@ -69,6 +70,14 @@ public class SquidListAdapter extends ArrayAdapter {
                 break;
             case "Link":
                 v = infl.inflate(R.layout.squidswap_menu_layout,null);
+
+                v.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent next = it.get(position).next;
+                        context.startActivity(next);
+                    }
+                });
                 break;
         }
 

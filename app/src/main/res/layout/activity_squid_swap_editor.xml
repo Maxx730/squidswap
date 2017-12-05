@@ -149,6 +149,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:max="20"
+                android:min="5"
                 android:progressDrawable="@drawable/blur_seeker" />
         </LinearLayout>
 
@@ -184,6 +186,38 @@
                     android:text="Please select what to copy..."
                     android:textAlignment="center"
                     android:textColor="@android:color/background_light" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/final_crop_btns"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <ImageButton
+                    android:id="@+id/final_crop_suc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginRight="1dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/squid_ui_btn"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:visibility="visible"
+                    app:srcCompat="@drawable/ic_image_crop_success_24dp" />
+
+                <ImageButton
+                    android:id="@+id/final_crop_can"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/squid_ui_btn"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:visibility="visible"
+                    app:srcCompat="@drawable/ic_close_image_crop_24dp" />
             </LinearLayout>
 
             <LinearLayout

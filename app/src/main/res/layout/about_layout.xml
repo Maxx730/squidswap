@@ -10,22 +10,29 @@
         android:id="@+id/back_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:alpha=".1"
+        android:padding="50dp"
         app:srcCompat="@drawable/squid" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <TextView
             android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingLeft="25dp"
-            android:paddingTop="5dp"
-            android:textAllCaps="true"
+            android:padding="10dp"
+            android:text="About"
+            android:textAllCaps="false"
             android:textColor="@android:color/background_light"
             android:textColorHighlight="@android:color/background_light"
             android:textSize="20sp" />
@@ -34,9 +41,9 @@
             android:id="@+id/back_to_main"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="8dp"
             android:layout_weight="7"
-            android:padding="0dp"
+            android:background="@drawable/squid_ui_btn"
+            android:padding="7dp"
             app:srcCompat="@drawable/ic_close_image_crop_24dp" />
     </LinearLayout>
 
