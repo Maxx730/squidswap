@@ -28,7 +28,7 @@
             android:id="@+id/image_main_tools"
             android:layout_width="match_parent"
             android:layout_height="51dp"
-            android:background="@color/black_back"
+            android:background="@android:color/black"
             android:orientation="horizontal">
 
             <TextView
@@ -50,7 +50,7 @@
                 android:layout_weight="1"
                 android:adjustViewBounds="false"
                 android:alpha="1"
-                android:background="@color/black_back"
+                android:background="@drawable/squid_ui_btn"
                 android:padding="10dp"
                 android:theme="@style/AlertDialog.AppCompat"
                 app:srcCompat="@drawable/ic_zoom_in_black_24dp" />
@@ -60,8 +60,8 @@
                 android:layout_width="29dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:alpha=".5"
-                android:background="@color/black_back"
+                android:alpha="1"
+                android:background="@drawable/squid_ui_btn"
                 android:padding="10dp"
                 app:srcCompat="@drawable/ic_zoom_out_black_24dp" />
 
@@ -81,14 +81,14 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@color/black_back"
+                android:visibility="gone"
                 app:srcCompat="@drawable/ic_file_download_black_24dp" />
 
             <ImageButton
                 android:id="@+id/editor_cancel"
-                android:layout_width="wrap_content"
+                android:layout_width="55dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@color/black_overlay"
+                android:background="@drawable/squid_ui_btn"
                 app:srcCompat="@drawable/ic_close_image_crop_24dp" />
 
         </LinearLayout>
@@ -131,7 +131,8 @@
             android:layout_height="wrap_content"
             android:background="@android:color/black"
             android:orientation="vertical"
-            android:padding="10dp">
+            android:padding="10dp"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/fading_title"
@@ -139,6 +140,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:paddingBottom="7dp"
+                android:paddingLeft="15dp"
                 android:text="Fading Amount"
                 android:textColor="@android:color/background_light" />
 
@@ -161,107 +163,94 @@
         </RelativeLayout>
 
         <LinearLayout
-            android:id="@+id/tool_hints"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/black_back"
+            android:background="@android:color/black"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/hintText"
+            <LinearLayout
+                android:id="@+id/tool_hints"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="Tools hints go here..."
-                android:textColor="@android:color/background_light" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/placement_btns"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:visibility="gone">
-
-            <ImageButton
-                android:id="@+id/placement_success"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@android:color/black"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                android:visibility="visible"
-                app:srcCompat="@drawable/ic_image_crop_success_24dp" />
-
-            <ImageButton
-                android:id="@+id/placement_cancel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@android:color/black"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                android:visibility="visible"
-                app:srcCompat="@drawable/ic_close_image_crop_24dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/crop_btns"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:visibility="gone">
-
-            <ImageButton
-                android:id="@+id/acc_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@android:color/black"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                android:visibility="visible"
-                app:srcCompat="@drawable/ic_image_crop_success_24dp" />
-
-            <ImageButton
-                android:id="@+id/can_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@android:color/black"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                android:visibility="visible"
-                app:srcCompat="@drawable/ic_close_image_crop_24dp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/layer_button_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:visibility="gone">
-
-            <Button
-                android:id="@+id/btn_layer_one"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@color/colorPrimary"
-                android:text="Layer 1"
-                android:textColor="@android:color/background_light" />
-
-            <Button
-                android:id="@+id/btn_layer_two"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="1dp"
                 android:background="@color/black_back"
-                android:text="Layer 2"
-                android:textColor="@android:color/background_light" />
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/hintText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="Please select what to copy..."
+                    android:textAlignment="center"
+                    android:textColor="@android:color/background_light" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/placement_btns"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <ImageButton
+                    android:id="@+id/placement_success"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginRight="1dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/squid_ui_btn"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:visibility="visible"
+                    app:srcCompat="@drawable/ic_image_crop_success_24dp" />
+
+                <ImageButton
+                    android:id="@+id/placement_cancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/squid_ui_btn"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:visibility="visible"
+                    app:srcCompat="@drawable/ic_close_image_crop_24dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/crop_btns"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <ImageButton
+                    android:id="@+id/acc_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="1dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/squid_ui_btn"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:visibility="visible"
+                    app:srcCompat="@drawable/ic_image_crop_success_24dp" />
+
+                <ImageButton
+                    android:id="@+id/can_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/squid_ui_btn"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:visibility="visible"
+                    app:srcCompat="@drawable/ic_close_image_crop_24dp" />
+
+            </LinearLayout>
         </LinearLayout>
+
     </LinearLayout>
 
 </RelativeLayout>

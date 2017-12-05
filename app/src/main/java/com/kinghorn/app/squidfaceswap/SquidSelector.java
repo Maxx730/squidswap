@@ -14,7 +14,7 @@ public class SquidSelector extends View {
     //Hashmap of start and end points.
     private HashMap selection_data;
     //Boolean for when the user is or is not pressing the screen.
-    public boolean drawing;
+    public boolean drawing,cropping;
     public boolean has_data;
 
     public SquidSelector(Context con){
@@ -23,6 +23,10 @@ public class SquidSelector extends View {
         selection_data = new HashMap();
         drawing = false;
         has_data = false;
+        cropping = false;
+
+        set_start_values(0,0);
+        set_end_values(0,0);
 
         selection_paint = new Paint();
         selection_paint.setStrokeWidth(6f);
@@ -35,7 +39,7 @@ public class SquidSelector extends View {
         super.onDraw(canvas);
 
         //If the user does have their finger down then we want to paint to the screen.
-        if(drawing){
+        if(drawing || cropping){
             canvas.drawRect((float) selection_data.get("start_x"),(float) selection_data.get("start_y"),(float) selection_data.get("end_x"),(float) selection_data.get("end_y"),selection_paint);
         }
     }
@@ -91,8 +95,12 @@ public class SquidSelector extends View {
 
     //Check the size of the selction area and deny it if it is
     //too small to even display anything.
-    public void check_size(){
-
+    public boolean check_size(){
+        if(((float) selection_data.get("end_x") - (float) selection_data.get("start_x") > 5) && ((float) selection_data.get("end_y") - (float) selection_data.get("start_y") > 5)){
+            return true;
+        }else{
+            return false;
+        }
     }
 
 }

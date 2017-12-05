@@ -19,6 +19,8 @@ public class SquidBitmapData {
     public float scale_y;
     public float width,height;
 
+    public boolean is_scaled = false;
+
     //The actual bitmap data for the image.
     public Bitmap bit,undo_bit;
 

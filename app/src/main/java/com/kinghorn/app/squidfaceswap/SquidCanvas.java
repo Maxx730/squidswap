@@ -27,11 +27,13 @@ public class SquidCanvas extends View{
     public boolean CENTER_IMAGE = true;
     public boolean DEBUG_CAN = true;
 
-    public SquidCanvas(Context con,SquidBitmapData f){
+    private SquidSelector sel;
+
+    public SquidCanvas(Context con,SquidBitmapData f,SquidSelector s){
         super(con);
         cn = con;
         foc = f;
-
+        sel = s;
         //Grab caching information here.
         setDrawingCacheEnabled(true);
         setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
@@ -54,7 +56,7 @@ public class SquidCanvas extends View{
 
             if(CENTER_IMAGE){
                 HashMap cent = return_center(vals);
-                canvas.drawBitmap(foc.bit,(float) cent.get("x"),(float) cent.get("y"),null);
+                canvas.drawBitmap(scale,(float) cent.get("x"),(float) cent.get("y"),null);
             }else{
                 canvas.drawBitmap(get_faded_img(),foc.x,foc.y,null);
             }
@@ -85,7 +87,7 @@ public class SquidCanvas extends View{
         return cropped;
     }
 
-    private Bitmap get_faded_img(){
+    public Bitmap get_faded_img(){
         Bitmap orig = foc.bit;
         Bitmap b = Bitmap.createBitmap(orig.getWidth(),orig.getHeight(),Bitmap.Config.ARGB_8888);
 
@@ -102,5 +104,4 @@ public class SquidCanvas extends View{
 
         return b;
     }
-
 }

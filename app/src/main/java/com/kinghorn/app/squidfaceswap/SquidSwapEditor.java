@@ -24,6 +24,7 @@ public class SquidSwapEditor extends AppCompatActivity{
     public RelativeLayout window;
     public SquidEditorUi edit;
     public SquidFileService fil;
+    public SquidCropPreview pre;
 
     //Keeps track of which part of the app we are currently working with.
     public String editor_status;
@@ -44,6 +45,11 @@ public class SquidSwapEditor extends AppCompatActivity{
                 mov.setVisibility(View.VISIBLE);
                 edit.toggle_crop_btn_display(View.GONE);
                 edit.toggle_plac_btn_display(View.VISIBLE);
+                edit.toggle_seek_display(View.VISIBLE);
+                edit.zoom_out.setVisibility(View.GONE);
+                edit.zoom_in.setVisibility(View.GONE);
+                edit.zoom_am.setVisibility(View.GONE);
+                edit.hint_text.setText("Please ");
                 can.CENTER_IMAGE = false;
             } catch (FileNotFoundException e) {
                 System.out.println("Sorry the selected file was not found.");
@@ -69,20 +75,23 @@ public class SquidSwapEditor extends AppCompatActivity{
             focused.set_bitmap(open_first());
 
             //Once we have the file, then we want to send it into the first canvas.
-            can = new SquidCanvas(getApplicationContext(),focused);
+            pre = new SquidCropPreview(getApplicationContext());
             sel = new SquidSelector(getApplicationContext());
+            can = new SquidCanvas(getApplicationContext(),focused,sel);
             fil = new SquidFileService(can,bas,sel,focused);
             mov = new SquidMovementHandler(getApplicationContext(),can,focused);
-            edit = new SquidEditorUi(getApplicationContext(),getWindow().getDecorView(),focused,sel,this,fil,can);
+            edit = new SquidEditorUi(getApplicationContext(),getWindow().getDecorView(),focused,sel,this,fil,can,pre,mov,bas);
 
             //Add the canvas view to the window.
             window.addView(bas);
             window.addView(can);
+            window.addView(pre);
             window.addView(sel);
             window.addView(mov);
 
             //Hide the movement canvas that will be the top most, but we need to be able to select.
             mov.setVisibility(View.GONE);
+            pre.setVisibility(View.GONE);
 
             //Initialize selection touch events.
             init_selector(sel);
@@ -112,6 +121,8 @@ public class SquidSwapEditor extends AppCompatActivity{
                             s.drawing = true;
                             s.set_start_values(motionEvent.getX(),motionEvent.getY());
                             s.set_end_values(motionEvent.getX(),motionEvent.getY());
+                        }else if(s.cropping){
+
                         }
                         break;
                     case MotionEvent.ACTION_UP:
@@ -122,16 +133,24 @@ public class SquidSwapEditor extends AppCompatActivity{
                             //Send the hashmap from the selection over to the canvas.
                             s.convert_direction();
                             focused.undo_bit = focused.bit;
-                            focused.set_bitmap(can.select_data(s.select_values()));
                             s.has_data = true;
-                            //Now we want the middle canvas to redraw with the new image.
-                            can.invalidate();
-                            edit.toggle_crop_btn_display(View.VISIBLE);
+
+                            if(sel.check_size()){
+                                focused.set_bitmap(can.select_data(s.select_values()));
+                                //Now we want the middle canvas to redraw with the new image.
+                                can.invalidate();
+                                edit.hint_text.setText("Does this look ok?");
+                                edit.toggle_crop_btn_display(View.VISIBLE);
+                            }
+                        }else if(s.cropping){
+
                         }
                         break;
                     case MotionEvent.ACTION_MOVE:
                         if(!s.has_data){
                             s.set_end_values(motionEvent.getX(),motionEvent.getY());
+                        }else if(s.cropping){
+
                         }
                         break;
                 }
@@ -152,8 +171,8 @@ public class SquidSwapEditor extends AppCompatActivity{
                             focused.y = motionEvent.getY() - (focused.height / 2);
                         break;
                     case MotionEvent.ACTION_MOVE:
-                        focused.x = motionEvent.getX() - (focused.width / 2);
-                        focused.y = motionEvent.getY() - (focused.height / 2);
+                            focused.x = motionEvent.getX() - (focused.width / 2);
+                            focused.y = motionEvent.getY() - (focused.height / 2);
                         break;
                     case MotionEvent.ACTION_UP:
 

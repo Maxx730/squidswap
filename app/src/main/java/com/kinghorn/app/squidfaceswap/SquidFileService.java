@@ -78,10 +78,10 @@ public class SquidFileService {
 
     //Takes in the bitmap data for both of the canvases and returns the data for
     //the final image before asking the user if they want to save it.
-    public boolean generate_preview(){
+    public Bitmap generate_preview(){
         //Grab the data from both canvases.
         Bitmap base = bas.get_base();
-        Bitmap hov = can.select_data(sel.select_values());
+        Bitmap hov = can.get_faded_img();
         Bitmap fin = Bitmap.createBitmap(bas.getWidth(),bas.getHeight(), Bitmap.Config.ARGB_8888);
 
         Canvas c = new Canvas(fin);
@@ -90,7 +90,7 @@ public class SquidFileService {
         c.drawBitmap(hov,dat.x,dat.y,null);
 
         save_image(fin);
-        return true;
+        return fin;
     }
 
     //Tells the system to refresh the media gallery so the photos will

@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 //Class that handles button clicks etc.
@@ -19,25 +20,33 @@ public class SquidEditorUi {
     private static SquidSwapEditor ed;
     private static SquidFileService fil;
     private static SquidCanvas can;
+    private SquidCropPreview pre;
+    private SquidMovementHandler mov;
+    private SquidBaseImage bas;
     private static Context c;
 
     //UI Elements that we will be using below here.
     public ImageButton crop_veri,crop_canc,close_editor,zoom_in,zoom_out,placement_suc,placement_can;
-    public LinearLayout crop_btns,plac_btns;
+    public TextView hint_text,zoom_am;
+    public LinearLayout crop_btns,plac_btns,fade_layout;
     public SeekBar fade_seek;
 
     //Constructor.
-    public SquidEditorUi(Context con,View mainview,SquidBitmapData d,SquidSelector s,SquidSwapEditor e,SquidFileService f,SquidCanvas vas){
+    public SquidEditorUi(Context con,View mainview,SquidBitmapData d,SquidSelector s,SquidSwapEditor e,SquidFileService f,SquidCanvas vas,SquidCropPreview p,SquidMovementHandler m,SquidBaseImage b){
         dat = d;
         c = con;
         sel = s;
         ed = e;
         fil = f;
         can = vas;
+        pre = p;
+        mov = m;
+        bas = b;
 
         //Inflate the layout we are referring to.
         crop_btns = (LinearLayout) mainview.findViewById(R.id.crop_btns);
         plac_btns = (LinearLayout) mainview.findViewById(R.id.placement_btns);
+        fade_layout = (LinearLayout) mainview.findViewById(R.id.fading_slider);
 
         //Grab the crop buttons and set the click events.
         crop_veri = (ImageButton) mainview.findViewById(R.id.acc_button);
@@ -49,6 +58,9 @@ public class SquidEditorUi {
         placement_can = (ImageButton) mainview.findViewById(R.id.placement_cancel);
 
         fade_seek = (SeekBar) mainview.findViewById(R.id.fading_seeker);
+
+        hint_text = (TextView) mainview.findViewById(R.id.hintText);
+        zoom_am = (TextView) mainview.findViewById(R.id.zoom_indication);
 
         //Set the listeners
         init_btn_listen();
@@ -63,6 +75,10 @@ public class SquidEditorUi {
 
     public void toggle_plac_btn_display(int val){
         plac_btns.setVisibility(val);
+    }
+
+    public void toggle_seek_display(int val){
+        fade_layout.setVisibility(val);
     }
 
     //General button touch listeners.
@@ -85,6 +101,7 @@ public class SquidEditorUi {
                 dat.set_bitmap(dat.undo_bit);
                 dat.scale_x = 1;
                 dat.scale_y = 1;
+                hint_text.setText("Please select what to copy...");
                 toggle_crop_btn_display(View.GONE);
             }
         });
@@ -104,10 +121,17 @@ public class SquidEditorUi {
         placement_suc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(fil.generate_preview()){
-                    Toast.makeText(c,"Saved Image",Toast.LENGTH_SHORT);
-                }
-
+                //Now we want to send the values of both the canvases onto one
+                //and give the option to crop.
+                pre.set_preview(fil.generate_preview());
+                pre.invalidate();
+                pre.setVisibility(View.VISIBLE);
+                sel.setVisibility(View.VISIBLE);
+                sel.cropping = true;
+                mov.setVisibility(View.GONE);
+                can.setVisibility(View.GONE);
+                bas.setVisibility(View.GONE);
+                fade_layout.setVisibility(View.GONE);
             }
         });
 
@@ -151,9 +175,10 @@ public class SquidEditorUi {
         zoom_in.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(dat.scale_x < 5 && dat.scale_y < 5){
-                    dat.scale_x += .5;
-                    dat.scale_y += .5;
+                if(dat.scale_x < 3 && dat.scale_y < 3){
+                    dat.scale_x += 1;
+                    dat.scale_y += 1;
+                    dat.is_scaled = true;
                     can.invalidate();
                 }
             }
@@ -163,8 +188,8 @@ public class SquidEditorUi {
             @Override
             public void onClick(View view) {
                 if(dat.scale_x > 1 && dat.scale_y > 1){
-                    dat.scale_x -= .5;
-                    dat.scale_y -= .5;
+                    dat.scale_x -= 1;
+                    dat.scale_y -= 1;
                     can.invalidate();
                 }
             }
