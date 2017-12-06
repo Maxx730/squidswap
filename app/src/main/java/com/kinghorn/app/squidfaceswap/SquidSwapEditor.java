@@ -16,16 +16,12 @@ import java.io.InputStream;
 import java.net.URI;
 
 public class SquidSwapEditor extends AppCompatActivity{
-    public SquidBitmapData focused,focused_base;
     public SquidCanvas can,pre,bas;
     public SquidSelector sel;
     public SquidMovementHandler mov;
     public RelativeLayout window;
     public SquidEditorUi edit;
     public SquidFileService fil;
-
-    //Keeps track of which part of the app we are currently working with.
-    public String editor_status;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -66,29 +62,30 @@ public class SquidSwapEditor extends AppCompatActivity{
 
         //Find the canvas window.
         window = (RelativeLayout) findViewById(R.id.canvas_window);
-        //Initialize our focused object with our canvas tools needed.
-        focused = new SquidBitmapData(getApplicationContext());
-        focused_base = new SquidBitmapData(getApplicationContext());
-        //Now that it has been initialized we want to set the first image to focus.
 
         //Make sure we can get to the file with a try catch.
         try{
-            focused.set_bitmap(open_first());
-
             //Once we have the file, then we want to send it into the first canvas.
             sel = new SquidSelector(getApplicationContext());
 
             //Three different squid canvases that are going to handle different parts of
             //the final image.
-            can = new SquidCanvas(getApplicationContext(),focused,sel);
-            pre = new SquidCanvas(getApplicationContext(),focused,sel);
-            bas = new SquidCanvas(getApplicationContext(),focused,sel);
+            //
+            //Each of the canvases has its own focused bitmap img.
+            can = new SquidCanvas(getApplicationContext(),new SquidBitmapData(getApplicationContext()),sel);
+            pre = new SquidCanvas(getApplicationContext(),new SquidBitmapData(getApplicationContext()),sel);
+            bas = new SquidCanvas(getApplicationContext(),new SquidBitmapData(getApplicationContext()),sel);
+            //Init our file service.
+            fil = new SquidFileService(can,bas,sel);
 
-            fil = new SquidFileService(can,bas,sel,focused);
+            //Set the first image that was chosen from the gallery.
+            can.set_img(fil.open_first(getIntent()));
+
             mov = new SquidMovementHandler(getApplicationContext(),can,focused);
             edit = new SquidEditorUi(getApplicationContext(),getWindow().getDecorView(),focused,sel,this,fil,can,pre,mov,bas);
 
             //Add the canvas view to the window.
+            //ORDER OF ADDING THESE IS IMPORTANT FOR CAPTURING USER INPUT.
             window.addView(bas);
             window.addView(can);
             window.addView(pre);
@@ -104,16 +101,6 @@ public class SquidSwapEditor extends AppCompatActivity{
         }catch(FileNotFoundException e){
             System.out.println("ERROR: Chosen file does not seem to exist!");
         }
-    }
-
-    //Function will check and return a bitmap if the image was sent along with the intent.
-    private Bitmap open_first() throws FileNotFoundException {
-        Intent in = getIntent();
-        String path = in.getStringExtra("chosen_uri");
-        InputStream i = getContentResolver().openInputStream(Uri.parse(path));
-        Bitmap b = BitmapFactory.decodeStream(i);
-
-        return b;
     }
 
     //Initialize the on touch listener for the selection object.

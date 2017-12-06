@@ -43,7 +43,6 @@ public class SquidCanvas extends View{
     public void set_img(Bitmap b){
         foc.bit = b;
     }
-
     public Bitmap get_img(){
         return foc.bit;
     }

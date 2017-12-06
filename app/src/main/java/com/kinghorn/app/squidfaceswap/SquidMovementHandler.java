@@ -14,15 +14,23 @@ public class SquidMovementHandler extends View {
     private SquidBitmapData dat;
     private Paint brush;
 
-    public SquidMovementHandler(Context context,SquidCanvas can,SquidBitmapData d) {
+    public SquidMovementHandler(Context context,SquidCanvas can) {
         super(context);
-
-        dat = d;
         canvas = can;
 
+        //Paint object that will handle painting the movement indicators to the
+        //image in certain colors etc.
         brush = new Paint();
         brush.setColor(Color.WHITE);
         brush.setStrokeWidth(3);
+    }
+
+    //Getters and setters below.
+    public void set_foc(SquidBitmapData d){
+        dat = d;
+    }
+    public SquidBitmapData get_foc(){
+        return dat;
     }
 
     @Override

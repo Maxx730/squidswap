@@ -1,19 +1,16 @@
 package com.kinghorn.app.squidfaceswap;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Matrix;
-import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Environment;
-import android.view.View;
-import android.widget.Toast;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.InputStream;
 import java.util.Random;
 
 public class SquidFileService {
@@ -31,12 +28,11 @@ public class SquidFileService {
         sel = s;
     }
 
-    public SquidFileService(SquidCanvas c,SquidCanvas b,SquidSelector s,SquidBitmapData d){
+    public SquidFileService(SquidCanvas c,SquidCanvas b,SquidSelector s){
         dir_string = Environment.getExternalStorageDirectory().toString();
         can = c;
         bas = b;
         sel = s;
-        dat = d;
 
         //Make the directory to house the squidswap photos.
         newDir = new File(dir_string + "/squidswap");
@@ -92,15 +88,13 @@ public class SquidFileService {
         return fin;
     }
 
-    //Tells the system to refresh the media gallery so the photos will
-    //show up after they are saved.
-    public void refresh_media(){
+    //Function will check and return a bitmap if the image was sent along with the intent.
+    public Bitmap open_first(Intent cont) throws FileNotFoundException {
+        Intent in = cont;
+        String path = in.getStringExtra("chosen_uri");
+        InputStream i = c.getContentResolver().openInputStream(Uri.parse(path));
+        Bitmap b = BitmapFactory.decodeStream(i);
 
-    }
-
-    public Drawable load_drawable(Context con, int drawable_id){
-        Drawable d = con.getResources().getDrawable(drawable_id);
-
-        return d;
+        return b;
     }
 }
