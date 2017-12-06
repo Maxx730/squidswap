@@ -88,6 +88,7 @@ public class SquidCanvas extends View{
         return cropped;
     }
 
+    //Returns the image after the fading on the edge differences have been applied.
     public Bitmap get_faded_img(){
         Bitmap orig = foc.bit;
         Bitmap b = Bitmap.createBitmap(orig.getWidth(),orig.getHeight(),Bitmap.Config.ARGB_8888);
@@ -111,5 +112,9 @@ public class SquidCanvas extends View{
         c.drawCircle(foc.bit.getWidth() / 4,foc.bit.getHeight() / 4,foc.bit.getWidth() + 200,p_top);
 
         return b;
+    }
+
+    public void set_img(Bitmap b){
+        foc.bit = b;
     }
 }

@@ -17,14 +17,13 @@ import java.net.URI;
 
 public class SquidSwapEditor extends AppCompatActivity{
     public SquidBitmapData focused;
-    public SquidCanvas can;
+    public SquidCanvas can,pre;
     public SquidSelector sel;
     public SquidBaseImage bas;
     public SquidMovementHandler mov;
     public RelativeLayout window;
     public SquidEditorUi edit;
     public SquidFileService fil;
-    public SquidCropPreview pre;
 
     //Keeps track of which part of the app we are currently working with.
     public String editor_status;
@@ -49,7 +48,7 @@ public class SquidSwapEditor extends AppCompatActivity{
                 edit.zoom_out.setVisibility(View.GONE);
                 edit.zoom_in.setVisibility(View.GONE);
                 edit.zoom_am.setVisibility(View.GONE);
-                edit.hint_text.setText("Please ");
+                edit.hint_text.setText("Please place the swap image.");
                 can.CENTER_IMAGE = false;
             } catch (FileNotFoundException e) {
                 System.out.println("Sorry the selected file was not found.");
@@ -75,9 +74,9 @@ public class SquidSwapEditor extends AppCompatActivity{
             focused.set_bitmap(open_first());
 
             //Once we have the file, then we want to send it into the first canvas.
-            pre = new SquidCropPreview(getApplicationContext());
             sel = new SquidSelector(getApplicationContext());
             can = new SquidCanvas(getApplicationContext(),focused,sel);
+            pre = new SquidCanvas(getApplicationContext(),focused,sel);
             fil = new SquidFileService(can,bas,sel,focused);
             mov = new SquidMovementHandler(getApplicationContext(),can,focused);
             edit = new SquidEditorUi(getApplicationContext(),getWindow().getDecorView(),focused,sel,this,fil,can,pre,mov,bas);
@@ -146,8 +145,10 @@ public class SquidSwapEditor extends AppCompatActivity{
                             }
                         }else if(s.cropping){
                             //Now we want the middle canvas to redraw with the new image.
-                            can.invalidate();
-                            edit.hint_text.setText("Does this look ok?");
+                            pre.set_img(pre.select_data(sel.select_values()));
+                            sel.zero_values();
+                            sel.invalidate();
+                            pre.invalidate();
                         }
                         break;
                     case MotionEvent.ACTION_MOVE:

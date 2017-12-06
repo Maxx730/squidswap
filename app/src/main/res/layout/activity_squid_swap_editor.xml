@@ -31,6 +31,17 @@
             android:background="@android:color/black"
             android:orientation="horizontal">
 
+            <ToggleButton
+                android:id="@+id/toggleButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/squid_ui_btn"
+                android:text="ToggleButton"
+                android:textColor="@android:color/background_light"
+                android:textOff="Back Image"
+                android:textOn="Front Image" />
+
             <TextView
                 android:id="@+id/zoom_indication"
                 android:layout_width="57dp"
@@ -41,7 +52,8 @@
                 android:text="1X"
                 android:textAlignment="center"
                 android:textColor="#FFF"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:visibility="gone" />
 
             <ImageButton
                 android:id="@+id/img_scale_inc"
@@ -53,6 +65,7 @@
                 android:background="@drawable/squid_ui_btn"
                 android:padding="10dp"
                 android:theme="@style/AlertDialog.AppCompat"
+                android:visibility="gone"
                 app:srcCompat="@drawable/ic_zoom_in_black_24dp" />
 
             <ImageButton
@@ -63,17 +76,8 @@
                 android:alpha="1"
                 android:background="@drawable/squid_ui_btn"
                 android:padding="10dp"
+                android:visibility="gone"
                 app:srcCompat="@drawable/ic_zoom_out_black_24dp" />
-
-            <ImageButton
-                android:id="@+id/img_selection_reset"
-                android:layout_width="wrap_content"
-                android:layout_height="54dp"
-                android:layout_weight="0.77"
-                android:alpha="0"
-                android:background="@android:color/background_dark"
-                android:padding="10dp"
-                app:srcCompat="@drawable/ic_standard_image_size_black_24dp" />
 
             <ImageButton
                 android:id="@+id/imageButton"
@@ -91,38 +95,6 @@
                 android:background="@drawable/squid_ui_btn"
                 app:srcCompat="@drawable/ic_close_image_crop_24dp" />
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/image_extra_tools"
-            android:layout_width="match_parent"
-            android:layout_height="51dp"
-            android:orientation="horizontal"
-            android:visibility="gone">
-
-            <ImageButton
-                android:id="@+id/imageButton8"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@android:color/black"
-                app:srcCompat="@drawable/ic_crop_black_24dp" />
-
-            <ImageButton
-                android:id="@+id/rotate_left_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@android:color/black"
-                app:srcCompat="@drawable/ic_rotate_left_black_24dp" />
-
-            <ImageButton
-                android:id="@+id/rotate_right_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@android:color/black"
-                app:srcCompat="@drawable/ic_rotate_right_black_24dp" />
         </LinearLayout>
 
         <LinearLayout

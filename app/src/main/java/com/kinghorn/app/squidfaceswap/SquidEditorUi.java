@@ -19,8 +19,7 @@ public class SquidEditorUi {
     private static SquidSelector sel;
     private static SquidSwapEditor ed;
     private static SquidFileService fil;
-    private static SquidCanvas can;
-    private SquidCropPreview pre;
+    private static SquidCanvas can,pre;
     private SquidMovementHandler mov;
     private SquidBaseImage bas;
     private static Context c;
@@ -32,7 +31,7 @@ public class SquidEditorUi {
     public SeekBar fade_seek;
 
     //Constructor.
-    public SquidEditorUi(Context con,View mainview,SquidBitmapData d,SquidSelector s,SquidSwapEditor e,SquidFileService f,SquidCanvas vas,SquidCropPreview p,SquidMovementHandler m,SquidBaseImage b){
+    public SquidEditorUi(Context con,View mainview,SquidBitmapData d,SquidSelector s,SquidSwapEditor e,SquidFileService f,SquidCanvas vas,SquidCanvas p,SquidMovementHandler m,SquidBaseImage b){
         dat = d;
         c = con;
         sel = s;
@@ -124,12 +123,18 @@ public class SquidEditorUi {
             public void onClick(View view) {
                 //Now we want to send the values of both the canvases onto one
                 //and give the option to crop.
-                pre.set_preview(fil.generate_preview());
+                pre.set_img(fil.generate_preview());
                 pre.invalidate();
                 pre.setVisibility(View.VISIBLE);
                 sel.setVisibility(View.VISIBLE);
                 final_crop.setVisibility(View.VISIBLE);
+
+                hint_text.setText("Crop Final Image");
+
                 sel.cropping = true;
+                sel.zero_values();
+                sel.invalidate();
+
                 plac_btns.setVisibility(View.GONE);
                 mov.setVisibility(View.GONE);
                 can.setVisibility(View.GONE);

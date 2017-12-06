@@ -44,6 +44,12 @@ public class SquidSelector extends View {
         }
     }
 
+    //Resets the values of the selector to 0;
+    public void zero_values(){
+        set_start_values(0,0);
+        set_end_values(0,0);
+    }
+
     //Sets the values for the hashmap used for where to draw onto the canvas.
     public void set_start_values(float x,float y){
         selection_data.put("start_x",x);

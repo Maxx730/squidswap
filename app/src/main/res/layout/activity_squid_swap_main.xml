@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
+    android:background="@drawable/simple_dashed"
     tools:context="com.kinghorn.app.squidfaceswap.SquidSwapMain">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
@@ -16,6 +16,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/simple_dashed"
         android:fitsSystemWindows="true">
 
         <RelativeLayout
@@ -31,20 +32,15 @@
                 app:srcCompat="@android:drawable/screen_background_dark_transparent" />
         </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/img_two_select"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:id="@+id/img_prev_one"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                app:srcCompat="@android:drawable/screen_background_dark_transparent" />
-        </RelativeLayout>
-
     </FrameLayout>
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/simple_dashed"
+        android:padding="120dp"
+        app:srcCompat="@drawable/squid" />
 
     <TextView
         android:id="@+id/version_text"
@@ -76,13 +72,6 @@
         android:textAlignment="center"
         android:textColor="@android:color/background_light"
         android:textSize="9sp" />
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="120dp"
-        app:srcCompat="@drawable/squid" />
 
     <LinearLayout
         android:id="@+id/fullscreen_content_controls"
