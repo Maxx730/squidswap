@@ -16,10 +16,9 @@ import java.io.InputStream;
 import java.net.URI;
 
 public class SquidSwapEditor extends AppCompatActivity{
-    public SquidBitmapData focused;
-    public SquidCanvas can,pre;
+    public SquidBitmapData focused,focused_base;
+    public SquidCanvas can,pre,bas;
     public SquidSelector sel;
-    public SquidBaseImage bas;
     public SquidMovementHandler mov;
     public RelativeLayout window;
     public SquidEditorUi edit;
@@ -40,7 +39,8 @@ public class SquidSwapEditor extends AppCompatActivity{
                 InputStream in = getContentResolver().openInputStream(path);
                 Bitmap b = BitmapFactory.decodeStream(in);
 
-                bas.set_image(b);
+                bas.set_img(b);
+
                 mov.setVisibility(View.VISIBLE);
                 edit.toggle_crop_btn_display(View.GONE);
                 edit.toggle_plac_btn_display(View.VISIBLE);
@@ -48,6 +48,8 @@ public class SquidSwapEditor extends AppCompatActivity{
                 edit.zoom_out.setVisibility(View.GONE);
                 edit.zoom_in.setVisibility(View.GONE);
                 edit.zoom_am.setVisibility(View.GONE);
+                edit.layer_toggle.setVisibility(View.VISIBLE);
+
                 edit.hint_text.setText("Please place the swap image.");
                 can.CENTER_IMAGE = false;
             } catch (FileNotFoundException e) {
@@ -66,7 +68,7 @@ public class SquidSwapEditor extends AppCompatActivity{
         window = (RelativeLayout) findViewById(R.id.canvas_window);
         //Initialize our focused object with our canvas tools needed.
         focused = new SquidBitmapData(getApplicationContext());
-        bas = new SquidBaseImage(getApplicationContext());
+        focused_base = new SquidBitmapData(getApplicationContext());
         //Now that it has been initialized we want to set the first image to focus.
 
         //Make sure we can get to the file with a try catch.
@@ -75,8 +77,13 @@ public class SquidSwapEditor extends AppCompatActivity{
 
             //Once we have the file, then we want to send it into the first canvas.
             sel = new SquidSelector(getApplicationContext());
+
+            //Three different squid canvases that are going to handle different parts of
+            //the final image.
             can = new SquidCanvas(getApplicationContext(),focused,sel);
             pre = new SquidCanvas(getApplicationContext(),focused,sel);
+            bas = new SquidCanvas(getApplicationContext(),focused,sel);
+
             fil = new SquidFileService(can,bas,sel,focused);
             mov = new SquidMovementHandler(getApplicationContext(),can,focused);
             edit = new SquidEditorUi(getApplicationContext(),getWindow().getDecorView(),focused,sel,this,fil,can,pre,mov,bas);

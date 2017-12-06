@@ -2,42 +2,50 @@ package com.kinghorn.app.squidfaceswap;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.ComposeShader;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
-import android.graphics.RadialGradient;
 import android.graphics.Shader;
-import android.graphics.SweepGradient;
-import android.graphics.drawable.shapes.OvalShape;
 import android.view.View;
-
 import java.util.HashMap;
-
 
 //Canvas class that we will use in this view to draw on top of the given image.
 public class SquidCanvas extends View{
+    //Private variables.
     private Context cn;
     private SquidBitmapData foc;
-    public int fade_val = 5;
+    private SquidSelector sel;
 
+    //Public variables that can be edited from outsite the
+    //object.
+    public int fade_val = 5;
     public boolean CENTER_IMAGE = true;
     public boolean DEBUG_CAN = true;
 
-    private SquidSelector sel;
-
+    //Constructor
+    //
+    //
     public SquidCanvas(Context con,SquidBitmapData f,SquidSelector s){
         super(con);
+        //Set our variables.
         cn = con;
         foc = f;
         sel = s;
         //Grab caching information here.
         setDrawingCacheEnabled(true);
         setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
+    }
+
+    //Getters and setters are below.
+    public void set_img(Bitmap b){
+        foc.bit = b;
+    }
+
+    public Bitmap get_img(){
+        return foc.bit;
     }
 
     @Override
@@ -112,9 +120,5 @@ public class SquidCanvas extends View{
         c.drawCircle(foc.bit.getWidth() / 4,foc.bit.getHeight() / 4,foc.bit.getWidth() + 200,p_top);
 
         return b;
-    }
-
-    public void set_img(Bitmap b){
-        foc.bit = b;
     }
 }

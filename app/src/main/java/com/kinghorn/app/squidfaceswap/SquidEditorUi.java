@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 //Class that handles button clicks etc.
 public class SquidEditorUi {
@@ -19,9 +20,8 @@ public class SquidEditorUi {
     private static SquidSelector sel;
     private static SquidSwapEditor ed;
     private static SquidFileService fil;
-    private static SquidCanvas can,pre;
+    private static SquidCanvas can,pre,bas;
     private SquidMovementHandler mov;
-    private SquidBaseImage bas;
     private static Context c;
 
     //UI Elements that we will be using below here.
@@ -29,9 +29,10 @@ public class SquidEditorUi {
     public TextView hint_text,zoom_am;
     public LinearLayout crop_btns,plac_btns,fade_layout,final_crop;
     public SeekBar fade_seek;
+    public ToggleButton layer_toggle;
 
     //Constructor.
-    public SquidEditorUi(Context con,View mainview,SquidBitmapData d,SquidSelector s,SquidSwapEditor e,SquidFileService f,SquidCanvas vas,SquidCanvas p,SquidMovementHandler m,SquidBaseImage b){
+    public SquidEditorUi(Context con,View mainview,SquidBitmapData d,SquidSelector s,SquidSwapEditor e,SquidFileService f,SquidCanvas vas,SquidCanvas p,SquidMovementHandler m,SquidCanvas b){
         dat = d;
         c = con;
         sel = s;
@@ -61,6 +62,8 @@ public class SquidEditorUi {
 
         hint_text = (TextView) mainview.findViewById(R.id.hintText);
         zoom_am = (TextView) mainview.findViewById(R.id.zoom_indication);
+
+        layer_toggle = (ToggleButton)mainview.findViewById(R.id.layer_toggle);
 
         //Set the listeners
         init_btn_listen();
@@ -116,7 +119,20 @@ public class SquidEditorUi {
             }
         });
 
-        //Once the user has verified where they want the placement to be, we need to combine
+        layer_toggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(layer_toggle.isChecked()){
+                    //Toggle the focus onto the foreground image.
+
+                }else{
+                    //Toggle the focus onto the background image.
+
+                }
+            }
+        });
+
+        //Once00457210 the user has verified where they want the placement to be, we need to combine
         //the bitmaps for the back and from layers and then give them a preview.
         placement_suc.setOnClickListener(new View.OnClickListener() {
             @Override

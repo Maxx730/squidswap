@@ -20,8 +20,7 @@ public class SquidFileService {
     private FileOutputStream out;
     private File save, newDir;
     private String dir_string;
-    private SquidCanvas can;
-    private SquidBaseImage bas;
+    private SquidCanvas can,bas;
     private SquidSelector sel;
     private SquidBitmapData dat;
     private static Context c;
@@ -32,7 +31,7 @@ public class SquidFileService {
         sel = s;
     }
 
-    public SquidFileService(SquidCanvas c,SquidBaseImage b,SquidSelector s,SquidBitmapData d){
+    public SquidFileService(SquidCanvas c,SquidCanvas b,SquidSelector s,SquidBitmapData d){
         dir_string = Environment.getExternalStorageDirectory().toString();
         can = c;
         bas = b;
@@ -80,7 +79,7 @@ public class SquidFileService {
     //the final image before asking the user if they want to save it.
     public Bitmap generate_preview(){
         //Grab the data from both canvases.
-        Bitmap base = bas.get_base();
+        Bitmap base = bas.getDrawingCache();
         Bitmap hov = can.get_faded_img();
         Bitmap fin = Bitmap.createBitmap(bas.getWidth(),bas.getHeight(), Bitmap.Config.ARGB_8888);
 
