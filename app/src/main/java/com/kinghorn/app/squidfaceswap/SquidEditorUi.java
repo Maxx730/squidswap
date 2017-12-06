@@ -65,7 +65,6 @@ public class SquidEditorUi {
         //Set the listeners
         init_btn_listen();
         editor_listeners();
-        set_scaling();
     }
 
     //Toggle the display of the crop buttons based on the value given.
@@ -184,32 +183,6 @@ public class SquidEditorUi {
     public void main_menu(){
         Intent in = new Intent(c,SquidSwapMain.class);
         c.startActivity(in);
-    }
-
-    //Logic for the scaling buttons.
-    public void set_scaling(){
-        zoom_in.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(dat.scale_x < 3 && dat.scale_y < 3){
-                    dat.scale_x += 1;
-                    dat.scale_y += 1;
-                    dat.is_scaled = true;
-                    can.invalidate();
-                }
-            }
-        });
-
-        zoom_out.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(dat.scale_x > 1 && dat.scale_y > 1){
-                    dat.scale_x -= 1;
-                    dat.scale_y -= 1;
-                    can.invalidate();
-                }
-            }
-        });
     }
 
 }

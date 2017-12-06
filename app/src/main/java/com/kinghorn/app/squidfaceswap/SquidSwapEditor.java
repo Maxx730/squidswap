@@ -98,38 +98,40 @@ public class SquidSwapEditor extends AppCompatActivity{
             pre.setVisibility(View.GONE);
 
             //Initialize selection touch events.
-            init_selector(sel);
+            init_selector();
         }catch(FileNotFoundException e){
+            //Unable to find the given file, we may want to setup some sort of fallback method to use as opposed to just throwing and
+            //error.
             System.out.println("ERROR: Chosen file does not seem to exist!");
         }
     }
 
     //Initialize the on touch listener for the selection object.
-    private void init_selector(final SquidSelector s){
-        s.setOnTouchListener(new View.OnTouchListener() {
+    private void init_selector(){
+        sel.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 switch(motionEvent.getAction()){
                     case MotionEvent.ACTION_DOWN:
-                        if(!s.has_data){
-                            s.drawing = true;
-                            s.set_start_values(motionEvent.getX(),motionEvent.getY());
-                            s.set_end_values(motionEvent.getX(),motionEvent.getY());
-                        }else if(s.cropping){
-                            s.drawing = true;
-                            s.set_start_values(motionEvent.getX(),motionEvent.getY());
-                            s.set_end_values(motionEvent.getX(),motionEvent.getY());
+                        if(!sel.has_data){
+                            sel.drawing = true;
+                            sel.set_start_values(motionEvent.getX(),motionEvent.getY());
+                            sel.set_end_values(motionEvent.getX(),motionEvent.getY());
+                        }else if(sel.cropping){
+                            sel.drawing = true;
+                            sel.set_start_values(motionEvent.getX(),motionEvent.getY());
+                            sel.set_end_values(motionEvent.getX(),motionEvent.getY());
                         }
                         break;
                     case MotionEvent.ACTION_UP:
-                        if(!s.has_data){
-                            s.drawing = false;
-                            s.set_end_values(motionEvent.getX(),motionEvent.getY());
+                        if(!sel.has_data){
+                            sel.drawing = false;
+                            sel.set_end_values(motionEvent.getX(),motionEvent.getY());
                             //Logic goes here for grabing the bitmap from the canvas.
                             //Send the hashmap from the selection over to the canvas.
-                            s.convert_direction();
+                            sel.convert_direction();
                             focused.undo_bit = focused.bit;
-                            s.has_data = true;
+                            sel.has_data = true;
 
                             if(sel.check_size()){
                                 focused.set_bitmap(can.select_data(s.select_values()));
@@ -138,7 +140,7 @@ public class SquidSwapEditor extends AppCompatActivity{
                                 edit.hint_text.setText("Does this look ok?");
                                 edit.toggle_crop_btn_display(View.VISIBLE);
                             }
-                        }else if(s.cropping){
+                        }else if(sel.cropping){
                             //Now we want the middle canvas to redraw with the new image.
                             pre.set_img(pre.select_data(sel.select_values()));
                             sel.zero_values();
@@ -147,13 +149,13 @@ public class SquidSwapEditor extends AppCompatActivity{
                         }
                         break;
                     case MotionEvent.ACTION_MOVE:
-                        if(!s.has_data || s.cropping){
-                            s.set_end_values(motionEvent.getX(),motionEvent.getY());
+                        if(!sel.has_data || sel.cropping){
+                            sel.set_end_values(motionEvent.getX(),motionEvent.getY());
                         }
                         break;
                 }
 
-                s.invalidate();
+                sel.invalidate();
                 return true;
             }
         });
