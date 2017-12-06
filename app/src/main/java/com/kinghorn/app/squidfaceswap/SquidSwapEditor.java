@@ -9,11 +9,8 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
-
-import java.io.BufferedInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.net.URI;
 
 public class SquidSwapEditor extends AppCompatActivity{
     public SquidCanvas can,pre,bas;
@@ -32,19 +29,21 @@ public class SquidSwapEditor extends AppCompatActivity{
             Uri path = data.getData();
             //Make sure the file exists.
             try {
+                //Grab the chosen image from the gallery.
                 InputStream in = getContentResolver().openInputStream(path);
                 Bitmap b = BitmapFactory.decodeStream(in);
-
+                //Set the base image canvas to the second chosen image.
                 bas.set_img(b);
 
+                edit.layer_toggle.setVisibility(View.VISIBLE);
                 mov.setVisibility(View.VISIBLE);
-                edit.toggle_crop_btn_display(View.GONE);
                 edit.toggle_plac_btn_display(View.VISIBLE);
                 edit.toggle_seek_display(View.VISIBLE);
+
+                edit.toggle_crop_btn_display(View.GONE);
                 edit.zoom_out.setVisibility(View.GONE);
                 edit.zoom_in.setVisibility(View.GONE);
                 edit.zoom_am.setVisibility(View.GONE);
-                edit.layer_toggle.setVisibility(View.VISIBLE);
 
                 edit.hint_text.setText("Please place the swap image.");
                 can.CENTER_IMAGE = false;
@@ -81,8 +80,10 @@ public class SquidSwapEditor extends AppCompatActivity{
             //Set the first image that was chosen from the gallery.
             can.set_img(fil.open_first(getIntent()));
 
-            mov = new SquidMovementHandler(getApplicationContext(),can,focused);
-            edit = new SquidEditorUi(getApplicationContext(),getWindow().getDecorView(),focused,sel,this,fil,can,pre,mov,bas);
+            //Initialize the object that will handle moving the faded image.
+            mov = new SquidMovementHandler(getApplicationContext(),can);
+            //Object that handles most of the user interface interaction across the application.
+            edit = new SquidEditorUi(getApplicationContext(),getWindow().getDecorView(),sel,this,fil,can,pre,mov,bas);
 
             //Add the canvas view to the window.
             //ORDER OF ADDING THESE IS IMPORTANT FOR CAPTURING USER INPUT.

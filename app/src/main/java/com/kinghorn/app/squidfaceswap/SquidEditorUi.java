@@ -15,8 +15,6 @@ import android.widget.ToggleButton;
 
 //Class that handles button clicks etc.
 public class SquidEditorUi {
-
-    private static SquidBitmapData dat;
     private static SquidSelector sel;
     private static SquidSwapEditor ed;
     private static SquidFileService fil;
@@ -32,8 +30,7 @@ public class SquidEditorUi {
     public ToggleButton layer_toggle;
 
     //Constructor.
-    public SquidEditorUi(Context con,View mainview,SquidBitmapData d,SquidSelector s,SquidSwapEditor e,SquidFileService f,SquidCanvas vas,SquidCanvas p,SquidMovementHandler m,SquidCanvas b){
-        dat = d;
+    public SquidEditorUi(Context con,View mainview,SquidSelector s,SquidSwapEditor e,SquidFileService f,SquidCanvas vas,SquidCanvas p,SquidMovementHandler m,SquidCanvas b){
         c = con;
         sel = s;
         ed = e;
@@ -75,11 +72,9 @@ public class SquidEditorUi {
     public void toggle_crop_btn_display(int val){
         crop_btns.setVisibility(val);
     }
-
     public void toggle_plac_btn_display(int val){
         plac_btns.setVisibility(val);
     }
-
     public void toggle_seek_display(int val){
         fade_layout.setVisibility(val);
     }
@@ -101,9 +96,6 @@ public class SquidEditorUi {
             @Override
             public void onClick(View view) {
                 sel.has_data = false;
-                dat.set_bitmap(dat.undo_bit);
-                dat.scale_x = 1;
-                dat.scale_y = 1;
                 hint_text.setText("Please select what to copy...");
                 toggle_crop_btn_display(View.GONE);
             }
