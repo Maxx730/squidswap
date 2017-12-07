@@ -24,6 +24,15 @@ public class SquidBitmapData {
     //The actual bitmap data for the image.
     public Bitmap bit,undo_bit;
 
+    //Getters and setters here.
+    public void set_undo(Bitmap b){
+        undo_bit = b;
+    }
+    public Bitmap get_undo(){
+        return undo_bit;
+    }
+    public Bitmap get_bit(){return bit;}
+
     //Constructor.
     public SquidBitmapData(Context con) {
         context = con;

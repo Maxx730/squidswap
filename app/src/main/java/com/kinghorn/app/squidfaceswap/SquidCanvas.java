@@ -41,7 +41,8 @@ public class SquidCanvas extends View{
 
     //Getters and setters are below.
     public void set_img(Bitmap b){
-        foc.bit = b;
+        foc.set_undo(foc.bit);
+        foc.set_bitmap(b);
     }
     public Bitmap get_img(){
         return foc.bit;

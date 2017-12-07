@@ -130,11 +130,10 @@ public class SquidSwapEditor extends AppCompatActivity{
                             //Logic goes here for grabing the bitmap from the canvas.
                             //Send the hashmap from the selection over to the canvas.
                             sel.convert_direction();
-                            focused.undo_bit = focused.bit;
                             sel.has_data = true;
 
                             if(sel.check_size()){
-                                focused.set_bitmap(can.select_data(s.select_values()));
+                                can.set_img(can.select_data(sel.select_values()));
                                 //Now we want the middle canvas to redraw with the new image.
                                 can.invalidate();
                                 edit.hint_text.setText("Does this look ok?");
