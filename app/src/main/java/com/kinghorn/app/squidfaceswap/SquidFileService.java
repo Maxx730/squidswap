@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
 import java.io.File;
@@ -20,19 +21,20 @@ public class SquidFileService {
     private SquidCanvas can,bas;
     private SquidSelector sel;
     private SquidBitmapData dat;
-    private static Context c;
+    private static Context con;
 
     //Constructor for using the file service to load stuff.
-    public SquidFileService(Context con,SquidSelector s){
-        c = con;
+    public SquidFileService(Context cont,SquidSelector s){
+        con = cont;
         sel = s;
     }
 
-    public SquidFileService(SquidCanvas c,SquidCanvas b,SquidSelector s){
+    public SquidFileService(Context cont,SquidCanvas c,SquidCanvas b,SquidSelector s){
         dir_string = Environment.getExternalStorageDirectory().toString();
         can = c;
         bas = b;
         sel = s;
+        con = cont;
 
         //Make the directory to house the squidswap photos.
         newDir = new File(dir_string + "/squidswap");
@@ -82,7 +84,7 @@ public class SquidFileService {
         Canvas c = new Canvas(fin);
 
         c.drawBitmap(base,0,0,null);
-        c.drawBitmap(hov,dat.x,dat.y,null);
+        c.drawBitmap(hov,can.get_foc().x,can.get_foc().y,null);
 
         save_image(fin);
         return fin;
@@ -92,9 +94,15 @@ public class SquidFileService {
     public Bitmap open_first(Intent cont) throws FileNotFoundException {
         Intent in = cont;
         String path = in.getStringExtra("chosen_uri");
-        InputStream i = c.getContentResolver().openInputStream(Uri.parse(path));
+        InputStream i = con.getContentResolver().openInputStream(Uri.parse(path));
         Bitmap b = BitmapFactory.decodeStream(i);
 
         return b;
+    }
+
+    public Drawable load_drawable(Context con, int drawable_id){
+        Drawable d = con.getResources().getDrawable(drawable_id);
+
+        return d;
     }
 }

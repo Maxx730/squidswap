@@ -55,4 +55,9 @@ public class SquidBitmapData {
         width = b.getWidth();
         height = b.getHeight();
     }
+
+    public void set_loc(float x,float y){
+        this.x = x;
+        this.y = y;
+    }
 }

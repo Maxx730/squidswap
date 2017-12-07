@@ -47,6 +47,7 @@ public class SquidCanvas extends View{
     public Bitmap get_img(){
         return foc.bit;
     }
+    public SquidBitmapData get_foc(){return foc;};
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -65,6 +66,10 @@ public class SquidCanvas extends View{
 
             if(CENTER_IMAGE){
                 HashMap cent = return_center(vals);
+
+                foc.x = (float) cent.get("x");
+                foc.y = (float) cent.get("y");
+
                 canvas.drawBitmap(scale,(float) cent.get("x"),(float) cent.get("y"),null);
             }else{
                 canvas.drawBitmap(get_faded_img(),foc.x,foc.y,null);
@@ -107,8 +112,6 @@ public class SquidCanvas extends View{
 
         c.drawBitmap(orig,0,0,p);
 
-        System.out.println((float)0.8f/fade_val);
-
         p.setAntiAlias(true);
         p_top.setAntiAlias(true);
         p.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
@@ -116,8 +119,8 @@ public class SquidCanvas extends View{
         p.setShader(new LinearGradient(0,0,foc.bit.getWidth(),0,new int[]{Color.BLACK,Color.TRANSPARENT,Color.TRANSPARENT,Color.BLACK},new float[]{0.0f,(float)0.8f/fade_val,(1f - ((float)0.8f/fade_val)),1f}, Shader.TileMode.CLAMP));
         p_top.setShader(new LinearGradient(0,0,0,foc.bit.getHeight(),new int[]{Color.BLACK,Color.TRANSPARENT,Color.TRANSPARENT,Color.BLACK},new float[]{0.0f,(float)0.8f/fade_val,(1f - ((float)0.8f/fade_val)),1f}, Shader.TileMode.CLAMP));
 
-        c.drawCircle(foc.bit.getWidth() / 4,foc.bit.getHeight() / 4,foc.bit.getWidth() + 200,p);
-        c.drawCircle(foc.bit.getWidth() / 4,foc.bit.getHeight() / 4,foc.bit.getWidth() + 200,p_top);
+        c.drawCircle(foc.bit.getWidth() / 4,foc.bit.getHeight() / 4,foc.bit.getWidth(),p);
+        c.drawCircle(foc.bit.getWidth() / 4,foc.bit.getHeight() / 4,foc.bit.getWidth(),p_top);
 
         return b;
     }

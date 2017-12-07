@@ -21,7 +21,7 @@ public class SquidMovementHandler extends View {
         //Paint object that will handle painting the movement indicators to the
         //image in certain colors etc.
         brush = new Paint();
-        brush.setColor(Color.WHITE);
+        brush.setColor(Color.parseColor("#B2FC05"));
         brush.setStrokeWidth(3);
     }
 

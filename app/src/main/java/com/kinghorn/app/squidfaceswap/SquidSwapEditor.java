@@ -34,6 +34,7 @@ public class SquidSwapEditor extends AppCompatActivity{
                 Bitmap b = BitmapFactory.decodeStream(in);
                 //Set the base image canvas to the second chosen image.
                 bas.set_img(b);
+                mov.set_foc(can.get_foc());
 
                 edit.layer_toggle.setVisibility(View.VISIBLE);
                 mov.setVisibility(View.VISIBLE);
@@ -41,9 +42,6 @@ public class SquidSwapEditor extends AppCompatActivity{
                 edit.toggle_seek_display(View.VISIBLE);
 
                 edit.toggle_crop_btn_display(View.GONE);
-                edit.zoom_out.setVisibility(View.GONE);
-                edit.zoom_in.setVisibility(View.GONE);
-                edit.zoom_am.setVisibility(View.GONE);
 
                 edit.hint_text.setText("Please place the swap image.");
                 can.CENTER_IMAGE = false;
@@ -75,7 +73,8 @@ public class SquidSwapEditor extends AppCompatActivity{
             pre = new SquidCanvas(getApplicationContext(),new SquidBitmapData(getApplicationContext()),sel);
             bas = new SquidCanvas(getApplicationContext(),new SquidBitmapData(getApplicationContext()),sel);
             //Init our file service.
-            fil = new SquidFileService(can,bas,sel);
+            fil = new SquidFileService(getApplicationContext(),can,bas,sel);
+
 
             //Set the first image that was chosen from the gallery.
             can.set_img(fil.open_first(getIntent()));
@@ -166,12 +165,14 @@ public class SquidSwapEditor extends AppCompatActivity{
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 switch(motionEvent.getAction()){
                     case MotionEvent.ACTION_DOWN:
-                            focused.x = motionEvent.getX() - (focused.width / 2);
-                            focused.y = motionEvent.getY() - (focused.height / 2);
+                        SquidBitmapData b = mov.get_foc();
+                        b.set_loc(motionEvent.getX() - (b.width / 2),motionEvent.getY() - (b.height / 2));
+                        mov.set_foc(b);
                         break;
                     case MotionEvent.ACTION_MOVE:
-                            focused.x = motionEvent.getX() - (focused.width / 2);
-                            focused.y = motionEvent.getY() - (focused.height / 2);
+                        SquidBitmapData m = mov.get_foc();
+                        m.set_loc(motionEvent.getX() - (m.width / 2),motionEvent.getY() - (m.height / 2));
+                        mov.set_foc(m);
                         break;
                     case MotionEvent.ACTION_UP:
 

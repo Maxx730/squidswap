@@ -23,9 +23,9 @@ public class SquidEditorUi {
     private static Context c;
 
     //UI Elements that we will be using below here.
-    public ImageButton crop_veri,crop_canc,close_editor,zoom_in,zoom_out,placement_suc,placement_can;
+    public ImageButton crop_veri,crop_canc,close_editor,zoom_in,zoom_out,placement_suc,placement_can,final_crop_suc,final_crop_can;
     public TextView hint_text,zoom_am;
-    public LinearLayout crop_btns,plac_btns,fade_layout,final_crop;
+    public LinearLayout crop_btns,plac_btns,fade_layout,final_crop,sav_img;
     public SeekBar fade_seek;
     public ToggleButton layer_toggle;
 
@@ -45,20 +45,20 @@ public class SquidEditorUi {
         plac_btns = (LinearLayout) mainview.findViewById(R.id.placement_btns);
         fade_layout = (LinearLayout) mainview.findViewById(R.id.fading_slider);
         final_crop = (LinearLayout) mainview.findViewById(R.id.final_crop_btns);
+        sav_img = (LinearLayout) mainview.findViewById(R.id.save_image_btn);
 
         //Grab the crop buttons and set the click events.
         crop_veri = (ImageButton) mainview.findViewById(R.id.acc_button);
         crop_canc = (ImageButton) mainview.findViewById(R.id.can_btn);
         close_editor = (ImageButton) mainview.findViewById(R.id.editor_cancel);
-        zoom_in = (ImageButton) mainview.findViewById(R.id.img_scale_inc);
-        zoom_out = (ImageButton) mainview.findViewById(R.id.img_scale_dec);
         placement_suc = (ImageButton) mainview.findViewById(R.id.placement_success);
         placement_can = (ImageButton) mainview.findViewById(R.id.placement_cancel);
+        final_crop_suc = (ImageButton) mainview.findViewById(R.id.final_crop_suc);
+        final_crop_can = (ImageButton) mainview.findViewById(R.id.final_crop_can);
 
         fade_seek = (SeekBar) mainview.findViewById(R.id.fading_seeker);
 
         hint_text = (TextView) mainview.findViewById(R.id.hintText);
-        zoom_am = (TextView) mainview.findViewById(R.id.zoom_indication);
 
         layer_toggle = (ToggleButton)mainview.findViewById(R.id.layer_toggle);
 
@@ -84,6 +84,7 @@ public class SquidEditorUi {
             @Override
             public void onClick(View view) {
                 sel.has_data = false;
+                Toast.makeText(c,"Closing Editor...",Toast.LENGTH_SHORT);
                 main_menu();
             }
         });
@@ -115,10 +116,14 @@ public class SquidEditorUi {
             public void onClick(View view) {
                 if(layer_toggle.isChecked()){
                     //Toggle the focus onto the foreground image.
-
+                    mov.set_foc(can.get_foc());
+                    fade_layout.setVisibility(View.VISIBLE);
+                    mov.invalidate();
                 }else{
                     //Toggle the focus onto the background image.
-
+                    mov.set_foc(bas.get_foc());
+                    fade_layout.setVisibility(View.INVISIBLE);
+                    mov.invalidate();
                 }
             }
         });
@@ -136,6 +141,7 @@ public class SquidEditorUi {
                 sel.setVisibility(View.VISIBLE);
                 final_crop.setVisibility(View.VISIBLE);
 
+
                 hint_text.setText("Crop Final Image");
 
                 sel.cropping = true;
@@ -147,13 +153,33 @@ public class SquidEditorUi {
                 can.setVisibility(View.GONE);
                 bas.setVisibility(View.GONE);
                 fade_layout.setVisibility(View.GONE);
+
             }
         });
+
+
 
         placement_can.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(c,"Stopping Squidswap Editing...",Toast.LENGTH_SHORT).show();
+                main_menu();
+            }
+        });
 
+        final_crop_can.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(c,"Stopping Squidswap Editing...",Toast.LENGTH_SHORT).show();
+                main_menu();
+            }
+        });
+
+        final_crop_suc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final_crop.setVisibility(View.GONE);
+                sav_img.setVisibility(View.VISIBLE);
             }
         });
 
