@@ -96,15 +96,23 @@
             android:id="@+id/layer_tools"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
             <ImageButton
-                android:id="@+id/imageButton"
+                android:id="@+id/layer_resize"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/squid_ui_btn"
                 android:padding="10dp"
                 app:srcCompat="@drawable/ic_resize_img" />
+
+            <ImageButton
+                android:id="@+id/layer_edge_fade"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/squid_ui_btn"
+                android:padding="10dp"
+                app:srcCompat="@drawable/ic_edge_fade" />
         </LinearLayout>
 
         <RelativeLayout
