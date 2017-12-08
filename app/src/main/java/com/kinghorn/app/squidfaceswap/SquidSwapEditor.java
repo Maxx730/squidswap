@@ -14,6 +14,7 @@ import java.io.InputStream;
 
 public class SquidSwapEditor extends AppCompatActivity{
     public SquidCanvas can,pre,bas;
+    public SquidPainter draw;
     public SquidSelector sel;
     public SquidMovementHandler mov;
     public RelativeLayout window;
@@ -76,6 +77,7 @@ public class SquidSwapEditor extends AppCompatActivity{
             can = new SquidCanvas(getApplicationContext(),new SquidBitmapData(getApplicationContext()),sel);
             pre = new SquidCanvas(getApplicationContext(),new SquidBitmapData(getApplicationContext()),sel);
             bas = new SquidCanvas(getApplicationContext(),new SquidBitmapData(getApplicationContext()),sel);
+            draw = new SquidPainter(getApplicationContext());
             //Init our file service.
             fil = new SquidFileService(getApplicationContext(),can,bas,sel);
 
@@ -98,6 +100,7 @@ public class SquidSwapEditor extends AppCompatActivity{
             window.addView(pre);
             window.addView(sel);
             window.addView(mov);
+            window.addView(draw);
 
             //Hide the movement canvas that will be the top most, but we need to be able to select.
             mov.setVisibility(View.GONE);
@@ -188,6 +191,25 @@ public class SquidSwapEditor extends AppCompatActivity{
 
                 mov.invalidate();
                 can.invalidate();
+                return true;
+            }
+        });
+
+        draw.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch(motionEvent.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+
+                        break;
+                    case MotionEvent.ACTION_UP:
+
+                        break;
+                }
+
                 return true;
             }
         });

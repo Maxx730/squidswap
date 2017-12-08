@@ -44,13 +44,21 @@
                     android:id="@+id/layer_toggle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginRight="1dp"
                     android:layout_weight="1"
                     android:background="@drawable/squid_ui_btn"
                     android:text="ToggleButton"
                     android:textColor="@android:color/background_light"
                     android:textOff="Back Image"
                     android:textOn="Front Image"
-                    android:visibility="gone" />
+                    android:visibility="invisible" />
+
+                <ImageButton
+                    android:id="@+id/squid_painter"
+                    android:layout_width="51dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/squid_ui_btn"
+                    app:srcCompat="@drawable/ic_squid_draw" />
 
             </LinearLayout>
 

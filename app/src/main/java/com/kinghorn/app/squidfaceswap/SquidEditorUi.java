@@ -104,6 +104,7 @@ public class SquidEditorUi {
             public void onClick(View view) {
                 sel.has_data = false;
                 hint_text.setText("Please select what to copy...");
+                can.set_img(can.foc.get_undo());
                 toggle_crop_btn_display(View.GONE);
             }
         });
@@ -126,6 +127,7 @@ public class SquidEditorUi {
                     mov.set_foc(can.get_foc());
                     fade_layout.setVisibility(View.VISIBLE);
                     mov.invalidate();
+                    System.out.println(Math.round(can.foc.get_scale_x()));
                     zoom_seek.setProgress(Math.round(can.foc.get_scale_x()));
                     scaler.set_focused(can);
                 }else{
