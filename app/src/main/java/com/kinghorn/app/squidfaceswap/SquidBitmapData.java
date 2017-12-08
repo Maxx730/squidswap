@@ -19,7 +19,10 @@ public class SquidBitmapData {
     public float scale_y;
     public float width,height;
 
+    //Booleans that keep track of the fading and the scaling of the image,
+    //
     public boolean is_scaled = false;
+    public boolean is_fade = true;
 
     //The actual bitmap data for the image.
     public Bitmap bit,undo_bit;

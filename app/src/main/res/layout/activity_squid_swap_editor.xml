@@ -80,7 +80,8 @@
                 android:paddingBottom="7dp"
                 android:paddingLeft="15dp"
                 android:text="Fading Amount"
-                android:textColor="@android:color/background_light" />
+                android:textColor="@android:color/background_light"
+                android:visibility="gone" />
 
             <SeekBar
                 android:id="@+id/fading_seeker"
@@ -93,14 +94,30 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/layer_tools"
-            android:layout_width="wrap_content"
+            android:id="@+id/sizing_slider"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/simple_dashed"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <SeekBar
+                android:id="@+id/seekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:progressDrawable="@drawable/blur_seeker" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layer_tools"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/background_dark"
             android:orientation="horizontal">
 
             <ImageButton
                 android:id="@+id/layer_resize"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/squid_ui_btn"
                 android:padding="10dp"
@@ -108,7 +125,7 @@
 
             <ImageButton
                 android:id="@+id/layer_edge_fade"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/squid_ui_btn"
                 android:padding="10dp"
@@ -167,7 +184,8 @@
                 android:layout_height="match_parent"
                 android:layout_marginBottom="1dp"
                 android:background="@color/black_back"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/hintText"

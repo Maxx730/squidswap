@@ -23,7 +23,7 @@ public class SquidEditorUi {
     private static Context c;
 
     //UI Elements that we will be using below here.
-    public ImageButton crop_veri,crop_canc,close_editor,zoom_in,zoom_out,placement_suc,placement_can,final_crop_suc,final_crop_can;
+    public ImageButton crop_veri,crop_canc,close_editor,zoom_in,zoom_out,placement_suc,placement_can,final_crop_suc,final_crop_can,toggle_fade;
     public TextView hint_text,zoom_am;
     public LinearLayout crop_btns,plac_btns,fade_layout,final_crop,sav_img;
     public SeekBar fade_seek;
@@ -55,6 +55,7 @@ public class SquidEditorUi {
         placement_can = (ImageButton) mainview.findViewById(R.id.placement_cancel);
         final_crop_suc = (ImageButton) mainview.findViewById(R.id.final_crop_suc);
         final_crop_can = (ImageButton) mainview.findViewById(R.id.final_crop_can);
+        toggle_fade = (ImageButton) mainview.findViewById(R.id.layer_edge_fade);
 
         fade_seek = (SeekBar) mainview.findViewById(R.id.fading_seeker);
 
@@ -158,6 +159,18 @@ public class SquidEditorUi {
         });
 
 
+        toggle_fade.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(can.get_foc().is_fade){
+                    can.get_foc().is_fade = false;
+                }else{
+                    can.get_foc().is_fade = true;
+                }
+
+                can.invalidate();
+            }
+        });
 
         placement_can.setOnClickListener(new View.OnClickListener() {
             @Override
