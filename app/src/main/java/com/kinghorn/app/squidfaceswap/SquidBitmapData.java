@@ -36,6 +36,8 @@ public class SquidBitmapData {
         return undo_bit;
     }
     public Bitmap get_bit(){return bit;}
+    public void set_scale_x(float x){scale_x = x;}
+    public float get_scale_x(){return scale_x;}
 
     //Constructor.
     public SquidBitmapData(Context con) {

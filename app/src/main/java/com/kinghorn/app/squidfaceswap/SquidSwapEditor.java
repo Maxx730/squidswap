@@ -89,7 +89,7 @@ public class SquidSwapEditor extends AppCompatActivity{
             //Initialize the object that will handle moving the faded image.
             mov = new SquidMovementHandler(getApplicationContext(),can);
             //Object that handles most of the user interface interaction across the application.
-            edit = new SquidEditorUi(getApplicationContext(),getWindow().getDecorView(),sel,this,fil,can,pre,mov,bas);
+            edit = new SquidEditorUi(getApplicationContext(),getWindow().getDecorView(),sel,this,fil,can,pre,mov,bas,scal);
 
             //Add the canvas view to the window.
             //ORDER OF ADDING THESE IS IMPORTANT FOR CAPTURING USER INPUT.

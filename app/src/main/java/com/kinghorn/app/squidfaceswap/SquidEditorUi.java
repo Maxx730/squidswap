@@ -20,17 +20,18 @@ public class SquidEditorUi {
     private static SquidFileService fil;
     private static SquidCanvas can,pre,bas;
     private SquidMovementHandler mov;
+    private SquidImageScaler scaler;
     private static Context c;
 
     //UI Elements that we will be using below here.
     public ImageButton crop_veri,crop_canc,close_editor,zoom_in,zoom_out,placement_suc,placement_can,final_crop_suc,final_crop_can,toggle_fade,resize_btn;
     public TextView hint_text,zoom_am;
     public LinearLayout crop_btns,plac_btns,fade_layout,final_crop,sav_img,layer_tools,scale_slider;
-    public SeekBar fade_seek;
+    public SeekBar fade_seek,zoom_seek;
     public ToggleButton layer_toggle;
 
     //Constructor.
-    public SquidEditorUi(Context con,View mainview,SquidSelector s,SquidSwapEditor e,SquidFileService f,SquidCanvas vas,SquidCanvas p,SquidMovementHandler m,SquidCanvas b){
+    public SquidEditorUi(Context con,View mainview,SquidSelector s,SquidSwapEditor e,SquidFileService f,SquidCanvas vas,SquidCanvas p,SquidMovementHandler m,SquidCanvas b,SquidImageScaler scal){
         c = con;
         sel = s;
         ed = e;
@@ -39,6 +40,7 @@ public class SquidEditorUi {
         pre = p;
         mov = m;
         bas = b;
+        scaler = scal;
 
         //Inflate the layout we are referring to.
         crop_btns = (LinearLayout) mainview.findViewById(R.id.crop_btns);
@@ -61,6 +63,7 @@ public class SquidEditorUi {
         resize_btn = (ImageButton) mainview.findViewById(R.id.layer_resize);
 
         fade_seek = (SeekBar) mainview.findViewById(R.id.fading_seeker);
+        zoom_seek = (SeekBar) mainview.findViewById(R.id.size_slider);
 
         hint_text = (TextView) mainview.findViewById(R.id.hintText);
 
@@ -118,16 +121,24 @@ public class SquidEditorUi {
         layer_toggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(layer_toggle.isChecked()){
+                if(!layer_toggle.isChecked()){
                     //Toggle the focus onto the foreground image.
                     mov.set_foc(can.get_foc());
                     fade_layout.setVisibility(View.VISIBLE);
                     mov.invalidate();
+                    zoom_seek.setProgress(Math.round(can.foc.get_scale_x()));
+                    scaler.set_focused(can);
                 }else{
                     //Toggle the focus onto the background image.
                     mov.set_foc(bas.get_foc());
                     fade_layout.setVisibility(View.GONE);
                     mov.invalidate();
+
+                    //Reset the value of the scaling ui to the value of the new
+                    //canvas scaling size and then set the focused canvas to the
+                    //given canvas.
+                    zoom_seek.setProgress(Math.round(bas.foc.get_scale_x()));
+                    scaler.set_focused(bas);
                 }
             }
         });
@@ -165,7 +176,7 @@ public class SquidEditorUi {
                 can.setVisibility(View.GONE);
                 bas.setVisibility(View.GONE);
                 fade_layout.setVisibility(View.GONE);
-
+                scale_slider.setVisibility(View.GONE);
             }
         });
 
@@ -217,6 +228,24 @@ public class SquidEditorUi {
                     can.fade_val = i;
                     can.invalidate();
                 }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        zoom_seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                scaler.set_scale(i);
+                scaler.focused_can.invalidate();
             }
 
             @Override

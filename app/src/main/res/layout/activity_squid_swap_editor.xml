@@ -105,10 +105,11 @@
                 app:srcCompat="@drawable/ic_resize_img" />
 
             <SeekBar
-                android:id="@+id/seekBar"
+                android:id="@+id/size_slider"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:max="3"
+                android:min="1"
                 android:progressDrawable="@drawable/blur_seeker" />
         </LinearLayout>
 

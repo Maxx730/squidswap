@@ -16,7 +16,7 @@ import java.util.HashMap;
 public class SquidCanvas extends View{
     //Private variables.
     private Context cn;
-    private SquidBitmapData foc;
+    public SquidBitmapData foc;
     private SquidSelector sel;
 
     //Public variables that can be edited from outsite the
