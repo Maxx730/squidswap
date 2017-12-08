@@ -19,6 +19,7 @@ public class SquidSwapEditor extends AppCompatActivity{
     public RelativeLayout window;
     public SquidEditorUi edit;
     public SquidFileService fil;
+    public SquidImageScaler scal;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -41,6 +42,7 @@ public class SquidSwapEditor extends AppCompatActivity{
                 edit.toggle_plac_btn_display(View.VISIBLE);
                 edit.toggle_seek_display(View.VISIBLE);
                 edit.layer_tools.setVisibility(View.VISIBLE);
+                edit.scale_slider.setVisibility(View.VISIBLE);
 
                 edit.toggle_crop_btn_display(View.GONE);
 
@@ -65,6 +67,7 @@ public class SquidSwapEditor extends AppCompatActivity{
         try{
             //Once we have the file, then we want to send it into the first canvas.
             sel = new SquidSelector(getApplicationContext());
+            scal = new SquidImageScaler();
 
             //Three different squid canvases that are going to handle different parts of
             //the final image.
@@ -75,6 +78,9 @@ public class SquidSwapEditor extends AppCompatActivity{
             bas = new SquidCanvas(getApplicationContext(),new SquidBitmapData(getApplicationContext()),sel);
             //Init our file service.
             fil = new SquidFileService(getApplicationContext(),can,bas,sel);
+
+            //Initialize the scaler with the initial squid canvas for cropping
+            scal.set_focused(can);
 
 
             //Set the first image that was chosen from the gallery.

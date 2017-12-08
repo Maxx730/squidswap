@@ -68,25 +68,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/black"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:padding="10dp"
             android:visibility="gone">
 
-            <TextView
-                android:id="@+id/fading_title"
-                android:layout_width="match_parent"
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="64dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:paddingBottom="7dp"
-                android:paddingLeft="15dp"
-                android:text="Fading Amount"
-                android:textColor="@android:color/background_light"
-                android:visibility="gone" />
+                app:srcCompat="@drawable/ic_edge_fade" />
 
             <SeekBar
                 android:id="@+id/fading_seeker"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:max="10"
                 android:min="7"
@@ -98,14 +94,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/simple_dashed"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:padding="10dp"
-            android:visibility="gone">
+            android:visibility="visible">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_resize_img" />
 
             <SeekBar
                 android:id="@+id/seekBar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:max="3"
                 android:progressDrawable="@drawable/blur_seeker" />
         </LinearLayout>
 

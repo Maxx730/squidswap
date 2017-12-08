@@ -25,7 +25,7 @@ public class SquidEditorUi {
     //UI Elements that we will be using below here.
     public ImageButton crop_veri,crop_canc,close_editor,zoom_in,zoom_out,placement_suc,placement_can,final_crop_suc,final_crop_can,toggle_fade,resize_btn;
     public TextView hint_text,zoom_am;
-    public LinearLayout crop_btns,plac_btns,fade_layout,final_crop,sav_img,layer_tools;
+    public LinearLayout crop_btns,plac_btns,fade_layout,final_crop,sav_img,layer_tools,scale_slider;
     public SeekBar fade_seek;
     public ToggleButton layer_toggle;
 
@@ -47,6 +47,7 @@ public class SquidEditorUi {
         final_crop = (LinearLayout) mainview.findViewById(R.id.final_crop_btns);
         sav_img = (LinearLayout) mainview.findViewById(R.id.save_image_btn);
         layer_tools = (LinearLayout) mainview.findViewById(R.id.layer_tools);
+        scale_slider = (LinearLayout) mainview.findViewById(R.id.sizing_slider);
 
         //Grab the crop buttons and set the click events.
         crop_veri = (ImageButton) mainview.findViewById(R.id.acc_button);
