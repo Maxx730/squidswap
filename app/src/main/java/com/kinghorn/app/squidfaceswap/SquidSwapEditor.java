@@ -40,6 +40,7 @@ public class SquidSwapEditor extends AppCompatActivity{
                 mov.setVisibility(View.VISIBLE);
                 edit.toggle_plac_btn_display(View.VISIBLE);
                 edit.toggle_seek_display(View.VISIBLE);
+                edit.layer_tools.setVisibility(View.VISIBLE);
 
                 edit.toggle_crop_btn_display(View.GONE);
 

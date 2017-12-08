@@ -23,9 +23,9 @@ public class SquidEditorUi {
     private static Context c;
 
     //UI Elements that we will be using below here.
-    public ImageButton crop_veri,crop_canc,close_editor,zoom_in,zoom_out,placement_suc,placement_can,final_crop_suc,final_crop_can,toggle_fade;
+    public ImageButton crop_veri,crop_canc,close_editor,zoom_in,zoom_out,placement_suc,placement_can,final_crop_suc,final_crop_can,toggle_fade,resize_btn;
     public TextView hint_text,zoom_am;
-    public LinearLayout crop_btns,plac_btns,fade_layout,final_crop,sav_img;
+    public LinearLayout crop_btns,plac_btns,fade_layout,final_crop,sav_img,layer_tools;
     public SeekBar fade_seek;
     public ToggleButton layer_toggle;
 
@@ -46,6 +46,7 @@ public class SquidEditorUi {
         fade_layout = (LinearLayout) mainview.findViewById(R.id.fading_slider);
         final_crop = (LinearLayout) mainview.findViewById(R.id.final_crop_btns);
         sav_img = (LinearLayout) mainview.findViewById(R.id.save_image_btn);
+        layer_tools = (LinearLayout) mainview.findViewById(R.id.layer_tools);
 
         //Grab the crop buttons and set the click events.
         crop_veri = (ImageButton) mainview.findViewById(R.id.acc_button);
@@ -56,6 +57,7 @@ public class SquidEditorUi {
         final_crop_suc = (ImageButton) mainview.findViewById(R.id.final_crop_suc);
         final_crop_can = (ImageButton) mainview.findViewById(R.id.final_crop_can);
         toggle_fade = (ImageButton) mainview.findViewById(R.id.layer_edge_fade);
+        resize_btn = (ImageButton) mainview.findViewById(R.id.layer_resize);
 
         fade_seek = (SeekBar) mainview.findViewById(R.id.fading_seeker);
 
@@ -123,9 +125,17 @@ public class SquidEditorUi {
                 }else{
                     //Toggle the focus onto the background image.
                     mov.set_foc(bas.get_foc());
-                    fade_layout.setVisibility(View.INVISIBLE);
+                    fade_layout.setVisibility(View.GONE);
                     mov.invalidate();
                 }
+            }
+        });
+
+        //Turns on the resizing tool which will disable moving the image for the focused layer.
+        resize_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
             }
         });
 
@@ -164,8 +174,10 @@ public class SquidEditorUi {
             public void onClick(View view) {
                 if(can.get_foc().is_fade){
                     can.get_foc().is_fade = false;
+                    fade_layout.setVisibility(View.GONE);
                 }else{
                     can.get_foc().is_fade = true;
+                    fade_layout.setVisibility(View.VISIBLE);
                 }
 
                 can.invalidate();

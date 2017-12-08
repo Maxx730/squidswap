@@ -99,7 +99,8 @@
             android:layout_height="wrap_content"
             android:background="@drawable/simple_dashed"
             android:orientation="vertical"
-            android:padding="10dp">
+            android:padding="10dp"
+            android:visibility="gone">
 
             <SeekBar
                 android:id="@+id/seekBar"
@@ -113,7 +114,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/background_dark"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <ImageButton
                 android:id="@+id/layer_resize"

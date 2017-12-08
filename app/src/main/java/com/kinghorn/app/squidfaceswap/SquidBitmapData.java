@@ -23,6 +23,7 @@ public class SquidBitmapData {
     //
     public boolean is_scaled = false;
     public boolean is_fade = true;
+    public boolean can_move = true;
 
     //The actual bitmap data for the image.
     public Bitmap bit,undo_bit;

@@ -37,7 +37,10 @@ public class SquidMovementHandler extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        draw_movement_indicator(canvas);
+        if(dat.can_move){
+            draw_movement_indicator(canvas);
+        }
+
         invalidate();
     }
 
