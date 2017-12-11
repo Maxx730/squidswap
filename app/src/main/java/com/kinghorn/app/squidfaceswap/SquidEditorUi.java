@@ -21,17 +21,18 @@ public class SquidEditorUi {
     private static SquidCanvas can,pre,bas;
     private SquidMovementHandler mov;
     private SquidImageScaler scaler;
+    private SquidPainter pain;
     private static Context c;
 
     //UI Elements that we will be using below here.
     public ImageButton crop_veri,crop_canc,close_editor,zoom_in,zoom_out,placement_suc,placement_can,final_crop_suc,final_crop_can,toggle_fade,resize_btn;
     public TextView hint_text,zoom_am;
     public LinearLayout crop_btns,plac_btns,fade_layout,final_crop,sav_img,layer_tools,scale_slider;
-    public SeekBar fade_seek,zoom_seek;
+    public SeekBar fade_seek,zoom_seek,paint_size_seek;
     public ToggleButton layer_toggle;
 
     //Constructor.
-    public SquidEditorUi(Context con,View mainview,SquidSelector s,SquidSwapEditor e,SquidFileService f,SquidCanvas vas,SquidCanvas p,SquidMovementHandler m,SquidCanvas b,SquidImageScaler scal){
+    public SquidEditorUi(Context con,View mainview,SquidSelector s,SquidSwapEditor e,SquidFileService f,SquidCanvas vas,SquidCanvas p,SquidMovementHandler m,SquidCanvas b,SquidImageScaler scal,SquidPainter pan){
         c = con;
         sel = s;
         ed = e;
@@ -41,6 +42,7 @@ public class SquidEditorUi {
         mov = m;
         bas = b;
         scaler = scal;
+        pain = pan;
 
         //Inflate the layout we are referring to.
         crop_btns = (LinearLayout) mainview.findViewById(R.id.crop_btns);
@@ -64,6 +66,7 @@ public class SquidEditorUi {
 
         fade_seek = (SeekBar) mainview.findViewById(R.id.fading_seeker);
         zoom_seek = (SeekBar) mainview.findViewById(R.id.size_slider);
+        paint_size_seek = (SeekBar) mainview.findViewById(R.id.brush_size_seeker);
 
         hint_text = (TextView) mainview.findViewById(R.id.hintText);
 
@@ -219,6 +222,27 @@ public class SquidEditorUi {
             public void onClick(View view) {
                 final_crop.setVisibility(View.GONE);
                 sav_img.setVisibility(View.VISIBLE);
+            }
+        });
+
+        paint_size_seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                pain.set_stroke_width((float) i);
+                pain.width_change = true;
+                pain.invalidate();
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                pain.width_change = false;
+                pain.invalidate();
             }
         });
 

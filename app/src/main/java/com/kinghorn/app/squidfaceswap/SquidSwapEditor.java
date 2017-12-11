@@ -91,7 +91,7 @@ public class SquidSwapEditor extends AppCompatActivity{
             //Initialize the object that will handle moving the faded image.
             mov = new SquidMovementHandler(getApplicationContext(),can);
             //Object that handles most of the user interface interaction across the application.
-            edit = new SquidEditorUi(getApplicationContext(),getWindow().getDecorView(),sel,this,fil,can,pre,mov,bas,scal);
+            edit = new SquidEditorUi(getApplicationContext(),getWindow().getDecorView(),sel,this,fil,can,pre,mov,bas,scal,draw);
 
             //Add the canvas view to the window.
             //ORDER OF ADDING THESE IS IMPORTANT FOR CAPTURING USER INPUT.
@@ -105,6 +105,7 @@ public class SquidSwapEditor extends AppCompatActivity{
             //Hide the movement canvas that will be the top most, but we need to be able to select.
             mov.setVisibility(View.GONE);
             pre.setVisibility(View.GONE);
+            draw.setVisibility(View.GONE);
 
             //Initialize selection touch events.
             init_selector();
@@ -200,15 +201,18 @@ public class SquidSwapEditor extends AppCompatActivity{
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 switch(motionEvent.getAction()){
                     case MotionEvent.ACTION_DOWN:
-
+                        draw.drawing = true;
+                        draw.set_path_start(motionEvent.getX(),motionEvent.getY());
                         break;
                     case MotionEvent.ACTION_MOVE:
-
+                        draw.move_path_to(motionEvent.getX(),motionEvent.getY());
                         break;
                     case MotionEvent.ACTION_UP:
-
+                        draw.drawing = false;
                         break;
                 }
+
+                draw.invalidate();
 
                 return true;
             }
