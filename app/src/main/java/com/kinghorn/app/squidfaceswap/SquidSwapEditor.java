@@ -192,6 +192,7 @@ public class SquidSwapEditor extends AppCompatActivity{
 
                 mov.invalidate();
                 can.invalidate();
+
                 return true;
             }
         });

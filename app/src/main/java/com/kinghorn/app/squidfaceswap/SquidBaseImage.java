@@ -47,7 +47,8 @@ public class SquidBaseImage extends View {
             bit.height = base_image.getHeight();
             bit.set_bitmap(base_image);
 
-            canvas.drawBitmap(base_image,(canvas.getWidth() - base_image.getWidth())/2,(canvas.getHeight() - base_image.getHeight())/2,null);
+            System.out.println("X Location Base: "+bit.x);
+            canvas.drawBitmap(base_image,((canvas.getWidth() - base_image.getWidth())/2) + bit.x,(canvas.getHeight() - base_image.getHeight())/2,null);
         }
     }
 

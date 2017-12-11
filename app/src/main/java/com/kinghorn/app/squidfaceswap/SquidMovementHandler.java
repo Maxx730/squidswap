@@ -61,7 +61,7 @@ public class SquidMovementHandler extends View {
             //If the image scaling is larger,
             //then we just want to draw the indicator to the edges of
             //the movement canvas.
-
+            dat.set_loc(200,200);
         }else{
             //Draws top left
             c.drawLine(startx,starty,startx + (width / 4),starty,brush);
