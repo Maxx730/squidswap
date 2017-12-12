@@ -75,6 +75,9 @@ public class SquidEditorUi {
         //Set the listeners
         init_btn_listen();
         editor_listeners();
+
+        //Set our default values down here.
+        zoom_seek.setProgress(0);
     }
 
     //Toggle the display of the crop buttons based on the value given.
@@ -130,9 +133,9 @@ public class SquidEditorUi {
                     mov.set_foc(can.get_foc());
                     fade_layout.setVisibility(View.VISIBLE);
                     mov.invalidate();
-                    System.out.println(Math.round(can.foc.get_scale_x()));
-                    zoom_seek.setProgress(Math.round(can.foc.get_scale_x()));
                     scaler.set_focused(can);
+                    zoom_seek.setProgress(Math.round(scaler.get_focused().getScaleX()));
+
                 }else{
                     //Toggle the focus onto the background image.
                     mov.set_foc(bas.get_foc());
@@ -142,8 +145,8 @@ public class SquidEditorUi {
                     //Reset the value of the scaling ui to the value of the new
                     //canvas scaling size and then set the focused canvas to the
                     //given canvas.
-                    zoom_seek.setProgress(Math.round(bas.foc.get_scale_x()));
                     scaler.set_focused(bas);
+                    zoom_seek.setProgress(Math.round(scaler.get_focused().getScaleX()));
                 }
             }
         });

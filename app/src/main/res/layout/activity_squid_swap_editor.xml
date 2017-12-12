@@ -205,6 +205,7 @@
                 android:layout_height="match_parent"
                 android:max="3"
                 android:min="1"
+                android:progress="1"
                 android:progressDrawable="@drawable/blur_seeker" />
         </LinearLayout>
 
@@ -212,7 +213,8 @@
             android:id="@+id/layer_tools"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/background_dark"
+            android:background="@color/black_overlay"
+            android:gravity="top|fill_vertical"
             android:orientation="horizontal"
             android:visibility="gone">
 

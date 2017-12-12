@@ -45,9 +45,9 @@ public class SquidSelector extends View {
     }
 
     //Resets the values of the selector to 0;
-    public void zero_values(){
-        set_start_values(0,0);
-        set_end_values(0,0);
+    public void zero_values() {
+        set_start_values(0, 0);
+        set_end_values(0, 0);
     }
 
     //Sets the values for the hashmap used for where to draw onto the canvas.
@@ -109,4 +109,10 @@ public class SquidSelector extends View {
         }
     }
 
+    public void convert_data_scale(float scale){
+        float star_x = (float) selection_data.get("start_x") * scale;
+        float star_y = (float) selection_data.get("start_y") * scale;
+
+        System.out.println(star_x);
+    }
 }

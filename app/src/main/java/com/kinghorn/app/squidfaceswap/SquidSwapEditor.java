@@ -45,6 +45,8 @@ public class SquidSwapEditor extends AppCompatActivity{
                 edit.layer_tools.setVisibility(View.VISIBLE);
                 edit.scale_slider.setVisibility(View.VISIBLE);
 
+                edit.zoom_seek.setProgress(0);
+
                 edit.toggle_crop_btn_display(View.GONE);
 
                 edit.hint_text.setText("Please place the swap image.");
@@ -98,7 +100,6 @@ public class SquidSwapEditor extends AppCompatActivity{
             window.addView(bas);
             window.addView(can);
             window.addView(pre);
-            window.addView(sel);
             window.addView(mov);
             window.addView(draw);
 
@@ -118,53 +119,25 @@ public class SquidSwapEditor extends AppCompatActivity{
 
     //Initialize the on touch listener for the selection object.
     private void init_selector(){
-        sel.setOnTouchListener(new View.OnTouchListener() {
+        can.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 switch(motionEvent.getAction()){
                     case MotionEvent.ACTION_DOWN:
-                        if(!sel.has_data){
-                            sel.drawing = true;
-                            sel.set_start_values(motionEvent.getX(),motionEvent.getY());
-                            sel.set_end_values(motionEvent.getX(),motionEvent.getY());
-                        }else if(sel.cropping){
-                            sel.drawing = true;
-                            sel.set_start_values(motionEvent.getX(),motionEvent.getY());
-                            sel.set_end_values(motionEvent.getX(),motionEvent.getY());
-                        }
+                        can.drawing = true;
+                        can.set_start((int) motionEvent.getX(),(int) motionEvent.getY());
                         break;
                     case MotionEvent.ACTION_UP:
-                        if(!sel.has_data){
-                            sel.drawing = false;
-                            sel.set_end_values(motionEvent.getX(),motionEvent.getY());
-                            //Logic goes here for grabing the bitmap from the canvas.
-                            //Send the hashmap from the selection over to the canvas.
-                            sel.convert_direction();
-                            sel.has_data = true;
-
-                            if(sel.check_size()){
-                                can.set_img(can.select_data(sel.select_values()));
-                                //Now we want the middle canvas to redraw with the new image.
-                                can.invalidate();
-                                edit.hint_text.setText("Does this look ok?");
-                                edit.toggle_crop_btn_display(View.VISIBLE);
-                            }
-                        }else if(sel.cropping){
-                            //Now we want the middle canvas to redraw with the new image.
-                            pre.set_img(pre.select_data(sel.select_values()));
-                            sel.zero_values();
-                            sel.invalidate();
-                            pre.invalidate();
-                        }
+                        can.set_end((int) motionEvent.getX(),(int) motionEvent.getY());
+                        can.reset_vals();
+                        can.drawing = false;
                         break;
                     case MotionEvent.ACTION_MOVE:
-                        if(!sel.has_data || sel.cropping){
-                            sel.set_end_values(motionEvent.getX(),motionEvent.getY());
-                        }
+                        can.set_end((int) motionEvent.getX(),(int) motionEvent.getY());
                         break;
                 }
 
-                sel.invalidate();
+                can.invalidate();
                 return true;
             }
         });

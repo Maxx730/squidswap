@@ -4,11 +4,13 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.DashPathEffect;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Shader;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import java.util.HashMap;
 
@@ -18,12 +20,19 @@ public class SquidCanvas extends View{
     private Context cn;
     public SquidBitmapData foc;
     private SquidSelector sel;
+    private Paint select_paint;
 
     //Public variables that can be edited from outsite the
     //object.
     public int fade_val = 5;
     public boolean CENTER_IMAGE = true;
     public boolean DEBUG_CAN = true;
+
+    //Check to see if the user is drawing to the canvas or not.
+    public boolean drawing = false;
+
+    //Selection data points.
+    private int start_x,start_y,end_x,end_y;
 
     //Constructor
     //
@@ -34,6 +43,14 @@ public class SquidCanvas extends View{
         cn = con;
         foc = f;
         sel = s;
+
+        select_paint = new Paint();
+        select_paint.setAntiAlias(true);
+        select_paint.setStyle(Paint.Style.STROKE);
+        select_paint.setColor(ContextCompat.getColor(con,R.color.colorPrimary));
+        select_paint.setStrokeWidth(6);
+        select_paint.setPathEffect(new DashPathEffect(new float[] {15,25}, 0));
+
         //Grab caching information here.
         setDrawingCacheEnabled(true);
         setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
@@ -48,6 +65,9 @@ public class SquidCanvas extends View{
         return foc.bit;
     }
     public SquidBitmapData get_foc(){return foc;};
+    public void set_start(int x,int y){this.start_x = x;this.start_y = y;}
+    public void set_end(int x,int y){this.end_x = x;this.end_y = y;}
+    public void reset_vals(){this.start_x = 0;this.end_x = 0;this.start_y =0;this.end_y = 0;}
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -78,6 +98,11 @@ public class SquidCanvas extends View{
                    canvas.drawBitmap(foc.bit, foc.x, foc.y, null);
                }
             }
+        }
+
+        //Always draw the selection here.
+        if(drawing && check_select_size()){
+            canvas.drawRect(start_x,start_y,end_x,end_y,select_paint);
         }
     }
 
@@ -127,5 +152,24 @@ public class SquidCanvas extends View{
         c.drawCircle(foc.bit.getWidth() / 4,foc.bit.getHeight() / 4,foc.bit.getWidth(),p_top);
 
         return b;
+    }
+
+    //Checks the size of the selection.
+    private boolean check_select_size(){
+        //Make sure we have values.
+        if(this.start_x > 0 && this.start_y > 0 && this.end_x > 0 && this.end_y > 0){
+            if(this.end_x - this.start_x > 10 && this.end_y - this.start_y > 10){
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+    }
+
+    private void check_conversion(){
+
+        
     }
 }
