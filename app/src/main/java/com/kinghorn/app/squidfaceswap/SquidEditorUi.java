@@ -6,8 +6,10 @@ import android.graphics.Color;
 import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -134,7 +136,7 @@ public class SquidEditorUi {
                     fade_layout.setVisibility(View.VISIBLE);
                     mov.invalidate();
                     scaler.set_focused(can);
-                    zoom_seek.setProgress(Math.round(scaler.get_focused().getScaleX()));
+                    zoom_seek.setProgress(Math.round(scaler.get_focused().getScaleX() - 1));
 
                 }else{
                     //Toggle the focus onto the background image.
@@ -146,7 +148,7 @@ public class SquidEditorUi {
                     //canvas scaling size and then set the focused canvas to the
                     //given canvas.
                     scaler.set_focused(bas);
-                    zoom_seek.setProgress(Math.round(scaler.get_focused().getScaleX()));
+                    zoom_seek.setProgress(Math.round(scaler.get_focused().getScaleX() - 1));
                 }
             }
         });
@@ -166,22 +168,14 @@ public class SquidEditorUi {
             public void onClick(View view) {
                 //Now we want to send the values of both the canvases onto one
                 //and give the option to crop.
-                pre.set_img(fil.generate_preview());
-                pre.invalidate();
-                pre.setVisibility(View.VISIBLE);
-                sel.setVisibility(View.VISIBLE);
-                final_crop.setVisibility(View.VISIBLE);
-
-
-                hint_text.setText("Crop Final Image");
-
-                sel.cropping = true;
-                sel.zero_values();
-                sel.invalidate();
+                can.set_img(fil.generate_preview());
+                can.get_foc().is_fade = false;
+                can.invalidate();
+                can.setVisibility(View.VISIBLE);
+                can.cropping = true;
 
                 plac_btns.setVisibility(View.GONE);
                 mov.setVisibility(View.GONE);
-                can.setVisibility(View.GONE);
                 bas.setVisibility(View.GONE);
                 fade_layout.setVisibility(View.GONE);
                 scale_slider.setVisibility(View.GONE);

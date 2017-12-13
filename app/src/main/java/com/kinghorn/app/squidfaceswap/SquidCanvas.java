@@ -1,5 +1,6 @@
 package com.kinghorn.app.squidfaceswap;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -10,8 +11,15 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Shader;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.View;
+import android.widget.RelativeLayout;
+
 import java.util.HashMap;
 
 //Canvas class that we will use in this view to draw on top of the given image.
@@ -19,7 +27,6 @@ public class SquidCanvas extends View{
     //Private variables.
     private Context cn;
     public SquidBitmapData foc;
-    private SquidSelector sel;
     private Paint select_paint;
 
     //Public variables that can be edited from outsite the
@@ -30,6 +37,7 @@ public class SquidCanvas extends View{
 
     //Check to see if the user is drawing to the canvas or not.
     public boolean drawing = false;
+    public boolean cropping = false;
 
     //Selection data points.
     private int start_x,start_y,end_x,end_y;
@@ -37,12 +45,13 @@ public class SquidCanvas extends View{
     //Constructor
     //
     //
-    public SquidCanvas(Context con,SquidBitmapData f,SquidSelector s){
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    public SquidCanvas(Context con, SquidBitmapData f){
         super(con);
         //Set our variables.
         cn = con;
         foc = f;
-        sel = s;
 
         select_paint = new Paint();
         select_paint.setAntiAlias(true);
@@ -50,6 +59,13 @@ public class SquidCanvas extends View{
         select_paint.setColor(ContextCompat.getColor(con,R.color.colorPrimary));
         select_paint.setStrokeWidth(6);
         select_paint.setPathEffect(new DashPathEffect(new float[] {15,25}, 0));
+
+        GradientDrawable gd = new GradientDrawable();
+        gd.setColor(0xFF00FF00); // Changes this drawbale to use a single color instead of a gradient
+        gd.setCornerRadius(5);
+        gd.setStroke(1, 0xFF000000);
+
+        setBackground(gd);
 
         //Grab caching information here.
         setDrawingCacheEnabled(true);
@@ -59,6 +75,7 @@ public class SquidCanvas extends View{
     //Getters and setters are below.
     public void set_img(Bitmap b){
         foc.set_undo(foc.bit);
+
         foc.set_bitmap(b);
     }
     public Bitmap get_img(){
@@ -90,19 +107,19 @@ public class SquidCanvas extends View{
                 foc.x = (float) cent.get("x");
                 foc.y = (float) cent.get("y");
 
-                canvas.drawBitmap(scale,(float) cent.get("x"),(float) cent.get("y"),null);
+                canvas.drawBitmap(scale,0,0,null);
             }else{
                if(foc.is_fade){
                    canvas.drawBitmap(get_faded_img(),foc.x,foc.y,null);
                }else {
-                   canvas.drawBitmap(foc.bit, foc.x, foc.y, null);
+                   canvas.drawBitmap(foc.bit, 0, 0, null);
                }
             }
         }
 
         //Always draw the selection here.
-        if(drawing && check_select_size()){
-            canvas.drawRect(start_x,start_y,end_x,end_y,select_paint);
+        if(drawing){
+           canvas.drawRect(start_x,start_y,end_x,end_y,select_paint);
         }
     }
 
@@ -121,12 +138,20 @@ public class SquidCanvas extends View{
         return re;
     }
 
+    public int center_x(Canvas c){
+        return (getWidth() - foc.bit.getWidth()) / 2;
+    }
+    public int center_y(Canvas c){
+        return (getHeight() - foc.bit.getHeight()) / 2;
+    }
+
     //Returns the bitmap data that was obtained from the image selection based
     //on the given values in the hashmap.
-    public Bitmap select_data(HashMap vals){
+    public Bitmap select_data(){
+        select_paint.setColor(Color.TRANSPARENT);
         Bitmap orig = getDrawingCache();
-        Bitmap cropped = Bitmap.createBitmap(orig,(Integer) Math.round((float) vals.get("start_x")),(Integer) Math.round((float) vals.get("start_y")),(Integer) Math.round((float) vals.get("end_x")) - (Integer) Math.round((float) vals.get("start_x")),(Integer) Math.round((float) vals.get("end_y")) - (Integer) Math.round((float) vals.get("start_y")));
-
+        Bitmap cropped = Bitmap.createBitmap(orig,(Integer) Math.round((float) start_x),(Integer) Math.round((float) start_y),(Integer) Math.round((float) end_x) - (Integer) Math.round((float) start_x),(Integer) Math.round((float) end_y) - (Integer) Math.round((float) start_y));
+        select_paint.setColor(ContextCompat.getColor(this.cn,R.color.colorPrimary));
         return cropped;
     }
 
@@ -146,7 +171,7 @@ public class SquidCanvas extends View{
         p.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
         p_top.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
         p.setShader(new LinearGradient(0,0,foc.bit.getWidth(),0,new int[]{Color.BLACK,Color.TRANSPARENT,Color.TRANSPARENT,Color.BLACK},new float[]{0.0f,(float)0.8f/fade_val,(1f - ((float)0.8f/fade_val)),1f}, Shader.TileMode.CLAMP));
-        p_top.setShader(new LinearGradient(0,0,0,foc.bit.getHeight(),new int[]{Color.BLACK,Color.TRANSPARENT,Color.TRANSPARENT,Color.BLACK},new float[]{0.0f,(float)0.2f/fade_val,(1f - ((float)0.2f/fade_val)),1f}, Shader.TileMode.CLAMP));
+        p_top.setShader(new LinearGradient(0,0,0,foc.bit.getHeight(),new int[]{Color.BLACK,Color.TRANSPARENT,Color.TRANSPARENT,Color.BLACK},new float[]{0.0f,(float)0.8f/fade_val,(1f - ((float)0.8f/fade_val)),1f}, Shader.TileMode.CLAMP));
 
         c.drawCircle(foc.bit.getWidth() / 4,foc.bit.getHeight() / 4,foc.bit.getWidth(),p);
         c.drawCircle(foc.bit.getWidth() / 4,foc.bit.getHeight() / 4,foc.bit.getWidth(),p_top);
@@ -166,10 +191,5 @@ public class SquidCanvas extends View{
         }else{
             return false;
         }
-    }
-
-    private void check_conversion(){
-
-        
     }
 }

@@ -21,6 +21,7 @@ public class SquidSwapEditor extends AppCompatActivity{
     public SquidEditorUi edit;
     public SquidFileService fil;
     public SquidImageScaler scal;
+    public SquidCropper crop;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -42,9 +43,8 @@ public class SquidSwapEditor extends AppCompatActivity{
                 mov.setVisibility(View.VISIBLE);
                 edit.toggle_plac_btn_display(View.VISIBLE);
                 edit.toggle_seek_display(View.VISIBLE);
-                edit.layer_tools.setVisibility(View.VISIBLE);
                 edit.scale_slider.setVisibility(View.VISIBLE);
-
+                scal.set_focused(can);
                 edit.zoom_seek.setProgress(0);
 
                 edit.toggle_crop_btn_display(View.GONE);
@@ -76,16 +76,16 @@ public class SquidSwapEditor extends AppCompatActivity{
             //the final image.
             //
             //Each of the canvases has its own focused bitmap img.
-            can = new SquidCanvas(getApplicationContext(),new SquidBitmapData(getApplicationContext()),sel);
-            pre = new SquidCanvas(getApplicationContext(),new SquidBitmapData(getApplicationContext()),sel);
-            bas = new SquidCanvas(getApplicationContext(),new SquidBitmapData(getApplicationContext()),sel);
+            can = new SquidCanvas(getApplicationContext(),new SquidBitmapData(getApplicationContext()));
+            pre = new SquidCanvas(getApplicationContext(),new SquidBitmapData(getApplicationContext()));
+            bas = new SquidCanvas(getApplicationContext(),new SquidBitmapData(getApplicationContext()));
+            crop = new SquidCropper(getApplicationContext(),new SquidBitmapData(getApplicationContext()));
             draw = new SquidPainter(getApplicationContext());
             //Init our file service.
             fil = new SquidFileService(getApplicationContext(),can,bas,sel);
 
             //Initialize the scaler with the initial squid canvas for cropping
             scal.set_focused(can);
-
 
             //Set the first image that was chosen from the gallery.
             can.set_img(fil.open_first(getIntent()));
@@ -102,11 +102,13 @@ public class SquidSwapEditor extends AppCompatActivity{
             window.addView(pre);
             window.addView(mov);
             window.addView(draw);
+            window.addView(crop);
 
             //Hide the movement canvas that will be the top most, but we need to be able to select.
             mov.setVisibility(View.GONE);
             pre.setVisibility(View.GONE);
             draw.setVisibility(View.GONE);
+            crop.setVisibility(View.GONE);
 
             //Initialize selection touch events.
             init_selector();
@@ -126,10 +128,13 @@ public class SquidSwapEditor extends AppCompatActivity{
                     case MotionEvent.ACTION_DOWN:
                         can.drawing = true;
                         can.set_start((int) motionEvent.getX(),(int) motionEvent.getY());
+                        can.set_end((int) motionEvent.getX(),(int) motionEvent.getY());
                         break;
                     case MotionEvent.ACTION_UP:
                         can.set_end((int) motionEvent.getX(),(int) motionEvent.getY());
+                        can.set_img(can.select_data());
                         can.reset_vals();
+                        edit.toggle_crop_btn_display(View.VISIBLE);
                         can.drawing = false;
                         break;
                     case MotionEvent.ACTION_MOVE:
@@ -138,6 +143,15 @@ public class SquidSwapEditor extends AppCompatActivity{
                 }
 
                 can.invalidate();
+                return true;
+            }
+        });
+
+        crop.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+
+
                 return true;
             }
         });

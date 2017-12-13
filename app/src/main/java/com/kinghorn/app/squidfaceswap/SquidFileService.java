@@ -86,8 +86,8 @@ public class SquidFileService {
         c.drawBitmap(base,0,0,null);
         c.drawBitmap(hov,can.get_foc().x,can.get_foc().y,null);
 
-        save_image(fin);
-        return fin;
+        Bitmap last = Bitmap.createBitmap(fin,0,0,base.getWidth(),base.getHeight());
+        return last;
     }
 
     //Function will check and return a bitmap if the image was sent along with the intent.
