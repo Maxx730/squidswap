@@ -60,13 +60,6 @@ public class SquidCanvas extends View{
         select_paint.setStrokeWidth(6);
         select_paint.setPathEffect(new DashPathEffect(new float[] {15,25}, 0));
 
-        GradientDrawable gd = new GradientDrawable();
-        gd.setColor(0xFF00FF00); // Changes this drawbale to use a single color instead of a gradient
-        gd.setCornerRadius(5);
-        gd.setStroke(1, 0xFF000000);
-
-        setBackground(gd);
-
         //Grab caching information here.
         setDrawingCacheEnabled(true);
         setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
@@ -75,7 +68,6 @@ public class SquidCanvas extends View{
     //Getters and setters are below.
     public void set_img(Bitmap b){
         foc.set_undo(foc.bit);
-
         foc.set_bitmap(b);
     }
     public Bitmap get_img(){
@@ -97,6 +89,8 @@ public class SquidCanvas extends View{
             //the image in the center.
             HashMap vals = new HashMap();
 
+            canvas.scale(foc.scale_x,foc.scale_y);
+
             vals.put("width",(float) foc.bit.getWidth() * foc.scale_x);
             vals.put("height",(float) foc.bit.getHeight() * foc.scale_y);
             vals.put("canvas",canvas);
@@ -107,18 +101,19 @@ public class SquidCanvas extends View{
                 foc.x = (float) cent.get("x");
                 foc.y = (float) cent.get("y");
 
-                canvas.drawBitmap(scale,0,0,null);
+                canvas.drawBitmap(foc.bit,((getWidth() * foc.scale_x) - (foc.bit.getWidth() * foc.scale_x)) / 2,(getHeight() - foc.bit.getHeight()) / 2,null);
             }else{
                if(foc.is_fade){
                    canvas.drawBitmap(get_faded_img(),foc.x,foc.y,null);
                }else {
-                   canvas.drawBitmap(foc.bit, 0, 0, null);
+                   canvas.drawBitmap(foc.bit,((getWidth() * foc.scale_x) - (foc.bit.getWidth() * foc.scale_x)) / 2,(getHeight() - foc.bit.getHeight()) / 2, null);
                }
             }
         }
 
         //Always draw the selection here.
         if(drawing){
+            select_paint.setStrokeWidth(6 / foc.scale_x);
            canvas.drawRect(start_x,start_y,end_x,end_y,select_paint);
         }
     }

@@ -43,7 +43,6 @@ public class SquidSwapEditor extends AppCompatActivity{
                 mov.setVisibility(View.VISIBLE);
                 edit.toggle_plac_btn_display(View.VISIBLE);
                 edit.toggle_seek_display(View.VISIBLE);
-                edit.scale_slider.setVisibility(View.VISIBLE);
                 scal.set_focused(can);
                 edit.zoom_seek.setProgress(0);
 
@@ -197,6 +196,7 @@ public class SquidSwapEditor extends AppCompatActivity{
                         break;
                     case MotionEvent.ACTION_UP:
                         draw.drawing = false;
+                        draw.end_path();
                         break;
                 }
 

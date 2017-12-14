@@ -86,7 +86,7 @@ public class SquidFileService {
         c.drawBitmap(base,0,0,null);
         c.drawBitmap(hov,can.get_foc().x,can.get_foc().y,null);
 
-        Bitmap last = Bitmap.createBitmap(fin,0,0,base.getWidth(),base.getHeight());
+        Bitmap last = Bitmap.createBitmap(fin,0,0,bas.getWidth(),bas.getHeight());
         return last;
     }
 
