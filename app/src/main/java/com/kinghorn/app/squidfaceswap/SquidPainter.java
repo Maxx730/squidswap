@@ -11,14 +11,18 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.view.MotionEvent;
 import android.view.View;
+
+import java.util.ArrayList;
+
 //Class that gives the user the ability to draw onto a canvas as well as erase.
 public class SquidPainter extends View {
 
     private SquidBitmapData foc_btn;
     private Bitmap canvas_bmp;
-    private Paint brush_paint,change_paint;
-    private Path pat;
+    private Paint brush_paint,change_paint,erase_paint;
+    private SquidPath pat,erase_path;
     private float stroke_width;
+    private ArrayList<SquidPath> paths;
 
     //Boolean that tracks if the eraser is being used or not.
     public boolean erasing = false;
@@ -35,6 +39,8 @@ public class SquidPainter extends View {
         brush_paint.setStyle(Paint.Style.STROKE);
         brush_paint.setAntiAlias(true);
         brush_paint.setStrokeWidth(10f);
+        brush_paint.setStrokeCap(Paint.Cap.ROUND);
+        brush_paint.setStrokeJoin(Paint.Join.ROUND);
         brush_paint.setColor(Color.BLUE);
 
         change_paint = new Paint();
@@ -45,7 +51,18 @@ public class SquidPainter extends View {
         change_paint.setTextSize(40);
         change_paint.setAlpha(80);
 
-        pat = new Path();
+        erase_paint = new Paint();
+        erase_paint.setStyle(Paint.Style.STROKE);
+        erase_paint.setAntiAlias(true);
+        erase_paint.setStrokeCap(Paint.Cap.ROUND);
+        erase_paint.setStrokeJoin(Paint.Join.ROUND);
+        erase_paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
+        erase_paint.setColor(Color.BLACK);
+
+        erase_path = new SquidPath(Color.BLACK,10);
+        pat = new SquidPath(Color.BLUE,10);
+
+        paths = new ArrayList<SquidPath>();
 
         drawing = false;
         width_change = false;
@@ -56,47 +73,57 @@ public class SquidPainter extends View {
     public SquidBitmapData get_foc(){return foc_btn;}
     public void set_paint(Paint p){brush_paint = p;}
     public Paint get_paint(){return brush_paint;}
-    public void set_stroke_width(float width){brush_paint.setStrokeWidth(width);}
-    public void set_brush_color(int col){brush_paint.setColor(col);}
+    public void set_stroke_width(int width){pat.setBrushsize(width);}
+    public void set_brush_color(int col){pat.setColor(col);}
+    public int path_length(){return paths.size();}
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        canvas_bmp = Bitmap.createBitmap(getWidth(),getHeight(), Bitmap.Config.ARGB_8888);
-
-        if(width_change){
-            canvas.drawCircle(getWidth()/2,getHeight()/2,brush_paint.getStrokeWidth(),change_paint);
-            //canvas.drawText(Integer.toString((int) brush_paint.getStrokeWidth()),getWidth()/2,getHeight()/2,change_paint);
-        }
-
         //Now we need to draw the canvas bitmap to the canvas and
         //draw a path over it.
-        if(drawing){
-            canvas.drawBitmap(canvas_bmp,0,0,null);
+        for(SquidPath p : paths){
+            canvas.drawPath(p,p.getPaint());
         }
 
-        canvas.drawPath(pat,brush_paint);
+        if(!erasing){
+            canvas.drawPath(pat,pat.getPaint());
+        }else{
+            canvas.drawPath(erase_path,erase_paint);
+        }
+
+        //When the stroke size is changed we want to indicate the size changing below.
+        if(width_change){
+            canvas.drawCircle(getWidth()/2,getHeight()/2,pat.getBrushSize(),change_paint);
+        }
     }
 
     //Functions that will handle starting and moving the drawing path to
     //Different locations based on the user input.
     public void set_path_start(float x,float y){
-        pat.moveTo(x,y);
+        if(erasing){
+            erase_path.moveTo(x,y);
+        }else{
+            pat.moveTo(x,y);
+        }
     }
 
     public void move_path_to(float x,float y){
-        pat.lineTo(x,y);
+        if(erasing){
+            erase_path.lineTo(x,y);
+        }else{
+            pat.lineTo(x,y);
+        }
     }
     public void end_path(){
-        canvas_bmp = getDrawingCache();
+        SquidPath p = new SquidPath(pat.getColor(),pat.getBrushSize());
+        p.set(pat);
+        paths.add(p);
         pat.reset();
     }
     public void set_erase(boolean er){
-        if(er){
-            brush_paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-        }else{
-            brush_paint.setXfermode(null);
-        }
+        erasing = er;
+        erase_path.setBrushsize((int) pat.getBrushSize());
     }
 }

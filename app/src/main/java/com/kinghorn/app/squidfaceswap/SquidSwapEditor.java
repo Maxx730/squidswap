@@ -190,6 +190,10 @@ public class SquidSwapEditor extends AppCompatActivity{
                     case MotionEvent.ACTION_DOWN:
                         draw.drawing = true;
                         draw.set_path_start(motionEvent.getX(),motionEvent.getY());
+
+                        if(draw.path_length() == 0){
+                            edit.draw_back.setVisibility(View.VISIBLE);
+                        }
                         break;
                     case MotionEvent.ACTION_MOVE:
                         draw.move_path_to(motionEvent.getX(),motionEvent.getY());

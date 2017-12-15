@@ -244,15 +244,31 @@
                 app:srcCompat="@drawable/ic_edge_fade" />
         </LinearLayout>
 
-        <RelativeLayout
-            android:id="@+id/canvas_window"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0.67"
-            android:gravity="bottom"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-        </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/canvas_window"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.67"
+                android:gravity="bottom"
+                android:orientation="vertical">
+
+            </RelativeLayout>
+
+            <ImageButton
+                android:id="@+id/revert_back"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="@android:color/transparent"
+                android:padding="10dp"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_history_black_24dp" />
+
+        </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

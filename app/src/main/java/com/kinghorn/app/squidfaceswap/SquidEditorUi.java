@@ -3,6 +3,8 @@ package com.kinghorn.app.squidfaceswap;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
@@ -27,11 +29,12 @@ public class SquidEditorUi {
     private SquidPainter pain;
     private static Context c;
     private boolean painter = false;
+    private boolean eraser = false;
 
     //UI Elements that we will be using below here.
-    public ImageButton crop_veri,crop_canc,close_editor,zoom_in,zoom_out,placement_suc,placement_can,final_crop_suc,final_crop_can,toggle_fade,resize_btn,toggle_painter,eraser_toggle;
+    public ImageButton crop_veri,crop_canc,close_editor,zoom_in,zoom_out,placement_suc,placement_can,final_crop_suc,final_crop_can,toggle_fade,resize_btn,toggle_painter,eraser_toggle,draw_back;
     public TextView hint_text,zoom_am;
-    public LinearLayout crop_btns,plac_btns,fade_layout,final_crop,sav_img,layer_tools,scale_slider,brush_size;
+    public LinearLayout crop_btns,plac_btns,fade_layout,final_crop,sav_img,layer_tools,scale_slider,brush_size,color_choices;
     public SeekBar fade_seek,zoom_seek,paint_size_seek;
     public ToggleButton layer_toggle;
 
@@ -57,6 +60,7 @@ public class SquidEditorUi {
         layer_tools = (LinearLayout) mainview.findViewById(R.id.layer_tools);
         scale_slider = (LinearLayout) mainview.findViewById(R.id.sizing_slider);
         brush_size = (LinearLayout) mainview.findViewById(R.id.brush_size);
+        color_choices = (LinearLayout) mainview.findViewById(R.id.color_choices);
 
         //Grab the crop buttons and set the click events.
         crop_veri = (ImageButton) mainview.findViewById(R.id.acc_button);
@@ -70,6 +74,7 @@ public class SquidEditorUi {
         resize_btn = (ImageButton) mainview.findViewById(R.id.layer_resize);
         toggle_painter = (ImageButton) mainview.findViewById(R.id.squid_painter);
         eraser_toggle = (ImageButton) mainview.findViewById(R.id.eraser_toggle);
+        draw_back = (ImageButton) mainview.findViewById(R.id.revert_back);
 
         fade_seek = (SeekBar) mainview.findViewById(R.id.fading_seeker);
         zoom_seek = (SeekBar) mainview.findViewById(R.id.size_slider);
@@ -112,6 +117,23 @@ public class SquidEditorUi {
 
     //Cropping phase button listeners.
     public void init_btn_listen(){
+
+        for(int i = 0;i < color_choices.getChildCount();i++){
+            final RelativeLayout lay = (RelativeLayout) color_choices.getChildAt(i);
+
+            lay.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Drawable bak = (Drawable) lay.getBackground();
+
+                    if(bak instanceof ColorDrawable){
+                        int col = ((ColorDrawable) bak).getColor();
+                        pain.set_brush_color(col);
+                    }
+                }
+            });
+        }
+
         crop_canc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -190,7 +212,13 @@ public class SquidEditorUi {
         eraser_toggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pain.set_erase(true);
+                if(eraser){
+                    eraser_toggle.setBackgroundColor(ContextCompat.getColor(c,R.color.black_back));
+                    pain.set_erase(false);
+                }else{
+                    eraser_toggle.setBackgroundColor(ContextCompat.getColor(c,R.color.colorPrimary));
+                    pain.set_erase(true);
+                }
             }
         });
 
@@ -241,6 +269,7 @@ public class SquidEditorUi {
                     toggle_painter.setBackgroundColor(ContextCompat.getColor(c,R.color.black_back));
                     eraser_toggle.setVisibility(View.GONE);
                     brush_size.setVisibility(View.GONE);
+                    color_choices.setVisibility(View.GONE);
                     painter = false;
 
                     Toast.makeText(c,"Painting Mode Inactive",Toast.LENGTH_SHORT).show();
@@ -249,6 +278,7 @@ public class SquidEditorUi {
                     toggle_painter.setBackgroundColor(ContextCompat.getColor(c,R.color.colorPrimary));
                     eraser_toggle.setVisibility(View.VISIBLE);
                     brush_size.setVisibility(View.VISIBLE);
+                    color_choices.setVisibility(View.VISIBLE);
                     painter = true;
 
                     Toast.makeText(c,"Painting Mode Active",Toast.LENGTH_SHORT).show();
@@ -260,7 +290,7 @@ public class SquidEditorUi {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                pain.set_stroke_width((float) i);
+                pain.set_stroke_width((int) i);
                 pain.width_change = true;
                 pain.invalidate();
             }
