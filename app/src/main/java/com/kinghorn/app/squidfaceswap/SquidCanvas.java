@@ -20,6 +20,7 @@ import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 //Canvas class that we will use in this view to draw on top of the given image.
@@ -28,6 +29,7 @@ public class SquidCanvas extends View{
     private Context cn;
     public SquidBitmapData foc;
     private Paint select_paint;
+    private ArrayList<SquidPath> paths;
 
     //Public variables that can be edited from outsite the
     //object.
@@ -38,6 +40,7 @@ public class SquidCanvas extends View{
     //Check to see if the user is drawing to the canvas or not.
     public boolean drawing = false;
     public boolean cropping = false;
+    public boolean draw_paint = true;
 
     //Selection data points.
     private int start_x,start_y,end_x,end_y;
@@ -60,6 +63,8 @@ public class SquidCanvas extends View{
         select_paint.setStrokeWidth(6);
         select_paint.setPathEffect(new DashPathEffect(new float[] {15,25}, 0));
 
+        paths = new ArrayList<SquidPath>();
+
         //Grab caching information here.
         setDrawingCacheEnabled(true);
         setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
@@ -78,6 +83,7 @@ public class SquidCanvas extends View{
     public void set_start(int x,int y){this.start_x = x;this.start_y = y;}
     public void set_end(int x,int y){this.end_x = x;this.end_y = y;}
     public void reset_vals(){this.start_x = 0;this.end_x = 0;this.start_y =0;this.end_y = 0;}
+    public void set_paint_paths(ArrayList<SquidPath> p){paths = p;}
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -112,10 +118,28 @@ public class SquidCanvas extends View{
             }
         }
 
+        if(draw_paint){
+            for(SquidPath p : paths){
+                canvas.drawPath(p,p.getPaint());
+            }
+        }
+
+        boolean x_check = check_x();
+        boolean y_check = check_y();
+
         //Always draw the selection here.
         if(drawing){
             select_paint.setStrokeWidth(6 / foc.scale_x);
-           canvas.drawRect(start_x,start_y,end_x,end_y,select_paint);
+
+            if(x_check && y_check){
+                canvas.drawRect(end_x,end_y,start_x,start_y,select_paint);
+            }else if(x_check && !y_check){
+                canvas.drawRect(end_x,start_y,start_x,end_y,select_paint);
+            }else if(!x_check && y_check){
+                canvas.drawRect(start_x,end_y,end_x,start_y,select_paint);
+            }else{
+                canvas.drawRect(start_x,start_y,end_x,end_y,select_paint);
+            }
         }
     }
 
@@ -146,7 +170,23 @@ public class SquidCanvas extends View{
     public Bitmap select_data(){
         select_paint.setColor(Color.TRANSPARENT);
         Bitmap orig = getDrawingCache();
-        Bitmap cropped = Bitmap.createBitmap(orig,(Integer) Math.round((float) start_x),(Integer) Math.round((float) start_y),(Integer) Math.round((float) end_x) - (Integer) Math.round((float) start_x),(Integer) Math.round((float) end_y) - (Integer) Math.round((float) start_y));
+
+        boolean x_check,y_check;
+
+        x_check = check_x();
+        y_check = check_y();
+        Bitmap cropped;
+
+        if(x_check && y_check){
+            cropped = Bitmap.createBitmap(orig,(Integer) Math.round((float) end_x),(Integer) Math.round((float) end_y),(Integer) Math.round((float) start_x) - (Integer) Math.round((float) end_x),(Integer) Math.round((float) start_y) - (Integer) Math.round((float) end_y));
+        }else if(x_check && !y_check){
+            cropped = Bitmap.createBitmap(orig,(Integer) Math.round((float) end_x),(Integer) Math.round((float) start_y),(Integer) Math.round((float) start_x) - (Integer) Math.round((float) end_x),(Integer) Math.round((float) end_y) - (Integer) Math.round((float) start_y));
+        }else if(!x_check && y_check){
+            cropped = Bitmap.createBitmap(orig,(Integer) Math.round((float) start_x),(Integer) Math.round((float) end_y),(Integer) Math.round((float) end_x) - (Integer) Math.round((float) start_x),(Integer) Math.round((float) start_y) - (Integer) Math.round((float) end_y));
+        }else{
+            cropped = Bitmap.createBitmap(orig,(Integer) Math.round((float) start_x),(Integer) Math.round((float) start_y),(Integer) Math.round((float) end_x) - (Integer) Math.round((float) start_x),(Integer) Math.round((float) end_y) - (Integer) Math.round((float) start_y));
+        }
+
         select_paint.setColor(ContextCompat.getColor(this.cn,R.color.colorPrimary));
         return cropped;
     }
@@ -184,6 +224,24 @@ public class SquidCanvas extends View{
             }else{
                 return false;
             }
+        }else{
+            return false;
+        }
+    }
+
+    //Checks the values of the start and end points and converts them based on
+    //what they are.
+    private boolean check_x(){
+        if(start_x > end_x){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    private boolean check_y(){
+        if(start_y > end_y){
+            return true;
         }else{
             return false;
         }

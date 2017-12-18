@@ -40,7 +40,7 @@
         android:layout_height="match_parent"
         android:background="@drawable/simple_dashed"
         android:padding="120dp"
-        app:srcCompat="@drawable/squid" />
+        app:srcCompat="@drawable/squidswap" />
 
     <TextView
         android:id="@+id/version_text"
@@ -48,7 +48,7 @@
         android:layout_height="match_parent"
         android:gravity="center_vertical"
         android:paddingTop="200dp"
-        android:text="SquidSwap Version 0.01"
+        android:text="SquidSwap Version 0.50 Beta"
         android:textAlignment="center"
         android:textColor="@android:color/background_light" />
 

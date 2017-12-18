@@ -9,6 +9,7 @@ import android.media.Image;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -32,11 +33,12 @@ public class SquidEditorUi {
     private boolean eraser = false;
 
     //UI Elements that we will be using below here.
-    public ImageButton crop_veri,crop_canc,close_editor,zoom_in,zoom_out,placement_suc,placement_can,final_crop_suc,final_crop_can,toggle_fade,resize_btn,toggle_painter,eraser_toggle,draw_back;
+    public ImageButton revert_btn,crop_veri,crop_canc,close_editor,zoom_in,zoom_out,placement_suc,placement_can,final_crop_suc,final_crop_can,toggle_fade,resize_btn,toggle_painter,eraser_toggle,draw_back;
     public TextView hint_text,zoom_am;
-    public LinearLayout crop_btns,plac_btns,fade_layout,final_crop,sav_img,layer_tools,scale_slider,brush_size,color_choices;
+    public LinearLayout crop_btns,plac_btns,fade_layout,final_crop,sav_img,layer_tools,scale_slider,brush_size,color_choices,buttons_below;
     public SeekBar fade_seek,zoom_seek,paint_size_seek;
     public ToggleButton layer_toggle;
+    public Button clear_btn,apply_paint;
 
     //Constructor.
     public SquidEditorUi(Context con,View mainview,SquidSelector s,SquidSwapEditor e,SquidFileService f,SquidCanvas vas,SquidCanvas p,SquidMovementHandler m,SquidCanvas b,SquidImageScaler scal,SquidPainter pan){
@@ -61,6 +63,7 @@ public class SquidEditorUi {
         scale_slider = (LinearLayout) mainview.findViewById(R.id.sizing_slider);
         brush_size = (LinearLayout) mainview.findViewById(R.id.brush_size);
         color_choices = (LinearLayout) mainview.findViewById(R.id.color_choices);
+        buttons_below = (LinearLayout) mainview.findViewById(R.id.buttons_below);
 
         //Grab the crop buttons and set the click events.
         crop_veri = (ImageButton) mainview.findViewById(R.id.acc_button);
@@ -75,6 +78,10 @@ public class SquidEditorUi {
         toggle_painter = (ImageButton) mainview.findViewById(R.id.squid_painter);
         eraser_toggle = (ImageButton) mainview.findViewById(R.id.eraser_toggle);
         draw_back = (ImageButton) mainview.findViewById(R.id.revert_back);
+        revert_btn = (ImageButton) mainview.findViewById(R.id.revert_back);
+
+        clear_btn = (Button) mainview.findViewById(R.id.clear_paint);
+        apply_paint = (Button) mainview.findViewById(R.id.apply_paint);
 
         fade_seek = (SeekBar) mainview.findViewById(R.id.fading_seeker);
         zoom_seek = (SeekBar) mainview.findViewById(R.id.size_slider);
@@ -140,6 +147,7 @@ public class SquidEditorUi {
                 sel.has_data = false;
                 hint_text.setText("Please select what to copy...");
                 can.set_img(can.foc.get_undo());
+                can.draw_paint = true;
                 toggle_crop_btn_display(View.GONE);
             }
         });
@@ -237,6 +245,17 @@ public class SquidEditorUi {
             }
         });
 
+        revert_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!pain.undo_last_paint()){
+                    revert_btn.getBackground().setAlpha(50);
+                }else{
+                    revert_btn.getBackground().setAlpha(100);
+                }
+            }
+        });
+
         placement_can.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -261,6 +280,13 @@ public class SquidEditorUi {
             }
         });
 
+        clear_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pain.clear_paint();
+            }
+        });
+
         toggle_painter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -270,6 +296,7 @@ public class SquidEditorUi {
                     eraser_toggle.setVisibility(View.GONE);
                     brush_size.setVisibility(View.GONE);
                     color_choices.setVisibility(View.GONE);
+                    buttons_below.setVisibility(View.VISIBLE);
                     painter = false;
 
                     Toast.makeText(c,"Painting Mode Inactive",Toast.LENGTH_SHORT).show();
@@ -279,6 +306,7 @@ public class SquidEditorUi {
                     eraser_toggle.setVisibility(View.VISIBLE);
                     brush_size.setVisibility(View.VISIBLE);
                     color_choices.setVisibility(View.VISIBLE);
+                    buttons_below.setVisibility(View.GONE);
                     painter = true;
 
                     Toast.makeText(c,"Painting Mode Active",Toast.LENGTH_SHORT).show();
@@ -304,6 +332,24 @@ public class SquidEditorUi {
             public void onStopTrackingTouch(SeekBar seekBar) {
                 pain.width_change = false;
                 pain.invalidate();
+            }
+        });
+
+        apply_paint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pain.setVisibility(View.GONE);
+                toggle_painter.setBackgroundColor(ContextCompat.getColor(c,R.color.black_back));
+                eraser_toggle.setVisibility(View.GONE);
+                brush_size.setVisibility(View.GONE);
+                color_choices.setVisibility(View.GONE);
+                buttons_below.setVisibility(View.VISIBLE);
+                painter = false;
+
+                can.set_paint_paths(pain.get_paths());
+                can.invalidate();
+
+                pain.setVisibility(View.GONE);
             }
         });
 

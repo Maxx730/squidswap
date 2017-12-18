@@ -9,8 +9,11 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -23,6 +26,7 @@ public class SquidPainter extends View {
     private SquidPath pat,erase_path;
     private float stroke_width;
     private ArrayList<SquidPath> paths;
+    private Context con;
 
     //Boolean that tracks if the eraser is being used or not.
     public boolean erasing = false;
@@ -31,6 +35,8 @@ public class SquidPainter extends View {
 
     public SquidPainter(Context context) {
         super(context);
+
+        con = context;
 
         setDrawingCacheEnabled(true);
         setDrawingCacheQuality(DRAWING_CACHE_QUALITY_AUTO);
@@ -76,6 +82,9 @@ public class SquidPainter extends View {
     public void set_stroke_width(int width){pat.setBrushsize(width);}
     public void set_brush_color(int col){pat.setColor(col);}
     public int path_length(){return paths.size();}
+    public void clear_paint(){paths.clear();
+        Toast.makeText(con,"Canvas Cleared",Toast.LENGTH_SHORT).show();invalidate();}
+    public ArrayList<SquidPath> get_paths(){return paths;}
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -116,14 +125,31 @@ public class SquidPainter extends View {
             pat.lineTo(x,y);
         }
     }
+
     public void end_path(){
         SquidPath p = new SquidPath(pat.getColor(),pat.getBrushSize());
         p.set(pat);
         paths.add(p);
         pat.reset();
     }
+
     public void set_erase(boolean er){
         erasing = er;
         erase_path.setBrushsize((int) pat.getBrushSize());
+    }
+
+    public boolean undo_last_paint(){
+        if(paths.size() > 0){
+            paths.remove(paths.size() - 1);
+            invalidate();
+
+            if(paths.size() == 0){
+                return false;
+            }else{
+                return true;
+            }
+        }else{
+            return false;
+        }
     }
 }

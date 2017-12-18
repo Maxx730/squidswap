@@ -39,12 +39,12 @@ public class SquidSwapEditor extends AppCompatActivity{
                 bas.set_img(b);
                 mov.set_foc(can.get_foc());
 
-                edit.layer_toggle.setVisibility(View.VISIBLE);
                 mov.setVisibility(View.VISIBLE);
                 edit.toggle_plac_btn_display(View.VISIBLE);
                 edit.toggle_seek_display(View.VISIBLE);
                 scal.set_focused(can);
                 edit.zoom_seek.setProgress(0);
+                edit.toggle_painter.setVisibility(View.GONE);
 
                 edit.toggle_crop_btn_display(View.GONE);
 
@@ -135,6 +135,7 @@ public class SquidSwapEditor extends AppCompatActivity{
                         can.reset_vals();
                         edit.toggle_crop_btn_display(View.VISIBLE);
                         can.drawing = false;
+                        can.draw_paint = false;
                         break;
                     case MotionEvent.ACTION_MOVE:
                         can.set_end((int) motionEvent.getX(),(int) motionEvent.getY());
