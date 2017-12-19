@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -35,81 +36,107 @@ import java.net.URI;
  */
 public class SquidSwapMain extends AppCompatActivity {
 
-    private Button img_choose_one;
-    private Intent intent;
-    private int FIRST_FILE;
-    private InputStream input;
+    private Button  paint,crop,swit,open;
+    private ImageButton settings;
     private int SQUID_SWAP_PERMISIONS;
-    private RelativeLayout select_one,select_two;
-    private Intent to_edit;
-    private ImageButton open_settings;
-    private View mContentView;
-
-    //Grabs the chosen file and sends to the next activity.
-    protected void onActivityResult(int request_code, int result_code, Intent data){
-        if(result_code == Activity.RESULT_OK && data != null){
-            Uri u = data.getData();
-
-            try{
-                input = getApplicationContext().getContentResolver().openInputStream(u);
-                to_edit.putExtra("chosen_uri",data.getData().toString());
-                startActivity(to_edit);
-            }catch(FileNotFoundException e){
-                e.printStackTrace();
-            }
-        }
-    }
+    private Intent sett_int,open_int;
+    private SquidFileService squidFiles;
+    private static final int PICK_IMAGE = 1;
+    private ImageView focusedImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        check_permissions();
-
-        FIRST_FILE = 1;
-        to_edit = new Intent(this,SquidSwapEditor.class);
-
-        intent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        intent.setType("image/*");
+        //Initialize our needed objects.
+        squidFiles = new SquidFileService(getApplicationContext());
 
         setContentView(R.layout.activity_squid_swap_main);
-        setTitle(R.string.app_title);
+        //Make sure the application has all the necessary
+        //permisions to read and write to the phone.
+        check_permissions();
+        init_buttons();
 
-        img_choose_one = (Button) findViewById(R.id.image_btn_one);
-        open_settings = (ImageButton) findViewById(R.id.settings_toggle);
+    }
 
-        //Opens the settings activity.
-        open_settings.setOnClickListener(new View.OnClickListener() {
+    //We are going to do different things with this based on which tool the
+    //user is coming from.
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //Make sure we grabbed a working result from the gallery.
+        if(resultCode == Activity.RESULT_OK){
+            //Figure out where this result is coming from, in most
+            //cases the data coming back will be bitmat data.
+            switch(requestCode){
+                case PICK_IMAGE:
+                    //We want to load the chosen image from the provided URI.
+
+                    break;
+            }
+        }
+    }
+
+    //Initializes all the buttons that will  be used in the main
+    //menu to interact with the application.
+    private void init_buttons(){
+        open = (Button) findViewById(R.id.image_btn_one);
+        paint = (Button) findViewById(R.id.main_paint);
+        crop = (Button) findViewById(R.id.main_crop);
+        swit = (Button) findViewById(R.id.main_swap);
+        settings =  (ImageButton) findViewById(R.id.settings_open);
+
+        open.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent set = new Intent(getApplicationContext(),SquidSwapSettings.class);
-                startActivity(set);
+                Toast.makeText(getApplicationContext(),"Please choose a file to open...",Toast.LENGTH_SHORT).show();
+
+                open_int = new Intent();
+                open_int.setType("image/*");
+                open_int.setAction(Intent.ACTION_GET_CONTENT);
+
+                startActivityForResult(Intent.createChooser(open_int, "Select Picture"), PICK_IMAGE);
             }
         });
 
-        //Choose the image that we want to start editing.
-        img_choose_one.setOnClickListener(new View.OnClickListener() {
+        paint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivityForResult(intent, FIRST_FILE);
+
+            }
+        });
+
+        crop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        swit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
             }
         });
     }
 
-
     //Make sure the application has the correct permissions.
     private void check_permissions(){
-
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(this,Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.READ_EXTERNAL_STORAGE) || ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-
-
-
             } else {
-
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE},
                         SQUID_SWAP_PERMISIONS);
@@ -117,3 +144,4 @@ public class SquidSwapMain extends AppCompatActivity {
         }
     }
 }
+

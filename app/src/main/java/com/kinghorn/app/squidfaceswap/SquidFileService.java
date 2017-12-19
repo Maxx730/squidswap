@@ -18,22 +18,15 @@ public class SquidFileService {
     private FileOutputStream out;
     private File save, newDir;
     private String dir_string;
-    private SquidCanvas can,bas;
-    private SquidSelector sel;
-    private SquidBitmapData dat;
     private static Context con;
 
     //Constructor for using the file service to load stuff.
     public SquidFileService(Context cont,SquidSelector s){
         con = cont;
-        sel = s;
     }
 
-    public SquidFileService(Context cont,SquidCanvas c,SquidCanvas b,SquidSelector s){
+    public SquidFileService(Context cont){
         dir_string = Environment.getExternalStorageDirectory().toString();
-        can = c;
-        bas = b;
-        sel = s;
         con = cont;
 
         //Make the directory to house the squidswap photos.
@@ -76,18 +69,7 @@ public class SquidFileService {
     //Takes in the bitmap data for both of the canvases and returns the data for
     //the final image before asking the user if they want to save it.
     public Bitmap generate_preview(){
-        //Grab the data from both canvases.
-        Bitmap base = bas.getDrawingCache();
-        Bitmap hov = can.get_faded_img();
-        Bitmap fin = Bitmap.createBitmap(bas.getWidth(),bas.getHeight(), Bitmap.Config.ARGB_8888);
-
-        Canvas c = new Canvas(fin);
-
-        c.drawBitmap(base,0,0,null);
-        c.drawBitmap(hov,can.get_foc().x,can.get_foc().y,null);
-
-        Bitmap last = Bitmap.createBitmap(fin,0,0,bas.getWidth(),bas.getHeight());
-        return last;
+        return Bitmap.createBitmap(100,100, Bitmap.Config.ARGB_8888);
     }
 
     //Function will check and return a bitmap if the image was sent along with the intent.
