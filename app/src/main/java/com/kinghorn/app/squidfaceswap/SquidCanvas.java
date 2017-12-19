@@ -41,6 +41,7 @@ public class SquidCanvas extends View{
     public boolean drawing = false;
     public boolean cropping = false;
     public boolean draw_paint = true;
+    public boolean can_select = true;
 
     //Selection data points.
     private int start_x,start_y,end_x,end_y;
@@ -124,21 +125,23 @@ public class SquidCanvas extends View{
             }
         }
 
-        boolean x_check = check_x();
-        boolean y_check = check_y();
+        if(can_select){
+            boolean x_check = check_x();
+            boolean y_check = check_y();
 
-        //Always draw the selection here.
-        if(drawing){
-            select_paint.setStrokeWidth(6 / foc.scale_x);
+            //Always draw the selection here.
+            if(drawing){
+                select_paint.setStrokeWidth(6 / foc.scale_x);
 
-            if(x_check && y_check){
-                canvas.drawRect(end_x,end_y,start_x,start_y,select_paint);
-            }else if(x_check && !y_check){
-                canvas.drawRect(end_x,start_y,start_x,end_y,select_paint);
-            }else if(!x_check && y_check){
-                canvas.drawRect(start_x,end_y,end_x,start_y,select_paint);
-            }else{
-                canvas.drawRect(start_x,start_y,end_x,end_y,select_paint);
+                if(x_check && y_check){
+                    canvas.drawRect(end_x,end_y,start_x,start_y,select_paint);
+                }else if(x_check && !y_check){
+                    canvas.drawRect(end_x,start_y,start_x,end_y,select_paint);
+                }else if(!x_check && y_check){
+                    canvas.drawRect(start_x,end_y,end_x,start_y,select_paint);
+                }else{
+                    canvas.drawRect(start_x,start_y,end_x,end_y,select_paint);
+                }
             }
         }
     }
@@ -206,8 +209,8 @@ public class SquidCanvas extends View{
         p_top.setAntiAlias(true);
         p.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
         p_top.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
-        p.setShader(new LinearGradient(0,0,foc.bit.getWidth(),0,new int[]{Color.BLACK,Color.TRANSPARENT,Color.TRANSPARENT,Color.BLACK},new float[]{0.0f,(float)0.8f/fade_val,(1f - ((float)0.8f/fade_val)),1f}, Shader.TileMode.CLAMP));
-        p_top.setShader(new LinearGradient(0,0,0,foc.bit.getHeight(),new int[]{Color.BLACK,Color.TRANSPARENT,Color.TRANSPARENT,Color.BLACK},new float[]{0.0f,(float)0.8f/fade_val,(1f - ((float)0.8f/fade_val)),1f}, Shader.TileMode.CLAMP));
+        p.setShader(new LinearGradient(0,0,foc.bit.getWidth(),0,new int[]{Color.BLACK,Color.TRANSPARENT,Color.TRANSPARENT,Color.BLACK},new float[]{0.0f,(float)0.6f/fade_val,(1f - ((float)0.8f/fade_val)),1f}, Shader.TileMode.CLAMP));
+        p_top.setShader(new LinearGradient(0,0,0,foc.bit.getHeight(),new int[]{Color.BLACK,Color.TRANSPARENT,Color.TRANSPARENT,Color.BLACK},new float[]{0.0f,(float)0.6f/fade_val,(1f - ((float)0.8f/fade_val)),1f}, Shader.TileMode.CLAMP));
 
         c.drawCircle(foc.bit.getWidth() / 4,foc.bit.getHeight() / 4,foc.bit.getWidth(),p);
         c.drawCircle(foc.bit.getWidth() / 4,foc.bit.getHeight() / 4,foc.bit.getWidth(),p_top);

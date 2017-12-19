@@ -148,6 +148,7 @@ public class SquidEditorUi {
                 hint_text.setText("Please select what to copy...");
                 can.set_img(can.foc.get_undo());
                 can.draw_paint = true;
+                can.can_select = true;
                 toggle_crop_btn_display(View.GONE);
             }
         });
@@ -208,6 +209,7 @@ public class SquidEditorUi {
                 can.invalidate();
                 can.setVisibility(View.VISIBLE);
                 can.cropping = true;
+                can.can_select = true;
 
                 plac_btns.setVisibility(View.GONE);
                 mov.setVisibility(View.GONE);

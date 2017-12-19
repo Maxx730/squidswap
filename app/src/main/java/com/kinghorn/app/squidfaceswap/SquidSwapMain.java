@@ -75,55 +75,29 @@ public class SquidSwapMain extends AppCompatActivity {
         setContentView(R.layout.activity_squid_swap_main);
         setTitle(R.string.app_title);
 
-        mContentView = findViewById(R.id.fullscreen_content);
-
-        select_one = (RelativeLayout) findViewById(R.id.img_one_select);
         img_choose_one = (Button) findViewById(R.id.image_btn_one);
         open_settings = (ImageButton) findViewById(R.id.settings_toggle);
 
+        //Opens the settings activity.
         open_settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("Opening the settings window...");
                 Intent set = new Intent(getApplicationContext(),SquidSwapSettings.class);
                 startActivity(set);
             }
         });
 
+        //Choose the image that we want to start editing.
         img_choose_one.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivityForResult(intent, FIRST_FILE);
             }
         });
-
-
-
-        select_one.setOnTouchListener(new View.OnTouchListener(){
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-               switch(motionEvent.getAction()){
-                   case MotionEvent.ACTION_DOWN:
-                       break;
-                   case MotionEvent.ACTION_MOVE:
-                       break;
-               }
-                return false;
-            }
-        });
-
-
-        // Set up the user interaction to manually show or hide the system UI.
-        mContentView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
     }
 
 
+    //Make sure the application has the correct permissions.
     private void check_permissions(){
 
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(this,Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){

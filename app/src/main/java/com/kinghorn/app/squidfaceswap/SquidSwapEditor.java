@@ -125,20 +125,27 @@ public class SquidSwapEditor extends AppCompatActivity{
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 switch(motionEvent.getAction()){
                     case MotionEvent.ACTION_DOWN:
-                        can.drawing = true;
-                        can.set_start((int) motionEvent.getX(),(int) motionEvent.getY());
-                        can.set_end((int) motionEvent.getX(),(int) motionEvent.getY());
+                        if(can.can_select){
+                            can.drawing = true;
+                            can.set_start((int) motionEvent.getX(),(int) motionEvent.getY());
+                            can.set_end((int) motionEvent.getX(),(int) motionEvent.getY());
+                        }
                         break;
                     case MotionEvent.ACTION_UP:
-                        can.set_end((int) motionEvent.getX(),(int) motionEvent.getY());
-                        can.set_img(can.select_data());
-                        can.reset_vals();
-                        edit.toggle_crop_btn_display(View.VISIBLE);
-                        can.drawing = false;
-                        can.draw_paint = false;
+                        if(can.can_select){
+                            can.set_end((int) motionEvent.getX(),(int) motionEvent.getY());
+                            can.set_img(can.select_data());
+                            can.reset_vals();
+                            edit.toggle_crop_btn_display(View.VISIBLE);
+                            can.drawing = false;
+                            can.draw_paint = false;
+                            can.can_select = false;
+                        }
                         break;
                     case MotionEvent.ACTION_MOVE:
-                        can.set_end((int) motionEvent.getX(),(int) motionEvent.getY());
+                        if(can.can_select){
+                            can.set_end((int) motionEvent.getX(),(int) motionEvent.getY());
+                        }
                         break;
                 }
 
