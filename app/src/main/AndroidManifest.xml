@@ -7,7 +7,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/squidswap"
+        android:icon="@drawable/squid_simp"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -23,15 +23,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SquidSwapEditor"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_squid_swap_editor"
-            android:theme="@style/FullscreenTheme"></activity>
-        <activity
             android:name=".SquidSwapSettings"
             android:configChanges="orientation|keyboardHidden|screenSize"></activity>
         <activity
             android:name=".SquidAboutPage"
+            android:configChanges="orientation|keyboardHidden|screenSize"></activity>
+        <activity
+            android:name=".GenericEditorActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"></activity>
     </application>
 

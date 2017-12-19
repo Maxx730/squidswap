@@ -159,7 +159,7 @@ public class SquidEditorUi {
                 Intent intent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 intent.setType("image/*");
 
-                ed.start_gal(intent);
+
             }
         });
 

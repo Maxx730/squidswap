@@ -1,13 +1,17 @@
 package com.kinghorn.app.squidfaceswap;
 
 import android.content.Context;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
+import android.provider.MediaStore;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -73,13 +77,15 @@ public class SquidFileService {
     }
 
     //Function will check and return a bitmap if the image was sent along with the intent.
-    public Bitmap open_first(Intent cont) throws FileNotFoundException {
-        Intent in = cont;
-        String path = in.getStringExtra("chosen_uri");
-        InputStream i = con.getContentResolver().openInputStream(Uri.parse(path));
+    public Bitmap open_first(Uri img_path) throws FileNotFoundException {
+        InputStream i = con.getContentResolver().openInputStream(Uri.parse(img_path.toString()));
         Bitmap b = BitmapFactory.decodeStream(i);
-
         return b;
+    }
+
+    public String get_uri_path(Uri u){
+
+        return "";
     }
 
     public Drawable load_drawable(Context con, int drawable_id){

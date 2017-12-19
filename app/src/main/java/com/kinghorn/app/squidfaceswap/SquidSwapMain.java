@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.FileInputStream;
@@ -39,10 +40,12 @@ public class SquidSwapMain extends AppCompatActivity {
     private Button  paint,crop,swit,open;
     private ImageButton settings;
     private int SQUID_SWAP_PERMISIONS;
-    private Intent sett_int,open_int;
+    private Intent sett_int,open_int,settings_int;
     private SquidFileService squidFiles;
     private static final int PICK_IMAGE = 1;
+    private static int HAS_IMAGE = 0;
     private ImageView focusedImage;
+    private TextView uri_path;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +58,8 @@ public class SquidSwapMain extends AppCompatActivity {
         //Make sure the application has all the necessary
         //permisions to read and write to the phone.
         check_permissions();
+        init_elements();
         init_buttons();
-
     }
 
     //We are going to do different things with this based on which tool the
@@ -72,7 +75,15 @@ public class SquidSwapMain extends AppCompatActivity {
             switch(requestCode){
                 case PICK_IMAGE:
                     //We want to load the chosen image from the provided URI.
+                    try {
+                        focusedImage.setImageBitmap(squidFiles.open_first(data.getData()));
 
+                        uri_path.setText(squidFiles.get_uri_path(data.getData()));
+                        //Set our has image variable to true so that the other buttons can be used.
+                        HAS_IMAGE = 1;
+                    } catch (FileNotFoundException e) {
+                        Toast.makeText(getApplicationContext(),"There was an error opening the chosen file.",Toast.LENGTH_SHORT).show();
+                    }
                     break;
             }
         }
@@ -103,30 +114,53 @@ public class SquidSwapMain extends AppCompatActivity {
         paint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if(HAS_IMAGE == 1){
+                    Intent edit = new Intent(getApplicationContext(),GenericEditorActivity.class);
+                    startActivity(edit);
+                }else{
+                    Toast.makeText(getApplicationContext(),"Image to edit has not been chosen...",Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         crop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if(HAS_IMAGE == 1){
+                    Intent edit = new Intent(getApplicationContext(),GenericEditorActivity.class);
+                    startActivity(edit);
+                }else{
+                    Toast.makeText(getApplicationContext(),"Image to edit has not been chosen...",Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         swit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if(HAS_IMAGE == 1){
+                    Intent edit = new Intent(getApplicationContext(),GenericEditorActivity.class);
+                    startActivity(edit);
+                }else{
+                    Toast.makeText(getApplicationContext(),"Image to edit has not been chosen...",Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                settings_int = new Intent(getApplicationContext(),SquidSwapSettings.class);
+                startActivity(settings_int);
             }
         });
+    }
+
+    //Initializes the rest of the elements on the page that are not buttons
+    //in particular.
+    private void init_elements(){
+        focusedImage = (ImageView) findViewById(R.id.focused_image);
+        uri_path = (TextView) findViewById(R.id.uri_path);
     }
 
     //Make sure the application has the correct permissions.
