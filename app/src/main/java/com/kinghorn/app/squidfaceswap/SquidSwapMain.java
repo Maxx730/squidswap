@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.net.Uri;
@@ -43,9 +44,13 @@ public class SquidSwapMain extends AppCompatActivity {
     private Intent sett_int,open_int,settings_int;
     private SquidFileService squidFiles;
     private static final int PICK_IMAGE = 1;
+    private static final int SWAP_INT = 1;
+    private static final int PAINT_INT = 2;
+    private static final int CROP_INT = 3;
     private static int HAS_IMAGE = 0;
     private ImageView focusedImage;
     private TextView uri_path;
+    private Uri focusedUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,12 +59,26 @@ public class SquidSwapMain extends AppCompatActivity {
         //Initialize our needed objects.
         squidFiles = new SquidFileService(getApplicationContext());
 
+        //Check if there is already a focused button.
+        Intent chec = getIntent();
+
         setContentView(R.layout.activity_squid_swap_main);
         //Make sure the application has all the necessary
         //permisions to read and write to the phone.
         check_permissions();
         init_elements();
         init_buttons();
+
+        //If we are coming back from canceling the image then we want to
+        if(chec.getExtras() != null){
+            focusedUri = Uri.parse(chec.getExtras().getString("FocusedUri"));
+            try {
+                focusedImage.setImageBitmap(squidFiles.open_first(focusedUri));
+            } catch (FileNotFoundException e) {
+
+            }
+        }
+
     }
 
     //We are going to do different things with this based on which tool the
@@ -77,8 +96,7 @@ public class SquidSwapMain extends AppCompatActivity {
                     //We want to load the chosen image from the provided URI.
                     try {
                         focusedImage.setImageBitmap(squidFiles.open_first(data.getData()));
-
-                        uri_path.setText(squidFiles.get_uri_path(data.getData()));
+                        focusedUri = data.getData();
                         //Set our has image variable to true so that the other buttons can be used.
                         HAS_IMAGE = 1;
                     } catch (FileNotFoundException e) {
@@ -116,6 +134,9 @@ public class SquidSwapMain extends AppCompatActivity {
             public void onClick(View view) {
                 if(HAS_IMAGE == 1){
                     Intent edit = new Intent(getApplicationContext(),GenericEditorActivity.class);
+                    edit.putExtra("SquidContext",PAINT_INT);
+                    //Pass the focused image on to the next intent.
+                    edit.putExtra("FocusedBitmap",focusedUri.toString());
                     startActivity(edit);
                 }else{
                     Toast.makeText(getApplicationContext(),"Image to edit has not been chosen...",Toast.LENGTH_SHORT).show();
@@ -128,6 +149,9 @@ public class SquidSwapMain extends AppCompatActivity {
             public void onClick(View view) {
                 if(HAS_IMAGE == 1){
                     Intent edit = new Intent(getApplicationContext(),GenericEditorActivity.class);
+                    edit.putExtra("SquidContext",CROP_INT);
+                    //Pass the focused image on to the next intent.
+                    edit.putExtra("FocusedBitmap",focusedUri.toString());
                     startActivity(edit);
                 }else{
                     Toast.makeText(getApplicationContext(),"Image to edit has not been chosen...",Toast.LENGTH_SHORT).show();
@@ -140,6 +164,9 @@ public class SquidSwapMain extends AppCompatActivity {
             public void onClick(View view) {
                 if(HAS_IMAGE == 1){
                     Intent edit = new Intent(getApplicationContext(),GenericEditorActivity.class);
+                    edit.putExtra("SquidContext",SWAP_INT);
+                    //Pass the focused image on to the next intent.
+                    edit.putExtra("FocusedBitmap",focusedUri.toString());
                     startActivity(edit);
                 }else{
                     Toast.makeText(getApplicationContext(),"Image to edit has not been chosen...",Toast.LENGTH_SHORT).show();

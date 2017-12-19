@@ -24,6 +24,21 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <LinearLayout
+                android:id="@+id/tools_overview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <ImageButton
+                    android:id="@+id/save_changes_main"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/squid_ui_btn"
+                    android:padding="10dp"
+                    app:srcCompat="@drawable/ic_save_black_24dp" />
+            </LinearLayout>
+
             <TextView
                 android:id="@+id/uri_path"
                 android:layout_width="match_parent"

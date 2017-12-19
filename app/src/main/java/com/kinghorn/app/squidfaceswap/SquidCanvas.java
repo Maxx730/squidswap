@@ -46,11 +46,6 @@ public class SquidCanvas extends View{
     //Selection data points.
     private int start_x,start_y,end_x,end_y;
 
-    //Constructor
-    //
-    //
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     public SquidCanvas(Context con, SquidBitmapData f){
         super(con);
         //Set our variables.

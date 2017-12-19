@@ -224,10 +224,10 @@ public class SquidEditorUi {
             public void onClick(View view) {
                 if(eraser){
                     eraser_toggle.setBackgroundColor(ContextCompat.getColor(c,R.color.black_back));
-                    pain.set_erase(false);
+
                 }else{
                     eraser_toggle.setBackgroundColor(ContextCompat.getColor(c,R.color.colorPrimary));
-                    pain.set_erase(true);
+
                 }
             }
         });

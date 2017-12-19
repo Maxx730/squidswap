@@ -111,19 +111,11 @@ public class SquidPainter extends View {
     //Functions that will handle starting and moving the drawing path to
     //Different locations based on the user input.
     public void set_path_start(float x,float y){
-        if(erasing){
-            erase_path.moveTo(x,y);
-        }else{
-            pat.moveTo(x,y);
-        }
+        pat.moveTo(x,y);
     }
 
     public void move_path_to(float x,float y){
-        if(erasing){
-            erase_path.lineTo(x,y);
-        }else{
-            pat.lineTo(x,y);
-        }
+        pat.lineTo(x,y);
     }
 
     public void end_path(){
@@ -131,11 +123,6 @@ public class SquidPainter extends View {
         p.set(pat);
         paths.add(p);
         pat.reset();
-    }
-
-    public void set_erase(boolean er){
-        erasing = er;
-        erase_path.setBrushsize((int) pat.getBrushSize());
     }
 
     public boolean undo_last_paint(){
