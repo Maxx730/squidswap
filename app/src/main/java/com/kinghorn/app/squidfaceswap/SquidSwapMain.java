@@ -70,7 +70,7 @@ public class SquidSwapMain extends AppCompatActivity {
         init_buttons();
 
         //If we are coming back from canceling the image then we want to
-        if(chec.getExtras() != null){
+        if(chec.getExtras() != null && chec.hasExtra("FocusedUri")){
             focusedUri = Uri.parse(chec.getExtras().getString("FocusedUri"));
             try {
                 focusedImage.setImageBitmap(squidFiles.open_first(focusedUri));
@@ -162,7 +162,7 @@ public class SquidSwapMain extends AppCompatActivity {
         swit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(HAS_IMAGE == 1){
+                if(focusedUri != null){
                     Intent edit = new Intent(getApplicationContext(),GenericEditorActivity.class);
                     edit.putExtra("SquidContext",SWAP_INT);
                     //Pass the focused image on to the next intent.

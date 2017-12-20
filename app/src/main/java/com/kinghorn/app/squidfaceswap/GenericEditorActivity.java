@@ -1,7 +1,15 @@
 package com.kinghorn.app.squidfaceswap;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
+import android.graphics.drawable.ShapeDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,7 +17,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
@@ -23,7 +33,7 @@ import java.io.FileNotFoundException;
 public class GenericEditorActivity extends AppCompatActivity{
 
     private static int context;
-    private Button suc_btn,can_btn;
+    private ImageButton suc_btn,can_btn;
     private Uri focusedUri;
     private Bitmap focusedBitmap;
     private SquidFileService fil;
@@ -62,13 +72,23 @@ public class GenericEditorActivity extends AppCompatActivity{
 
     //Initializes the bottom buttons based on the context of the editor.
     private void init_bottom_btns(){
-        suc_btn = (Button) findViewById(R.id.editor_apply);
-        can_btn = (Button) findViewById(R.id.editor_cancel);
+        suc_btn = (ImageButton) findViewById(R.id.editor_apply);
+        can_btn = (ImageButton) findViewById(R.id.editor_cancel);
 
         suc_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                switch(context){
+                    case 1:
 
+                        break;
+                    case 2:
+                        //Here we want to apply the paint paths from the squid painter and
+                        //apply them over the bitmap, then we want to convert the bitmap
+                        //to a byte array and send it back to the main activity.
+
+                        break;
+                }
             }
         });
 
@@ -91,6 +111,7 @@ public class GenericEditorActivity extends AppCompatActivity{
         LinearLayout.LayoutParams par = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
         RelativeLayout r = (RelativeLayout) findViewById(R.id.canvas_layout);
         SeekBar bar = tools.findViewById(R.id.brush_size);
+        LinearLayout choice = tools.findViewById(R.id.color_choices);
 
         tools.setLayoutParams(par);
 
@@ -144,5 +165,83 @@ public class GenericEditorActivity extends AppCompatActivity{
                 p.invalidate();
             }
         });
+
+        //Loop through the color choices and set onclick listeners to change the color of
+        //the painting canvas.
+        for(int i = 0;i < choice.getChildCount();i++){
+            RelativeLayout rel = (RelativeLayout) choice.getChildAt(i);
+
+            rel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                p.set_brush_color(Color.parseColor((String) view.getTag()));
+                }
+            });
+        }
+    }
+
+    //Initializes the cropping tool
+    private void init_cropper(){
+        final SquidCanvas crop = new SquidCanvas(getApplicationContext(),new SquidBitmapData(getApplicationContext()));
+        LayoutInflater inflate = getLayoutInflater();
+        final LinearLayout l = (LinearLayout) inflate.inflate(R.layout.cropping_tools,null);
+        LinearLayout.LayoutParams par = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
+        l.setLayoutParams(par);
+        RelativeLayout r = (RelativeLayout) findViewById(R.id.canvas_layout);
+        ImageButton bac = l.findViewById(R.id.crop_back);
+
+        l.setVisibility(View.GONE);
+
+        crop.set_img(focusedBitmap);
+        crop.invalidate();
+
+        r.addView(crop);
+        r.addView(l);
+
+        crop.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch(motionEvent.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+                        crop.set_start((int) motionEvent.getX(),(int) motionEvent.getY());
+                        crop.drawing = true;
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        crop.set_end((int) motionEvent.getX(),(int) motionEvent.getY());
+                        crop.drawing = true;
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        crop.set_end((int) motionEvent.getX(),(int) motionEvent.getY());
+                        crop.set_img(crop.select_data());
+                        crop.reset_vals();
+                        l.setVisibility(View.VISIBLE);
+                        crop.drawing = false;
+                        break;
+                }
+
+                crop.invalidate();
+                return true;
+            }
+        });
+
+        bac.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                crop.set_img(crop.get_foc().get_undo());
+                crop.invalidate();
+                l.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    //Initializes the scaling tool.
+    private void init_scaler(){
+        SquidCanvas scal = new SquidCanvas(getApplicationContext(),new SquidBitmapData(getApplicationContext()));
+        RelativeLayout r = (RelativeLayout) findViewById(R.id.canvas_layout);
+
+        scal.set_img(focusedBitmap);
+        scal.invalidate();
+
+        r.addView(scal);
     }
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/checkered_background"
@@ -28,34 +29,35 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:background="@android:color/black"
+            android:background="@android:color/transparent"
             android:orientation="vertical"
             android:padding="2dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/black_back"
-                android:orientation="horizontal">
+                android:background="@android:color/transparent"
+                android:orientation="horizontal"
+                android:padding="10dp">
 
-                <Button
+                <ImageButton
                     android:id="@+id/editor_apply"
-                    android:layout_width="wrap_content"
+                    android:layout_width="52dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="2dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/squid_ui_btn"
-                    android:text="@string/editor_confirm"
-                    android:textColor="@android:color/background_light" />
+                    android:background="@drawable/round_squid_button"
+                    app:srcCompat="@drawable/ic_image_crop_success_24dp" />
 
-                <Button
-                    android:id="@+id/editor_cancel"
+                <Space
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/squid_ui_btn"
-                    android:text="@string/editor_cancel"
-                    android:textColor="@android:color/background_light" />
+                    android:layout_weight="1" />
+
+                <ImageButton
+                    android:id="@+id/editor_cancel"
+                    android:layout_width="52dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/round_squid_button"
+                    app:srcCompat="@drawable/ic_close_image_crop_24dp" />
             </LinearLayout>
         </LinearLayout>
 

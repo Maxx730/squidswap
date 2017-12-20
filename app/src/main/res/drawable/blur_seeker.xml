@@ -3,9 +3,9 @@
     <item android:id="@android:id/background"
         android:gravity="center_vertical|fill_horizontal">
         <shape android:shape="rectangle"
-            android:tint="#88FFFFFF">
-            <corners android:radius="5dp"/>
-            <size android:height="5dp" />
+            android:tint="#000000">
+            <corners android:radius="20dp"/>
+            <size android:height="20dp" />
             <solid android:color="#FFFFFFFF" />
         </shape>
     </item>
@@ -18,9 +18,9 @@
                 <item>
                     <shape android:shape="rectangle"
                         android:tint="@color/colorAccent">
-                        <corners android:radius="5dp"/>
-                        <size android:height="5dp" />
-                        <solid android:color="#00f518" />
+                        <corners android:radius="20dp"/>
+                        <size android:height="20dp" />
+                        <solid android:color="#00ff00" />
                     </shape>
                 </item>
             </selector>

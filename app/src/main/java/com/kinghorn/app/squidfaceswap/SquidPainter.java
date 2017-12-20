@@ -96,11 +96,7 @@ public class SquidPainter extends View {
             canvas.drawPath(p,p.getPaint());
         }
 
-        if(!erasing){
-            canvas.drawPath(pat,pat.getPaint());
-        }else{
-            canvas.drawPath(erase_path,erase_paint);
-        }
+        canvas.drawPath(pat,pat.getPaint());
 
         //When the stroke size is changed we want to indicate the size changing below.
         if(width_change){

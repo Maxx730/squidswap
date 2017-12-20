@@ -57,7 +57,6 @@ public class SquidCanvas extends View{
         select_paint.setStyle(Paint.Style.STROKE);
         select_paint.setColor(Color.WHITE);
         select_paint.setStrokeWidth(6);
-        select_paint.setPathEffect(new DashPathEffect(new float[] {15,25}, 0));
 
         paths = new ArrayList<SquidPath>();
 
@@ -72,6 +71,7 @@ public class SquidCanvas extends View{
         foc.set_bitmap(b);
         invalidate();
     }
+
     public Bitmap get_img(){
         return foc.bit;
     }
