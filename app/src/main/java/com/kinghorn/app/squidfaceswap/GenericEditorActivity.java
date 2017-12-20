@@ -84,6 +84,13 @@ public class GenericEditorActivity extends AppCompatActivity{
         }
     }
 
+    //When the user has finished editing their image with the respective tool
+    //we want to convert the bitmap to a byte array and send back to the main
+    //activity.
+    private void convert_to_byte(){
+
+    }
+
     //Initializes the bottom buttons based on the context of the editor.
     private void init_bottom_btns(){
         suc_btn = (ImageButton) findViewById(R.id.editor_apply);
@@ -212,7 +219,6 @@ public class GenericEditorActivity extends AppCompatActivity{
         RelativeLayout r = (RelativeLayout) findViewById(R.id.canvas_layout);
         ImageButton bac = l.findViewById(R.id.crop_back);
 
-        l.setVisibility(View.GONE);
 
         crop.set_img(focusedBitmap);
         crop.invalidate();
@@ -236,7 +242,6 @@ public class GenericEditorActivity extends AppCompatActivity{
                         crop.set_end((int) motionEvent.getX(),(int) motionEvent.getY());
                         crop.set_img(crop.select_data());
                         crop.reset_vals();
-                        l.setVisibility(View.VISIBLE);
                         crop.drawing = false;
                         break;
                 }
@@ -251,7 +256,6 @@ public class GenericEditorActivity extends AppCompatActivity{
             public void onClick(View view) {
                 crop.set_img(crop.get_foc().get_undo());
                 crop.invalidate();
-                l.setVisibility(View.GONE);
             }
         });
     }

@@ -125,6 +125,8 @@ public class SquidCanvas extends View{
             boolean y_check = check_y();
 
             //Always draw the selection here.
+            //We also want to draw a crosshair when
+            //selecting to indicate that we are selecting.
             if(drawing){
                 select_paint.setStrokeWidth(6 / foc.scale_x);
 
@@ -243,5 +245,9 @@ public class SquidCanvas extends View{
         }else{
             return false;
         }
+    }
+
+    private void draw_crosshair(Canvas c){
+
     }
 }
