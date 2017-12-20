@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.ShapeDrawable;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -58,7 +59,20 @@ public class GenericEditorActivity extends AppCompatActivity{
             focusedBitmap = fil.open_first(focusedUri);
 
             //Initialize the rest of the editor if the file that was sent has been found.
-            init_painter();
+            switch(context){
+                case 1:
+                    init_swapper();
+                    break;
+                case 2:
+                    init_painter();
+                    break;
+                case 3:
+                    init_cropper();
+                    break;
+                case 4:
+                    init_scaler();
+                    break;
+            }
 
             //Initialize the elements we need.
             init_bottom_btns();
@@ -111,6 +125,7 @@ public class GenericEditorActivity extends AppCompatActivity{
         LinearLayout.LayoutParams par = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
         RelativeLayout r = (RelativeLayout) findViewById(R.id.canvas_layout);
         SeekBar bar = tools.findViewById(R.id.brush_size);
+        ImageButton revert = (ImageButton) tools.findViewById(R.id.paint_back);
         LinearLayout choice = tools.findViewById(R.id.color_choices);
 
         tools.setLayoutParams(par);
@@ -178,6 +193,13 @@ public class GenericEditorActivity extends AppCompatActivity{
                 }
             });
         }
+
+        revert.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                p.undo_last_paint();
+            }
+        });
     }
 
     //Initializes the cropping tool
@@ -243,5 +265,10 @@ public class GenericEditorActivity extends AppCompatActivity{
         scal.invalidate();
 
         r.addView(scal);
+    }
+
+    //Initializes the face swapping tool.
+    private void init_swapper(){
+
     }
 }

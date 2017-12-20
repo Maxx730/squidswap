@@ -38,7 +38,7 @@ import java.net.URI;
  */
 public class SquidSwapMain extends AppCompatActivity {
 
-    private Button  paint,crop,swit,open;
+    private Button  paint,crop,swit,open,scal;
     private ImageButton settings;
     private int SQUID_SWAP_PERMISIONS;
     private Intent sett_int,open_int,settings_int;
@@ -47,6 +47,7 @@ public class SquidSwapMain extends AppCompatActivity {
     private static final int SWAP_INT = 1;
     private static final int PAINT_INT = 2;
     private static final int CROP_INT = 3;
+    private static final int SCALE_INT = 4;
     private static int HAS_IMAGE = 0;
     private ImageView focusedImage;
     private TextView uri_path;
@@ -114,6 +115,7 @@ public class SquidSwapMain extends AppCompatActivity {
         paint = (Button) findViewById(R.id.main_paint);
         crop = (Button) findViewById(R.id.main_crop);
         swit = (Button) findViewById(R.id.main_swap);
+        scal = (Button) findViewById(R.id.main_scale);
         settings =  (ImageButton) findViewById(R.id.settings_open);
 
         open.setOnClickListener(new View.OnClickListener() {
@@ -132,7 +134,7 @@ public class SquidSwapMain extends AppCompatActivity {
         paint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(HAS_IMAGE == 1){
+                if(focusedUri != null){
                     Intent edit = new Intent(getApplicationContext(),GenericEditorActivity.class);
                     edit.putExtra("SquidContext",PAINT_INT);
                     //Pass the focused image on to the next intent.
@@ -147,9 +149,24 @@ public class SquidSwapMain extends AppCompatActivity {
         crop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(HAS_IMAGE == 1){
+                if(focusedUri != null){
                     Intent edit = new Intent(getApplicationContext(),GenericEditorActivity.class);
                     edit.putExtra("SquidContext",CROP_INT);
+                    //Pass the focused image on to the next intent.
+                    edit.putExtra("FocusedBitmap",focusedUri.toString());
+                    startActivity(edit);
+                }else{
+                    Toast.makeText(getApplicationContext(),"Image to edit has not been chosen...",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        scal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(focusedUri != null){
+                    Intent edit = new Intent(getApplicationContext(),GenericEditorActivity.class);
+                    edit.putExtra("SquidContext",SCALE_INT);
                     //Pass the focused image on to the next intent.
                     edit.putExtra("FocusedBitmap",focusedUri.toString());
                     startActivity(edit);
