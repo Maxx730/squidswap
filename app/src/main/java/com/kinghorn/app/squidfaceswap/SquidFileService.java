@@ -8,14 +8,19 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+import android.icu.util.Output;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Random;
 
 public class SquidFileService {
@@ -70,6 +75,28 @@ public class SquidFileService {
 
     }
 
+    //Saves the current image as a temporary file.
+    public String save_tmp(Bitmap bmp){
+        File fil = new File(con.getCacheDir(),"squidswap_tmp.png");
+        OutputStream out = null;
+        String fil_name = null;
+
+        try {
+            fil.createNewFile();
+            out = new FileOutputStream(fil);
+
+            bmp.compress(Bitmap.CompressFormat.PNG,10,out);
+            fil_name = fil.getAbsolutePath();
+
+            out.flush();
+            out.close();
+        } catch (IOException e) {
+            Toast.makeText(con,"Error creating temporary file...",Toast.LENGTH_SHORT).show();
+        }
+
+        return fil_name;
+    }
+
     //Takes in the bitmap data for both of the canvases and returns the data for
     //the final image before asking the user if they want to save it.
     public Bitmap generate_preview(){
@@ -78,14 +105,28 @@ public class SquidFileService {
 
     //Function will check and return a bitmap if the image was sent along with the intent.
     public Bitmap open_first(Uri img_path) throws FileNotFoundException {
-        InputStream i = con.getContentResolver().openInputStream(Uri.parse(img_path.toString()));
+        InputStream i = con.getContentResolver().openInputStream(img_path);
         Bitmap b = BitmapFactory.decodeStream(i);
         return b;
     }
 
-    public String get_uri_path(Uri u){
+    public Bitmap load_cached_file(){
+        Bitmap b = null;
 
-        return "";
+        try {
+            FileInputStream in = new FileInputStream(new File(con.getCacheDir(),"squidswap_tmp.png"));
+            b = BitmapFactory.decodeStream(in);
+            File[] files = con.getCacheDir().listFiles();
+
+            for(int i = 0;i < files.length;i++){
+                System.out.println(files[i].getAbsolutePath());
+            }
+
+        } catch (FileNotFoundException e) {
+            Toast.makeText(con,"Error opening cached file...",Toast.LENGTH_SHORT).show();
+        }
+
+        return b;
     }
 
     public Drawable load_drawable(Context con, int drawable_id){

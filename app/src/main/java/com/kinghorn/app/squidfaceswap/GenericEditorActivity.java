@@ -26,6 +26,7 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 
 //Generic activity class that will be loaded everytime a tool to
@@ -38,6 +39,9 @@ public class GenericEditorActivity extends AppCompatActivity{
     private Uri focusedUri;
     private Bitmap focusedBitmap;
     private SquidFileService fil;
+    private SquidCanvas c;
+    private SquidPainter p;
+    private Intent i;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,7 +60,11 @@ public class GenericEditorActivity extends AppCompatActivity{
         focusedUri = Uri.parse(prev.getExtras().getString("FocusedBitmap"));
 
         try {
-            focusedBitmap = fil.open_first(focusedUri);
+            if(prev.hasExtra("tmp")){
+                focusedBitmap = fil.load_cached_file();
+            }else{
+                focusedBitmap = fil.open_first(focusedUri);
+            }
 
             //Initialize the rest of the editor if the file that was sent has been found.
             switch(context){
@@ -84,13 +92,6 @@ public class GenericEditorActivity extends AppCompatActivity{
         }
     }
 
-    //When the user has finished editing their image with the respective tool
-    //we want to convert the bitmap to a byte array and send back to the main
-    //activity.
-    private void convert_to_byte(){
-
-    }
-
     //Initializes the bottom buttons based on the context of the editor.
     private void init_bottom_btns(){
         suc_btn = (ImageButton) findViewById(R.id.editor_apply);
@@ -107,7 +108,22 @@ public class GenericEditorActivity extends AppCompatActivity{
                         //Here we want to apply the paint paths from the squid painter and
                         //apply them over the bitmap, then we want to convert the bitmap
                         //to a byte array and send it back to the main activity.
+                        i = new Intent(getApplicationContext(),SquidSwapMain.class);
 
+                        i.putExtra("FocusedFileName",fil.save_tmp(p.apply_paint(c)));
+                        //Set tmp to true if the image has been changed etc.
+                        i.putExtra("tmp",true);
+
+                        startActivity(i);
+                        break;
+                    case 3:
+                        i = new Intent(getApplicationContext(),SquidSwapMain.class);
+
+                        i.putExtra("FocusedFileName",fil.save_tmp(focusedBitmap));
+                        //Set tmp to true if the image has been changed etc.
+                        i.putExtra("tmp",true);
+
+                        startActivity(i);
                         break;
                 }
             }
@@ -125,8 +141,8 @@ public class GenericEditorActivity extends AppCompatActivity{
 
     //Initializes the painting tool within this layout.
     private void init_painter(){
-        SquidCanvas c = new SquidCanvas(getApplicationContext(),new SquidBitmapData(getApplicationContext()));
-        final SquidPainter p = new SquidPainter(getApplicationContext());
+        c = new SquidCanvas(getApplicationContext(),new SquidBitmapData(getApplicationContext()));
+        p = new SquidPainter(getApplicationContext());
         LayoutInflater l = getLayoutInflater();
         LinearLayout tools = (LinearLayout) l.inflate(R.layout.squid_paint_tools,null);
         LinearLayout.LayoutParams par = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -240,7 +256,12 @@ public class GenericEditorActivity extends AppCompatActivity{
                         break;
                     case MotionEvent.ACTION_UP:
                         crop.set_end((int) motionEvent.getX(),(int) motionEvent.getY());
-                        crop.set_img(crop.select_data());
+
+                        Bitmap b = crop.select_data();
+
+                        focusedBitmap = b;
+                        crop.set_img(focusedBitmap);
+
                         crop.reset_vals();
                         crop.drawing = false;
                         break;

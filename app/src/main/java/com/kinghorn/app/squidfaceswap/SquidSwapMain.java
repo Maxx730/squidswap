@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
@@ -52,6 +53,7 @@ public class SquidSwapMain extends AppCompatActivity {
     private ImageView focusedImage;
     private TextView uri_path;
     private Uri focusedUri;
+    private Intent chec;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +63,7 @@ public class SquidSwapMain extends AppCompatActivity {
         squidFiles = new SquidFileService(getApplicationContext());
 
         //Check if there is already a focused button.
-        Intent chec = getIntent();
+        chec = getIntent();
 
         setContentView(R.layout.activity_squid_swap_main);
         //Make sure the application has all the necessary
@@ -78,6 +80,12 @@ public class SquidSwapMain extends AppCompatActivity {
             } catch (FileNotFoundException e) {
 
             }
+        }else if(chec.getExtras() != null && chec.hasExtra("FocusedFileName")){
+            Bitmap b = squidFiles.load_cached_file();
+
+            focusedUri = Uri.parse(chec.getStringExtra("FocusedFileName"));
+
+            focusedImage.setImageBitmap(b);
         }
 
     }
@@ -122,6 +130,8 @@ public class SquidSwapMain extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getApplicationContext(),"Please choose a file to open...",Toast.LENGTH_SHORT).show();
+                
+                chec.removeExtra("tmp");
 
                 open_int = new Intent();
                 open_int.setType("image/*");
@@ -139,6 +149,13 @@ public class SquidSwapMain extends AppCompatActivity {
                     edit.putExtra("SquidContext",PAINT_INT);
                     //Pass the focused image on to the next intent.
                     edit.putExtra("FocusedBitmap",focusedUri.toString());
+
+                    //Pass on to the next activity that we are now dealing with a
+                    //temporary cached file.
+                    if(chec.hasExtra("tmp")){
+                        edit.putExtra("tmp",true);
+                    }
+
                     startActivity(edit);
                 }else{
                     Toast.makeText(getApplicationContext(),"Image to edit has not been chosen...",Toast.LENGTH_SHORT).show();
@@ -154,6 +171,13 @@ public class SquidSwapMain extends AppCompatActivity {
                     edit.putExtra("SquidContext",CROP_INT);
                     //Pass the focused image on to the next intent.
                     edit.putExtra("FocusedBitmap",focusedUri.toString());
+
+                    //Pass on to the next activity that we are now dealing with a
+                    //temporary cached file.
+                    if(chec.hasExtra("tmp")){
+                        edit.putExtra("tmp",true);
+                    }
+
                     startActivity(edit);
                 }else{
                     Toast.makeText(getApplicationContext(),"Image to edit has not been chosen...",Toast.LENGTH_SHORT).show();
@@ -169,6 +193,13 @@ public class SquidSwapMain extends AppCompatActivity {
                     edit.putExtra("SquidContext",SCALE_INT);
                     //Pass the focused image on to the next intent.
                     edit.putExtra("FocusedBitmap",focusedUri.toString());
+
+                    //Pass on to the next activity that we are now dealing with a
+                    //temporary cached file.
+                    if(chec.hasExtra("tmp")){
+                        edit.putExtra("tmp",true);
+                    }
+
                     startActivity(edit);
                 }else{
                     Toast.makeText(getApplicationContext(),"Image to edit has not been chosen...",Toast.LENGTH_SHORT).show();
@@ -184,6 +215,13 @@ public class SquidSwapMain extends AppCompatActivity {
                     edit.putExtra("SquidContext",SWAP_INT);
                     //Pass the focused image on to the next intent.
                     edit.putExtra("FocusedBitmap",focusedUri.toString());
+
+                    //Pass on to the next activity that we are now dealing with a
+                    //temporary cached file.
+                    if(chec.hasExtra("tmp")){
+                        edit.putExtra("tmp",true);
+                    }
+
                     startActivity(edit);
                 }else{
                     Toast.makeText(getApplicationContext(),"Image to edit has not been chosen...",Toast.LENGTH_SHORT).show();

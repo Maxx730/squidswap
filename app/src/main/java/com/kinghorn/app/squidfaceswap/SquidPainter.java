@@ -135,4 +135,16 @@ public class SquidPainter extends View {
             return false;
         }
     }
+
+    //Applies the paint layer on top of the normal canvas that is holding the
+    //image.
+    public Bitmap apply_paint(SquidCanvas orig){
+        Bitmap b = Bitmap.createBitmap(orig.getWidth(),orig.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas fin = new Canvas(b);
+
+        fin.drawBitmap(orig.getDrawingCache(),0,0,null);
+        fin.drawBitmap(getDrawingCache(),0,0,null);
+
+        return b;
+    }
 }

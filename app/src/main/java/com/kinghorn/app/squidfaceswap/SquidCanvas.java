@@ -127,7 +127,7 @@ public class SquidCanvas extends View{
             //Always draw the selection here.
             //We also want to draw a crosshair when
             //selecting to indicate that we are selecting.
-            if(drawing){
+            if(drawing && check_select_size()){
                 select_paint.setStrokeWidth(6 / foc.scale_x);
 
                 if(x_check && y_check){
