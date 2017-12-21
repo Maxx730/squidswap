@@ -40,7 +40,7 @@ import java.net.URI;
 public class SquidSwapMain extends AppCompatActivity {
 
     private Button  paint,crop,swit,open,scal;
-    private ImageButton settings;
+    private ImageButton settings,save;
     private int SQUID_SWAP_PERMISIONS;
     private Intent sett_int,open_int,settings_int;
     private SquidFileService squidFiles;
@@ -125,12 +125,13 @@ public class SquidSwapMain extends AppCompatActivity {
         swit = (Button) findViewById(R.id.main_swap);
         scal = (Button) findViewById(R.id.main_scale);
         settings =  (ImageButton) findViewById(R.id.settings_open);
+        save = (ImageButton) findViewById(R.id.save_changes_main);
 
         open.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getApplicationContext(),"Please choose a file to open...",Toast.LENGTH_SHORT).show();
-                
+
                 chec.removeExtra("tmp");
 
                 open_int = new Intent();
@@ -234,6 +235,15 @@ public class SquidSwapMain extends AppCompatActivity {
             public void onClick(View view) {
                 settings_int = new Intent(getApplicationContext(),SquidSwapSettings.class);
                 startActivity(settings_int);
+            }
+        });
+
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                squidFiles.save_image(squidFiles.load_cached_file());
+
+                Toast.makeText(getApplicationContext(),"Image Saved",Toast.LENGTH_SHORT).show();
             }
         });
     }

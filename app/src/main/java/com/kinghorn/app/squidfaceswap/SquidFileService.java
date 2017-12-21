@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.icu.util.Output;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -69,7 +70,16 @@ public class SquidFileService {
             //Once the output stream has been initialized we want to saved the file
             //to the given location.
             image_data.compress(Bitmap.CompressFormat.PNG,100,out);
+            MediaScannerConnection.scanFile(con, new String[]{save.getAbsolutePath()}, null, new MediaScannerConnection.OnScanCompletedListener() {
+                @Override
+                public void onScanCompleted(String s, Uri uri) {
+
+                }
+            });
+            out.close();
         }catch(FileNotFoundException e){
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -110,6 +120,7 @@ public class SquidFileService {
         return b;
     }
 
+    //Returns the cached file that was last edited as a bitmap.
     public Bitmap load_cached_file(){
         Bitmap b = null;
 
@@ -128,6 +139,7 @@ public class SquidFileService {
 
         return b;
     }
+
 
     public Drawable load_drawable(Context con, int drawable_id){
         Drawable d = con.getResources().getDrawable(drawable_id);
