@@ -276,11 +276,14 @@ public class GenericEditorActivity extends AppCompatActivity{
         //the painting canvas.
         for(int i = 0;i < choice.getChildCount();i++){
             RelativeLayout rel = (RelativeLayout) choice.getChildAt(i);
+            p.add_to_colors(rel);
 
             rel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                p.set_brush_color(Color.parseColor((String) view.getTag()));
+                    p.reset_color_alpha();
+                    view.setAlpha(1);
+                    p.set_brush_color(Color.parseColor((String) view.getTag()));
                 }
             });
         }

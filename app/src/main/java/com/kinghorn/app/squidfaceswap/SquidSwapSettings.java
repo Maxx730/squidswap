@@ -32,6 +32,7 @@ public class SquidSwapSettings extends AppCompatActivity {
 
 
         menu_items.add(0,new SquidMenuItem(this,"About",file.load_drawable(this,R.drawable.ic_info_black_24dp),new Intent(this,SquidAboutPage.class),"Link"));
+        menu_items.add(0,new SquidMenuItem(this,"Image Quaility",file.load_drawable(this,R.drawable.ic_info_black_24dp),new Intent(this,SquidAboutPage.class),"Link"));
         ex.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

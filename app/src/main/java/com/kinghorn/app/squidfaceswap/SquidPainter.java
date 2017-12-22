@@ -13,6 +13,7 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ public class SquidPainter extends View {
     private float stroke_width;
     private ArrayList<SquidPath> paths;
     private Context con;
+    private ArrayList<RelativeLayout> colors;
 
     //Boolean that tracks if the eraser is being used or not.
     public boolean erasing = false;
@@ -72,6 +74,8 @@ public class SquidPainter extends View {
 
         drawing = false;
         width_change = false;
+
+        colors = new ArrayList<RelativeLayout>();
     }
 
     //Getters and setters start here.
@@ -85,6 +89,7 @@ public class SquidPainter extends View {
     public void clear_paint(){paths.clear();
         Toast.makeText(con,"Canvas Cleared",Toast.LENGTH_SHORT).show();invalidate();}
     public ArrayList<SquidPath> get_paths(){return paths;}
+    public void add_to_colors(RelativeLayout r){colors.add(r);}
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -154,5 +159,11 @@ public class SquidPainter extends View {
         fin.drawBitmap(getDrawingCache(),0,0,null);
 
         return b;
+    }
+
+    public void reset_color_alpha(){
+        for(RelativeLayout r : colors){
+            r.setAlpha(.5f);
+        }
     }
 }
