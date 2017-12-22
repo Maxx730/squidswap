@@ -29,11 +29,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
+            android:animateLayoutChanges="true"
             android:background="@android:color/transparent"
             android:orientation="vertical"
             android:padding="2dp">
 
             <LinearLayout
+                android:id="@+id/scale_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="bottom"
@@ -41,13 +43,16 @@
                 android:layout_marginRight="10dp"
                 android:background="@drawable/round_squid_button"
                 android:orientation="vertical"
-                android:padding="5dp">
+                android:padding="5dp"
+                android:visibility="gone">
 
                 <SeekBar
                     android:id="@+id/scale_bar"
+                    style="@style/Widget.AppCompat.SeekBar.Discrete"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/black_back" />
+                    android:max="3"
+                    android:progress="0" />
             </LinearLayout>
 
             <LinearLayout
@@ -69,7 +74,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="invisible">
 
                     <ImageButton
                         android:id="@+id/toggle_scaling"
@@ -78,6 +84,14 @@
                         android:layout_marginLeft="10dp"
                         android:background="@drawable/round_squid_button"
                         app:srcCompat="@drawable/ic_resize_img" />
+
+                    <ImageButton
+                        android:id="@+id/imageButton2"
+                        android:layout_width="53dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:background="@drawable/round_squid_button"
+                        app:srcCompat="@drawable/ic_open_with_black_24dp" />
                 </LinearLayout>
 
                 <ImageButton

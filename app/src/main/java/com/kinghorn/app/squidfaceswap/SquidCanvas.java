@@ -109,7 +109,7 @@ public class SquidCanvas extends View{
                if(foc.is_fade){
                    canvas.drawBitmap(get_faded_img(),foc.x,foc.y,null);
                }else {
-                   canvas.drawBitmap(foc.bit,((getWidth() * foc.scale_x) - (foc.bit.getWidth() * foc.scale_x)) / 2,(getHeight() - foc.bit.getHeight()) / 2, null);
+                   canvas.drawBitmap(foc.bit,0,0, null);
                }
             }
         }

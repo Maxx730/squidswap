@@ -49,6 +49,7 @@ public class SquidSwapMain extends AppCompatActivity {
     private static final int PAINT_INT = 2;
     private static final int CROP_INT = 3;
     private static final int SCALE_INT = 4;
+    private static final int PICK_SWAP_IMAGE = 5;
     private static int HAS_IMAGE = 0;
     private ImageView focusedImage;
     private TextView uri_path;
@@ -104,13 +105,27 @@ public class SquidSwapMain extends AppCompatActivity {
                 case PICK_IMAGE:
                     //We want to load the chosen image from the provided URI.
                     try {
-                        focusedImage.setImageBitmap(squidFiles.open_first(data.getData()));
+                        Bitmap b = squidFiles.open_first(data.getData());
+                        focusedImage.setImageBitmap(b);
+                        squidFiles.save_tmp(b);
                         focusedUri = data.getData();
                         //Set our has image variable to true so that the other buttons can be used.
                         HAS_IMAGE = 1;
                     } catch (FileNotFoundException e) {
                         Toast.makeText(getApplicationContext(),"There was an error opening the chosen file.",Toast.LENGTH_SHORT).show();
                     }
+                    break;
+                case PICK_SWAP_IMAGE:
+                    //Once they have picked a swap image, we want to then send them to the generic activity
+                    //to move around the swapping tool, we need to send the uri for the chosen image in the intent.
+                    Uri u = data.getData();
+                    Intent n = new Intent(getApplicationContext(),GenericEditorActivity.class);
+
+                    n.putExtra("BackgroundImage",u.toString());
+                    n.putExtra("FrontImage",focusedUri.toString());
+                    n.putExtra("SquidContext",1);
+
+                    startActivity(n);
                     break;
             }
         }
@@ -212,18 +227,13 @@ public class SquidSwapMain extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(focusedUri != null){
-                    Intent edit = new Intent(getApplicationContext(),GenericEditorActivity.class);
-                    edit.putExtra("SquidContext",SWAP_INT);
-                    //Pass the focused image on to the next intent.
-                    edit.putExtra("FocusedBitmap",focusedUri.toString());
+                    Toast.makeText(getApplicationContext(),"Please choose a file to open...",Toast.LENGTH_SHORT).show();
 
-                    //Pass on to the next activity that we are now dealing with a
-                    //temporary cached file.
-                    if(chec.hasExtra("tmp")){
-                        edit.putExtra("tmp",true);
-                    }
+                    open_int = new Intent();
+                    open_int.setType("image/*");
+                    open_int.setAction(Intent.ACTION_GET_CONTENT);
 
-                    startActivity(edit);
+                    startActivityForResult(Intent.createChooser(open_int, "Select Picture"), PICK_SWAP_IMAGE);
                 }else{
                     Toast.makeText(getApplicationContext(),"Image to edit has not been chosen...",Toast.LENGTH_SHORT).show();
                 }
@@ -241,9 +251,13 @@ public class SquidSwapMain extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                squidFiles.save_image(squidFiles.load_cached_file());
+                if(HAS_IMAGE == 1){
+                    squidFiles.save_image(squidFiles.load_cached_file());
 
-                Toast.makeText(getApplicationContext(),"Image Saved",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"Image Saved",Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getApplicationContext(),"No Image has been Edited",Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

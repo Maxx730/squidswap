@@ -136,6 +136,14 @@ public class SquidPainter extends View {
         }
     }
 
+    //Returns a bitmap of what was painted with regards to the size of the actual
+    //base image so that we are not saving a gigantic image with black background.
+    private Bitmap get_painted_size(Bitmap org){
+        Bitmap b = null;
+
+        return b;
+    }
+
     //Applies the paint layer on top of the normal canvas that is holding the
     //image.
     public Bitmap apply_paint(SquidCanvas orig){

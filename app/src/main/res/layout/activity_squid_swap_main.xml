@@ -73,7 +73,7 @@
 
                 <Button
                     android:id="@+id/main_swap"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:background="@drawable/squid_ui_btn"
@@ -84,7 +84,7 @@
 
                 <Button
                     android:id="@+id/main_scale"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:background="@drawable/squid_ui_btn"
@@ -95,7 +95,7 @@
 
                 <Button
                     android:id="@+id/main_crop"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:background="@drawable/squid_ui_btn"
@@ -106,7 +106,7 @@
 
                 <Button
                     android:id="@+id/main_paint"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:background="@drawable/squid_ui_btn"
@@ -114,30 +114,6 @@
                     android:text="Paint"
                     android:textAlignment="textStart"
                     android:textColor="@android:color/background_light" />
-
-                <TextView
-                    android:id="@+id/version_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:layout_marginTop="20dp"
-                    android:gravity="center_vertical"
-                    android:padding="0dp"
-                    android:paddingTop="20dp"
-                    android:text="SquidSwap Version 0.50 Beta"
-                    android:textAlignment="center"
-                    android:textColor="@android:color/background_light" />
-
-                <TextView
-                    android:id="@+id/legal_info"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:gravity="bottom"
-                    android:text="Property of covfefe Inc. LLC Conglormourate"
-                    android:textAlignment="center"
-                    android:textColor="@android:color/background_light"
-                    android:textSize="9sp" />
 
             </LinearLayout>
 

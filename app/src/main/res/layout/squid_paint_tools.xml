@@ -17,6 +17,7 @@
             android:layout_width="51dp"
             android:layout_height="51dp"
             android:layout_marginLeft="5dp"
+            android:alpha=".5"
             android:background="@drawable/color_pick_white"
             android:gravity="center_horizontal"
             android:tag="#F5F5F5">
@@ -27,6 +28,7 @@
             android:layout_width="51dp"
             android:layout_height="51dp"
             android:layout_marginLeft="5dp"
+            android:alpha=".5"
             android:background="@drawable/color_pick_black"
             android:gravity="center_horizontal"
             android:tag="#454544">
@@ -37,6 +39,7 @@
             android:layout_width="51dp"
             android:layout_height="51dp"
             android:layout_marginLeft="5dp"
+            android:alpha=".5"
             android:background="@drawable/color_pick_purple"
             android:gravity="center_horizontal"
             android:tag="#8D5FDE">
@@ -47,6 +50,7 @@
             android:layout_width="51dp"
             android:layout_height="51dp"
             android:layout_marginLeft="5dp"
+            android:alpha=".5"
             android:background="@drawable/color_pick_orange"
             android:gravity="center_horizontal"
             android:tag="#DEAA41">
@@ -57,6 +61,7 @@
             android:layout_width="51dp"
             android:layout_height="51dp"
             android:layout_marginLeft="5dp"
+            android:alpha=".5"
             android:background="@drawable/color_pick_green"
             android:gravity="center_horizontal"
             android:tag="#AFDE59">
@@ -67,6 +72,7 @@
             android:layout_width="51dp"
             android:layout_height="51dp"
             android:layout_marginLeft="5dp"
+            android:alpha=".5"
             android:background="@drawable/color_pick"
             android:gravity="center_horizontal"
             android:tag="#de3d3d">
@@ -77,6 +83,7 @@
             android:layout_width="51dp"
             android:layout_height="51dp"
             android:layout_marginLeft="5dp"
+            android:alpha=".5"
             android:background="@drawable/color_pick_blue"
             android:gravity="center_horizontal"
             android:tag="#257EDE">

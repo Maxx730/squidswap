@@ -35,11 +35,13 @@ import java.io.FileNotFoundException;
 public class GenericEditorActivity extends AppCompatActivity{
 
     private static int context;
-    private ImageButton suc_btn,can_btn;
+    private ImageButton suc_btn,can_btn,scale_btn;
+    private LinearLayout scal_layout;
+    private SeekBar scal_seek;
     private Uri focusedUri;
-    private Bitmap focusedBitmap;
+    private Bitmap focusedBitmap,frontImage,backImage;
     private SquidFileService fil;
-    private SquidCanvas c;
+    private SquidCanvas c,b;
     private SquidPainter p;
     private Intent i;
 
@@ -57,14 +59,23 @@ public class GenericEditorActivity extends AppCompatActivity{
         //Get the context of why this activity was opened and react accordingly to the
         //context integer.
         context = prev.getExtras().getInt("SquidContext");
-        focusedUri = Uri.parse(prev.getExtras().getString("FocusedBitmap"));
+
+        if(prev.hasExtra("FocusedBitmap")){
+            focusedUri = Uri.parse(prev.getExtras().getString("FocusedBitmap"));
+        }
 
         try {
             if(prev.hasExtra("tmp")){
                 focusedBitmap = fil.load_cached_file();
+            }else if(prev.hasExtra("BackgroundImage") && prev.hasExtra("FrontImage")){
+                backImage = fil.open_first(Uri.parse(prev.getStringExtra("BackgroundImage")));
+                frontImage = fil.load_cached_file();
             }else{
                 focusedBitmap = fil.open_first(focusedUri);
             }
+
+            //Initialize the elements we need.
+            init_bottom_btns();
 
             //Initialize the rest of the editor if the file that was sent has been found.
             switch(context){
@@ -81,9 +92,6 @@ public class GenericEditorActivity extends AppCompatActivity{
                     init_scaler();
                     break;
             }
-
-            //Initialize the elements we need.
-            init_bottom_btns();
         } catch (FileNotFoundException e) {
             Toast.makeText(getApplicationContext(),"Error opening chosen file...",Toast.LENGTH_SHORT).show();
 
@@ -96,6 +104,10 @@ public class GenericEditorActivity extends AppCompatActivity{
     private void init_bottom_btns(){
         suc_btn = (ImageButton) findViewById(R.id.editor_apply);
         can_btn = (ImageButton) findViewById(R.id.editor_cancel);
+        scale_btn = (ImageButton) findViewById(R.id.toggle_scaling);
+
+        scal_layout = (LinearLayout) findViewById(R.id.scale_layout);
+        scal_seek = (SeekBar) findViewById(R.id.scale_bar);
 
         suc_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,6 +137,17 @@ public class GenericEditorActivity extends AppCompatActivity{
 
                         startActivity(i);
                         break;
+                    case 4:
+                        i = new Intent(getApplicationContext(),SquidSwapMain.class);
+
+                        focusedBitmap = c.getDrawingCache();
+
+                        i.putExtra("FocusedFileName",fil.save_tmp(focusedBitmap));
+                        //Set tmp to true if the image has been changed etc.
+                        i.putExtra("tmp",true);
+
+                        startActivity(i);
+                        break;
                 }
             }
         });
@@ -135,6 +158,37 @@ public class GenericEditorActivity extends AppCompatActivity{
                 Intent bac = new Intent(getApplicationContext(),SquidSwapMain.class);
                 bac.putExtra("FocusedUri",focusedUri.toString());
                 startActivity(bac);
+            }
+        });
+
+        scale_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(scal_layout.getVisibility() == View.GONE){
+                    scal_layout.setVisibility(View.VISIBLE);
+                }else{
+                    scal_layout.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        scal_seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                c.get_foc().scale_x = i + 1;
+                c.get_foc().scale_y = i + 1;
+
+                c.invalidate();
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
             }
         });
     }
@@ -227,7 +281,7 @@ public class GenericEditorActivity extends AppCompatActivity{
 
     //Initializes the cropping tool
     private void init_cropper(){
-        final SquidCanvas crop = new SquidCanvas(getApplicationContext(),new SquidBitmapData(getApplicationContext()));
+        c = new SquidCanvas(getApplicationContext(),new SquidBitmapData(getApplicationContext()));
         LayoutInflater inflate = getLayoutInflater();
         final LinearLayout l = (LinearLayout) inflate.inflate(R.layout.cropping_tools,null);
         LinearLayout.LayoutParams par = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
@@ -236,38 +290,38 @@ public class GenericEditorActivity extends AppCompatActivity{
         ImageButton bac = l.findViewById(R.id.crop_back);
 
 
-        crop.set_img(focusedBitmap);
-        crop.invalidate();
+        c.set_img(focusedBitmap);
+        c.invalidate();
 
-        r.addView(crop);
+        r.addView(c);
         r.addView(l);
 
-        crop.setOnTouchListener(new View.OnTouchListener() {
+        c.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 switch(motionEvent.getAction()){
                     case MotionEvent.ACTION_DOWN:
-                        crop.set_start((int) motionEvent.getX(),(int) motionEvent.getY());
-                        crop.drawing = true;
+                        c.set_start((int) motionEvent.getX(),(int) motionEvent.getY());
+                        c.drawing = true;
                         break;
                     case MotionEvent.ACTION_MOVE:
-                        crop.set_end((int) motionEvent.getX(),(int) motionEvent.getY());
-                        crop.drawing = true;
+                        c.set_end((int) motionEvent.getX(),(int) motionEvent.getY());
+                        c.drawing = true;
                         break;
                     case MotionEvent.ACTION_UP:
-                        crop.set_end((int) motionEvent.getX(),(int) motionEvent.getY());
+                        c.set_end((int) motionEvent.getX(),(int) motionEvent.getY());
 
-                        Bitmap b = crop.select_data();
+                        Bitmap b = c.select_data();
 
                         focusedBitmap = b;
-                        crop.set_img(focusedBitmap);
+                        c.set_img(focusedBitmap);
 
-                        crop.reset_vals();
-                        crop.drawing = false;
+                        c.reset_vals();
+                        c.drawing = false;
                         break;
                 }
 
-                crop.invalidate();
+                c.invalidate();
                 return true;
             }
         });
@@ -275,25 +329,49 @@ public class GenericEditorActivity extends AppCompatActivity{
         bac.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                crop.set_img(crop.get_foc().get_undo());
-                crop.invalidate();
+                c.set_img(c.get_foc().get_undo());
+                c.invalidate();
             }
         });
     }
 
     //Initializes the scaling tool.
     private void init_scaler(){
-        SquidCanvas scal = new SquidCanvas(getApplicationContext(),new SquidBitmapData(getApplicationContext()));
+        c = new SquidCanvas(getApplicationContext(),new SquidBitmapData(getApplicationContext()));
         RelativeLayout r = (RelativeLayout) findViewById(R.id.canvas_layout);
 
-        scal.set_img(focusedBitmap);
-        scal.invalidate();
+        scal_layout.setVisibility(View.VISIBLE);
 
-        r.addView(scal);
+        c.set_img(focusedBitmap);
+        c.CENTER_IMAGE = false;
+        c.get_foc().is_fade = false;
+        c.invalidate();
+
+        r.addView(c);
     }
 
     //Initializes the face swapping tool.
     private void init_swapper(){
+        c = new SquidCanvas(getApplicationContext(),new SquidBitmapData(getApplicationContext()));
+        b = new SquidCanvas(getApplicationContext(),new SquidBitmapData(getApplicationContext()));
 
+        RelativeLayout r = (RelativeLayout) findViewById(R.id.canvas_layout);
+        LayoutInflater inflate = getLayoutInflater();
+        LinearLayout l = (LinearLayout) inflate.inflate(R.layout.swap_tools,null);
+        LinearLayout.LayoutParams par = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        l.setLayoutParams(par);
+
+        b.set_img(backImage);
+        c.set_img(frontImage);
+
+        c.CENTER_IMAGE = false;
+        c.get_foc().is_fade = true;
+
+        b.invalidate();
+        c.invalidate();
+
+        r.addView(b);
+        r.addView(c);
+        r.addView(l);
     }
 }
