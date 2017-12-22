@@ -3,6 +3,7 @@ package com.kinghorn.app.squidfaceswap;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.drawable.ColorDrawable;
@@ -37,7 +38,7 @@ public class GenericEditorActivity extends AppCompatActivity{
     private static int context;
     private ImageButton suc_btn,can_btn,scale_btn;
     private LinearLayout scal_layout;
-    private SeekBar scal_seek;
+    private SeekBar scal_seek,fade_seek;
     private Uri focusedUri;
     private Bitmap focusedBitmap,frontImage,backImage;
     private SquidFileService fil;
@@ -114,7 +115,20 @@ public class GenericEditorActivity extends AppCompatActivity{
             public void onClick(View view) {
                 switch(context){
                     case 1:
+                        //Creates the swapped bitmap and tmp cached file and redirects back to
+                        //the main menu.
+                        Bitmap bp = Bitmap.createBitmap(backImage.getWidth(),backImage.getHeight(), Bitmap.Config.ARGB_8888);
+                        Canvas en = new Canvas(bp);
 
+                        en.drawBitmap(b.getDrawingCache(),0,0,null);
+                        en.drawBitmap(c.getDrawingCache(),0,0,null);
+
+                        Intent in = new Intent(getApplicationContext(),SquidSwapMain.class);
+
+                        in.putExtra("FocusedFileName",fil.save_tmp(bp));
+                        in.putExtra("tmp",true);
+
+                        startActivity(in);
                         break;
                     case 2:
                         //Here we want to apply the paint paths from the squid painter and
@@ -373,5 +387,46 @@ public class GenericEditorActivity extends AppCompatActivity{
         r.addView(b);
         r.addView(c);
         r.addView(l);
+
+        fade_seek = (SeekBar) l.findViewById(R.id.fade_seeker);
+
+        fade_seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                c.fade_val = i;
+                c.invalidate();
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        c.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch(motionEvent.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+                        c.get_foc().x = motionEvent.getX() - (c.get_foc().bit.getWidth() / 2);
+                        c.get_foc().y = motionEvent.getY() - (c.get_foc().bit.getHeight() / 2);
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        c.get_foc().x = motionEvent.getX() - (c.get_foc().bit.getWidth() / 2);
+                        c.get_foc().y = motionEvent.getY() - (c.get_foc().bit.getHeight() / 2);
+                        break;
+                    case MotionEvent.ACTION_UP:
+
+                        break;
+                }
+                c.invalidate();
+                return true;
+            }
+        });
     }
 }

@@ -5,9 +5,20 @@
     android:orientation="vertical"
     android:padding="10dp">
 
+    <TextView
+        android:id="@+id/fade_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/round_squid_button"
+        android:padding="10dp"
+        android:text="Adjust edge fading here."
+        android:textColor="@android:color/background_light" />
+
     <SeekBar
         android:id="@+id/fade_seeker"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/round_squid_button" />
+        android:layout_marginTop="2dp"
+        android:background="@drawable/round_squid_button"
+        android:max="10" />
 </LinearLayout>

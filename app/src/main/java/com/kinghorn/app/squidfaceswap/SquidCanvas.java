@@ -10,6 +10,7 @@ import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.RadialGradient;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
@@ -107,7 +108,7 @@ public class SquidCanvas extends View{
                 canvas.drawBitmap(foc.bit,((getWidth() * foc.scale_x) - (foc.bit.getWidth() * foc.scale_x)) / 2,(getHeight() - foc.bit.getHeight()) / 2,null);
             }else{
                if(foc.is_fade){
-                   canvas.drawBitmap(get_faded_img(),foc.x,foc.y,null);
+                   canvas.drawBitmap(get_faded_img("square"),foc.x,foc.y,null);
                }else {
                    canvas.drawBitmap(foc.bit,0,0, null);
                }
@@ -192,7 +193,7 @@ public class SquidCanvas extends View{
     }
 
     //Returns the image after the fading on the edge differences have been applied.
-    public Bitmap get_faded_img(){
+    public Bitmap get_faded_img(String type){
         Bitmap orig = foc.bit;
         Bitmap b = Bitmap.createBitmap(orig.getWidth(),orig.getHeight(),Bitmap.Config.ARGB_8888);
 
@@ -206,11 +207,17 @@ public class SquidCanvas extends View{
         p_top.setAntiAlias(true);
         p.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
         p_top.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
-        p.setShader(new LinearGradient(0,0,foc.bit.getWidth(),0,new int[]{Color.BLACK,Color.TRANSPARENT,Color.TRANSPARENT,Color.BLACK},new float[]{0.0f,(float)0.6f/fade_val,(1f - ((float)0.8f/fade_val)),1f}, Shader.TileMode.CLAMP));
-        p_top.setShader(new LinearGradient(0,0,0,foc.bit.getHeight(),new int[]{Color.BLACK,Color.TRANSPARENT,Color.TRANSPARENT,Color.BLACK},new float[]{0.0f,(float)0.6f/fade_val,(1f - ((float)0.8f/fade_val)),1f}, Shader.TileMode.CLAMP));
 
-        c.drawCircle(foc.bit.getWidth() / 4,foc.bit.getHeight() / 4,foc.bit.getWidth(),p);
-        c.drawCircle(foc.bit.getWidth() / 4,foc.bit.getHeight() / 4,foc.bit.getWidth(),p_top);
+        if(type == "circle"){
+            p.setShader(new RadialGradient(foc.bit.getWidth() / 2,foc.bit.getHeight() / 2,5,new int[]{Color.BLACK,Color.TRANSPARENT},new float[]{0.0f,1f}, Shader.TileMode.CLAMP));
+            c.drawCircle(0,0,1,p);
+        }else{
+            p.setShader(new LinearGradient(0,0,foc.bit.getWidth(),0,new int[]{Color.BLACK,Color.TRANSPARENT,Color.TRANSPARENT,Color.BLACK},new float[]{0.0f,(float)0.6f/fade_val,(1f - ((float)0.8f/fade_val)),1f}, Shader.TileMode.CLAMP));
+            p_top.setShader(new LinearGradient(0,0,0,foc.bit.getHeight(),new int[]{Color.BLACK,Color.TRANSPARENT,Color.TRANSPARENT,Color.BLACK},new float[]{0.0f,(float)0.6f/fade_val,(1f - ((float)0.8f/fade_val)),1f}, Shader.TileMode.CLAMP));
+
+            c.drawRect(0,0,foc.bit.getWidth(),foc.bit.getHeight(),p);
+            c.drawRect(0,0,foc.bit.getWidth(),foc.bit.getHeight(),p_top);
+        }
 
         return b;
     }
@@ -247,7 +254,5 @@ public class SquidCanvas extends View{
         }
     }
 
-    private void draw_crosshair(Canvas c){
 
-    }
 }
