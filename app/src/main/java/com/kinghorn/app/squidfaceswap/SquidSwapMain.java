@@ -39,8 +39,8 @@ import java.net.URI;
  */
 public class SquidSwapMain extends AppCompatActivity {
 
-    private Button  paint,crop,swit,open,scal;
-    private ImageButton settings,save;
+    private ImageButton  paint,crop,swit,scal;
+    private ImageButton settings,save,open;
     private int SQUID_SWAP_PERMISIONS;
     private Intent sett_int,open_int,settings_int;
     private SquidFileService squidFiles;
@@ -134,11 +134,11 @@ public class SquidSwapMain extends AppCompatActivity {
     //Initializes all the buttons that will  be used in the main
     //menu to interact with the application.
     private void init_buttons(){
-        open = (Button) findViewById(R.id.image_btn_one);
-        paint = (Button) findViewById(R.id.main_paint);
-        crop = (Button) findViewById(R.id.main_crop);
-        swit = (Button) findViewById(R.id.main_swap);
-        scal = (Button) findViewById(R.id.main_scale);
+        open = (ImageButton) findViewById(R.id.image_btn_one);
+        paint = (ImageButton) findViewById(R.id.main_paint);
+        crop = (ImageButton) findViewById(R.id.main_crop);
+        swit = (ImageButton) findViewById(R.id.main_swap);
+        scal = (ImageButton) findViewById(R.id.main_scale);
         settings =  (ImageButton) findViewById(R.id.settings_open);
         save = (ImageButton) findViewById(R.id.save_changes_main);
 
@@ -266,7 +266,7 @@ public class SquidSwapMain extends AppCompatActivity {
     //in particular.
     private void init_elements(){
         focusedImage = (ImageView) findViewById(R.id.focused_image);
-        uri_path = (TextView) findViewById(R.id.uri_path);
+
     }
 
     //Make sure the application has the correct permissions.

@@ -13,134 +13,96 @@
     <!-- This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->
 
-    <ScrollView
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/checkered_background">
 
-        <LinearLayout
+        <ImageView
+            android:id="@+id/focused_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:padding="10dp"
+            app:srcCompat="@drawable/defaultphoto" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+        <ImageButton
+            android:id="@+id/settings_open"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/round_squid_button"
+            android:elevation="11dp"
+            android:padding="10dp"
+            app:srcCompat="@drawable/ic_settings_black_24dp" />
 
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+        <ImageButton
+            android:id="@+id/save_changes_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/round_squid_button"
+            android:padding="10dp"
+            app:srcCompat="@drawable/ic_save_black_24dp" />
 
-                    <ImageView
-                        android:id="@+id/focused_image"
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:background="@drawable/checkered_background"
-                        android:padding="10dp"
-                        app:srcCompat="@drawable/defaultphoto" />
+        <LinearLayout
+            android:id="@+id/fullscreen_content_controls"
+            style="?metaButtonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:gravity="bottom"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            tools:ignore="UselessParent">
 
-                    <ImageButton
-                        android:id="@+id/settings_open"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/round_squid_button"
-                        android:elevation="11dp"
-                        android:padding="10dp"
-                        app:srcCompat="@drawable/ic_settings_black_24dp" />
+            <ImageButton
+                android:id="@+id/image_btn_one"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.75"
+                android:background="@drawable/round_squid_button"
+                app:srcCompat="@drawable/ic_folder_black_24dp" />
 
-                    <ImageButton
-                        android:id="@+id/save_changes_main"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/round_squid_button"
-                        android:padding="10dp"
-                        app:srcCompat="@drawable/ic_save_black_24dp" />
+            <ImageButton
+                android:id="@+id/main_swap"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.75"
+                android:background="@drawable/round_squid_button"
+                app:srcCompat="@drawable/ic_rotate_left_black_24dp" />
 
-                </FrameLayout>
+            <ImageButton
+                android:id="@+id/main_crop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/round_squid_button"
+                app:srcCompat="@drawable/ic_crop_black_24dp" />
 
-                <TextView
-                    android:id="@+id/uri_path"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:textColor="@android:color/background_light"
-                    android:visibility="gone" />
+            <ImageButton
+                android:id="@+id/main_paint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/round_squid_button"
+                app:srcCompat="@drawable/ic_squid_draw" />
 
-                <Button
-                    android:id="@+id/main_swap"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:background="@drawable/squid_ui_btn"
-                    android:paddingLeft="20dp"
-                    android:text="Swap"
-                    android:textAlignment="textStart"
-                    android:textColor="@android:color/background_light" />
-
-                <Button
-                    android:id="@+id/main_scale"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:background="@drawable/squid_ui_btn"
-                    android:paddingLeft="20dp"
-                    android:text="Scale"
-                    android:textAlignment="textStart"
-                    android:textColor="@android:color/background_light" />
-
-                <Button
-                    android:id="@+id/main_crop"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:background="@drawable/squid_ui_btn"
-                    android:paddingLeft="20dp"
-                    android:text="Crop"
-                    android:textAlignment="textStart"
-                    android:textColor="@android:color/background_light" />
-
-                <Button
-                    android:id="@+id/main_paint"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:background="@drawable/squid_ui_btn"
-                    android:paddingLeft="20dp"
-                    android:text="Paint"
-                    android:textAlignment="textStart"
-                    android:textColor="@android:color/background_light" />
-
-            </LinearLayout>
+            <ImageButton
+                android:id="@+id/main_scale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/round_squid_button"
+                app:srcCompat="@drawable/ic_resize_img" />
 
         </LinearLayout>
-    </ScrollView>
 
-    <LinearLayout
-        android:id="@+id/fullscreen_content_controls"
-        style="?metaButtonBarStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
-        android:background="@color/black_overlay"
-        android:gravity="bottom"
-        android:orientation="horizontal"
-        tools:ignore="UselessParent">
-
-        <Button
-            android:id="@+id/image_btn_one"
-            style="@style/Widget.Design.Snackbar"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/squid_ui_btn"
-            android:text="@string/choose_btn_one"
-            android:textColor="@android:color/background_light" />
-
-    </LinearLayout>
+    </FrameLayout>
 
 </FrameLayout>
