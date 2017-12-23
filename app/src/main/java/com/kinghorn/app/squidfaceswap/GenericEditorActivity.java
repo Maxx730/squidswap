@@ -117,7 +117,7 @@ public class GenericEditorActivity extends AppCompatActivity{
                     case 1:
                         //Creates the swapped bitmap and tmp cached file and redirects back to
                         //the main menu.
-                        Bitmap bp = Bitmap.createBitmap(backImage.getWidth(),backImage.getHeight(), Bitmap.Config.ARGB_8888);
+                        Bitmap bp = Bitmap.createBitmap(b.getWidth(),b.getHeight(), Bitmap.Config.ARGB_8888);
                         Canvas en = new Canvas(bp);
 
                         en.drawBitmap(b.getDrawingCache(),0,0,null);
