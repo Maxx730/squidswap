@@ -3,6 +3,9 @@ package com.kinghorn.app.squidfaceswap;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -39,8 +42,7 @@ import java.net.URI;
  */
 public class SquidSwapMain extends AppCompatActivity {
 
-    private ImageButton  paint,crop,swit,scal;
-    private ImageButton settings,save,open;
+    private ImageButton  paint,crop,swit,scal,settings,save,open,restart;
     private int SQUID_SWAP_PERMISIONS;
     private Intent sett_int,open_int,settings_int;
     private SquidFileService squidFiles;
@@ -141,6 +143,7 @@ public class SquidSwapMain extends AppCompatActivity {
         scal = (ImageButton) findViewById(R.id.main_scale);
         settings =  (ImageButton) findViewById(R.id.settings_open);
         save = (ImageButton) findViewById(R.id.save_changes_main);
+        restart = (ImageButton) findViewById(R.id.restart_main);
 
         open.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -258,6 +261,35 @@ public class SquidSwapMain extends AppCompatActivity {
                 }else{
                     Toast.makeText(getApplicationContext(),"No Image has been Edited",Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        //When this button is clicked we first want to do a prompt asking if the user would like
+        //to restart from the beginning erasing any current work from being saved.
+        restart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder d = new AlertDialog.Builder(SquidSwapMain.this);
+
+                d.setTitle("Are you sure you would like to restart?")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //If the user clicks yes we want to reset all of the different
+                                //Values such as the images etc as well as the focused button values.
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //If not then do nothing.
+                            }
+                        });
+
+                //Show the alert dialog.
+                AlertDialog a = d.create();
+                a.show();
             }
         });
     }

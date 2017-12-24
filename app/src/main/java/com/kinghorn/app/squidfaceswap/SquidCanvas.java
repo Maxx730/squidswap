@@ -106,22 +106,25 @@ public class SquidCanvas extends View{
                 foc.x = (float) cent.get("x");
                 foc.y = (float) cent.get("y");
 
-                canvas.drawBitmap(matrix_scale(foc.bit,foc.scale_x,foc.scale_y),((getWidth() * foc.scale_x) - (foc.bit.getWidth() * foc.scale_x)) / 2,(getHeight() - foc.bit.getHeight()) / 2,null);
+                canvas.drawBitmap(matrix_rotate(foc.bit),((getWidth() * foc.scale_x) - (foc.bit.getWidth() * foc.scale_x)) / 2,(getHeight() - foc.bit.getHeight()) / 2,null);
             }else{
                if(foc.is_fade){
-                   canvas.drawBitmap(get_faded_img("square"),foc.x,foc.y,null);
+                   canvas.drawBitmap(matrix_rotate(get_faded_img("square")),foc.x - (foc.bit.getWidth() / 4),foc.y - (foc.bit.getHeight() / 4),null);
                }else {
-                   canvas.drawBitmap(foc.bit,0,0, null);
+                   canvas.drawBitmap(matrix_rotate(foc.bit),0,0, null);
                }
             }
         }
 
+        //Logic that draws the paint to the canvas if we are using the canvas as a painting
+        //tool.
         if(draw_paint){
             for(SquidPath p : paths){
                 canvas.drawPath(p,p.getPaint());
             }
         }
 
+        //Selection tool logic that will draw the selection box to the screen.
         if(can_select){
             boolean x_check = check_x();
             boolean y_check = check_y();
@@ -269,9 +272,13 @@ public class SquidCanvas extends View{
         return b;
     }
 
+    //Returns the original focused image but rotation based on its rotation angle.
     private Bitmap matrix_rotate(Bitmap orig){
         Matrix m = new Matrix();
         Bitmap b = null;
+
+        m.setRotate(foc.rotation_angle);
+        b = Bitmap.createBitmap(orig,0,0,orig.getWidth(),orig.getHeight(),m,true);
 
         return b;
     }
