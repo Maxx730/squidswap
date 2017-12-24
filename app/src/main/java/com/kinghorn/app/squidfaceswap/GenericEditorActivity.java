@@ -33,12 +33,12 @@ import java.io.FileNotFoundException;
 //Generic activity class that will be loaded everytime a tool to
 //manipulate the image is clicked, the images that will be shown
 //are based on the tool they want to use.
-public class GenericEditorActivity extends AppCompatActivity{
+public class GenericEditorActivity extends AppCompatActivity {
 
     private static int context;
     private ImageButton suc_btn,can_btn,scale_btn;
     private LinearLayout scal_layout;
-    private SeekBar scal_seek,fade_seek;
+    private SeekBar scal_seek,fade_seek,rotate_seek;
     private Uri focusedUri;
     private Bitmap focusedBitmap,frontImage,backImage;
     private SquidFileService fil;
@@ -378,6 +378,8 @@ public class GenericEditorActivity extends AppCompatActivity{
         LinearLayout.LayoutParams par = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         l.setLayoutParams(par);
 
+        rotate_seek = (SeekBar) l.findViewById(R.id.rotation_seek);
+
         b.set_img(backImage);
         c.set_img(frontImage);
 
@@ -429,6 +431,26 @@ public class GenericEditorActivity extends AppCompatActivity{
                 }
                 c.invalidate();
                 return true;
+            }
+        });
+
+        //Seekbar that will rotate the front image of the swapper when changed, we will need to
+        //set the default to 90 or whatever the start position should be.
+        rotate_seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                c.get_foc().rotation_angle = i;
+                c.invalidate();
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
             }
         });
     }

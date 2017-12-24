@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.LinearGradient;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
@@ -105,7 +106,7 @@ public class SquidCanvas extends View{
                 foc.x = (float) cent.get("x");
                 foc.y = (float) cent.get("y");
 
-                canvas.drawBitmap(foc.bit,((getWidth() * foc.scale_x) - (foc.bit.getWidth() * foc.scale_x)) / 2,(getHeight() - foc.bit.getHeight()) / 2,null);
+                canvas.drawBitmap(matrix_scale(foc.bit,foc.scale_x,foc.scale_y),((getWidth() * foc.scale_x) - (foc.bit.getWidth() * foc.scale_x)) / 2,(getHeight() - foc.bit.getHeight()) / 2,null);
             }else{
                if(foc.is_fade){
                    canvas.drawBitmap(get_faded_img("square"),foc.x,foc.y,null);
@@ -142,6 +143,8 @@ public class SquidCanvas extends View{
                 }
             }
         }
+
+        canvas.rotate(foc.rotation_angle);
     }
 
     //Returns where the values to place the image in the center should be.
@@ -193,6 +196,7 @@ public class SquidCanvas extends View{
     }
 
     //Returns the image after the fading on the edge differences have been applied.
+    //As of now we are still working on the circular duffer fade functionality.
     public Bitmap get_faded_img(String type){
         Bitmap orig = foc.bit;
         Bitmap b = Bitmap.createBitmap(orig.getWidth(),orig.getHeight(),Bitmap.Config.ARGB_8888);
@@ -222,7 +226,7 @@ public class SquidCanvas extends View{
         return b;
     }
 
-    //Checks the size of the selection.
+    //Checks the size of the selection.  If large enough then it returns true.
     private boolean check_select_size(){
         //Make sure we have values.
         if(this.start_x > 0 && this.start_y > 0 && this.end_x > 0 && this.end_y > 0){
@@ -254,5 +258,21 @@ public class SquidCanvas extends View{
         }
     }
 
+    //Scales the image based on a matrix rather than scaling the canvas, this will probably
+    //solve the issues we have with scaling and selection on a bitmap.
+    private Bitmap matrix_scale(Bitmap orig,float scale_x,float scale_y){
+        Matrix m = new Matrix();
+        m.setScale(scale_x,scale_y);
 
+        Bitmap b = Bitmap.createBitmap(orig,0,0,orig.getWidth(),orig.getHeight(),m,true);
+
+        return b;
+    }
+
+    private Bitmap matrix_rotate(Bitmap orig){
+        Matrix m = new Matrix();
+        Bitmap b = null;
+
+        return b;
+    }
 }

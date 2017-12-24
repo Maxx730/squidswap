@@ -18,6 +18,7 @@ public class SquidBitmapData {
     public float scale_x;
     public float scale_y;
     public float width,height;
+    public float rotation_angle;
 
     //Booleans that keep track of the fading and the scaling of the image,
     //
