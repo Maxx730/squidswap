@@ -38,6 +38,7 @@ public class SquidCanvas extends View{
     public int fade_val = 5;
     public boolean CENTER_IMAGE = true;
     public boolean DEBUG_CAN = true;
+    public boolean WATERMARK = true;
 
     //Check to see if the user is drawing to the canvas or not.
     public boolean drawing = false;
@@ -69,6 +70,8 @@ public class SquidCanvas extends View{
 
     //Getters and setters are below.
     public void set_img(Bitmap b){
+        //Here we are going to want to check if we need to scale the image to the size of the canvas, if it is a background image
+        //that is.
         foc.set_undo(foc.bit);
         foc.set_bitmap(b);
         invalidate();
@@ -109,7 +112,7 @@ public class SquidCanvas extends View{
                 canvas.drawBitmap(matrix_rotate(foc.bit),((getWidth() * foc.scale_x) - (foc.bit.getWidth() * foc.scale_x)) / 2,(getHeight() - foc.bit.getHeight()) / 2,null);
             }else{
                if(foc.is_fade){
-                   canvas.drawBitmap(matrix_rotate(get_faded_img("square")),foc.x - (foc.bit.getWidth() / 4),foc.y - (foc.bit.getHeight() / 4),null);
+                   canvas.drawBitmap(matrix_rotate(get_faded_img("square")),foc.x,foc.y,null);
                }else {
                    canvas.drawBitmap(matrix_rotate(foc.bit),0,0, null);
                }

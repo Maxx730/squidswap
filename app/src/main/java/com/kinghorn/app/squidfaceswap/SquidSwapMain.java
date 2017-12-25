@@ -258,6 +258,10 @@ public class SquidSwapMain extends AppCompatActivity {
                     squidFiles.save_image(squidFiles.load_cached_file());
 
                     Toast.makeText(getApplicationContext(),"Image Saved",Toast.LENGTH_SHORT).show();
+
+                    squidFiles.delete_tmp();
+                    focusedImage.setImageDrawable(null);
+                    HAS_IMAGE = 0;
                 }else{
                     Toast.makeText(getApplicationContext(),"No Image has been Edited",Toast.LENGTH_SHORT).show();
                 }
@@ -278,6 +282,10 @@ public class SquidSwapMain extends AppCompatActivity {
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 //If the user clicks yes we want to reset all of the different
                                 //Values such as the images etc as well as the focused button values.
+                                focusedUri = null;
+                                squidFiles.delete_tmp();
+                                focusedImage.setImageDrawable(null);
+                                HAS_IMAGE = 0;
                             }
                         })
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {

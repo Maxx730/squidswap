@@ -7,6 +7,8 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.icu.util.Output;
 import android.media.MediaScannerConnection;
@@ -29,6 +31,7 @@ public class SquidFileService {
     private File save, newDir;
     private String dir_string;
     private static Context con;
+    private boolean WATERMARK = true;
 
     //Constructor for using the file service to load stuff.
     public SquidFileService(Context cont,SquidSelector s){
@@ -67,6 +70,26 @@ public class SquidFileService {
             out = new FileOutputStream(save);
             System.out.println("Output stream initialized...");
 
+            if(WATERMARK) {
+                //Check if we want to add a watermark if so we need to
+                //create a new canvas to put the watermark over the image.
+                Bitmap b = Bitmap.createBitmap(image_data.getWidth(), image_data.getHeight(), Bitmap.Config.ARGB_8888);
+                Canvas c = new Canvas(b);
+
+                c.drawBitmap(image_data,0,0,null);
+
+                Paint p = new Paint();
+                p.setColor(Color.WHITE);
+                p.setAlpha(90);
+                p.setTextSize(40);
+                p.setAntiAlias(true);
+                //Draw the watermark over the completed image.
+                c.drawText("SquidSwap",(image_data.getWidth() / 2)- 50,image_data.getHeight() / 2,p);
+
+                //Set the completed image to the new image with the watermark.
+                image_data = b;
+            }
+
             //Once the output stream has been initialized we want to saved the file
             //to the given location.
             image_data.compress(Bitmap.CompressFormat.PNG,100,out);
@@ -76,6 +99,7 @@ public class SquidFileService {
 
                 }
             });
+
             out.close();
         }catch(FileNotFoundException e){
             e.printStackTrace();
@@ -145,5 +169,16 @@ public class SquidFileService {
         Drawable d = con.getResources().getDrawable(drawable_id);
 
         return d;
+    }
+
+    //Deletes the temp file stored in the cached directory when the user starts the
+    //application over and or when the user finishes and saves the file.
+    public void delete_tmp(){
+        File f = new File(con.getCacheDir(),"squidswap_tmp.png");
+
+        if(f.delete()){
+            System.out.println("Temp file deleted successfully.");
+        }
+
     }
 }
