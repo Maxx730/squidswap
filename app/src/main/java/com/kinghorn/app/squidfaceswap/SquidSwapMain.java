@@ -25,6 +25,7 @@ import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -42,7 +43,7 @@ import java.net.URI;
  */
 public class SquidSwapMain extends AppCompatActivity {
 
-    private ImageButton  paint,crop,swit,scal,settings,save,open,restart;
+    private ImageButton  paint,crop,swit,scal,settings,save,open,restart,main_up,close_main;
     private int SQUID_SWAP_PERMISIONS;
     private Intent sett_int,open_int,settings_int;
     private SquidFileService squidFiles;
@@ -53,10 +54,11 @@ public class SquidSwapMain extends AppCompatActivity {
     private static final int SCALE_INT = 4;
     private static final int PICK_SWAP_IMAGE = 5;
     private static int HAS_IMAGE = 0;
-    private ImageView focusedImage;
-    private TextView uri_path;
+    private ImageView focusedImage,tapImage;
+    private TextView uri_path,tap_to_open;
     private Uri focusedUri;
     private Intent chec;
+    private FrameLayout main_men;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,8 +89,11 @@ public class SquidSwapMain extends AppCompatActivity {
             Bitmap b = squidFiles.load_cached_file();
 
             focusedUri = Uri.parse(chec.getStringExtra("FocusedFileName"));
-
             focusedImage.setImageBitmap(b);
+
+            //Hide the tap to open image.
+            tapImage.setVisibility(View.GONE);
+            tap_to_open.setVisibility(View.GONE);
         }
 
     }
@@ -111,6 +116,10 @@ public class SquidSwapMain extends AppCompatActivity {
                         focusedImage.setImageBitmap(b);
                         squidFiles.save_tmp(b);
                         focusedUri = data.getData();
+
+                        //Hide the tap to open image.
+                        tapImage.setVisibility(View.GONE);
+                        tap_to_open.setVisibility(View.GONE);
                         //Set our has image variable to true so that the other buttons can be used.
                         HAS_IMAGE = 1;
                     } catch (FileNotFoundException e) {
@@ -144,8 +153,14 @@ public class SquidSwapMain extends AppCompatActivity {
         settings =  (ImageButton) findViewById(R.id.settings_open);
         save = (ImageButton) findViewById(R.id.save_changes_main);
         restart = (ImageButton) findViewById(R.id.restart_main);
+        main_up = (ImageButton) findViewById(R.id.main_menu_up);
+        close_main = (ImageButton) findViewById(R.id.close_main_menu);
 
-        open.setOnClickListener(new View.OnClickListener() {
+        tapImage = (ImageView) findViewById(R.id.tap_image);
+
+
+
+        tapImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getApplicationContext(),"Please choose a file to open...",Toast.LENGTH_SHORT).show();
@@ -179,6 +194,13 @@ public class SquidSwapMain extends AppCompatActivity {
                 }else{
                     Toast.makeText(getApplicationContext(),"Image to edit has not been chosen...",Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        close_main.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                main_men.setVisibility(View.GONE);
             }
         });
 
@@ -262,6 +284,10 @@ public class SquidSwapMain extends AppCompatActivity {
                     squidFiles.delete_tmp();
                     focusedImage.setImageDrawable(null);
                     HAS_IMAGE = 0;
+
+                    //Show the tap to open image.
+                    tapImage.setVisibility(View.VISIBLE);
+                    tap_to_open.setVisibility(View.VISIBLE);
                 }else{
                     Toast.makeText(getApplicationContext(),"No Image has been Edited",Toast.LENGTH_SHORT).show();
                 }
@@ -286,6 +312,10 @@ public class SquidSwapMain extends AppCompatActivity {
                                 squidFiles.delete_tmp();
                                 focusedImage.setImageDrawable(null);
                                 HAS_IMAGE = 0;
+
+                                //Hide the tap to open image.
+                                tapImage.setVisibility(View.VISIBLE);
+                                tap_to_open.setVisibility(View.VISIBLE);
                             }
                         })
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -300,13 +330,21 @@ public class SquidSwapMain extends AppCompatActivity {
                 a.show();
             }
         });
+
+        main_up.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                main_men.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     //Initializes the rest of the elements on the page that are not buttons
     //in particular.
     private void init_elements(){
         focusedImage = (ImageView) findViewById(R.id.focused_image);
-
+        tap_to_open = (TextView) findViewById(R.id.tap_text);
+        main_men = (FrameLayout) findViewById(R.id.main_menu);
     }
 
     //Make sure the application has the correct permissions.
