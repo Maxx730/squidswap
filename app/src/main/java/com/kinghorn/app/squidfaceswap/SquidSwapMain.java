@@ -24,6 +24,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -59,6 +61,7 @@ public class SquidSwapMain extends AppCompatActivity {
     private Uri focusedUri;
     private Intent chec;
     private FrameLayout main_men,opening_layout;
+    private Animation slide_up,slide_down;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -200,7 +203,7 @@ public class SquidSwapMain extends AppCompatActivity {
         close_main.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                main_men.setVisibility(View.GONE);
+                main_men.startAnimation(slide_down);
                 tapImage.setClickable(true);
             }
         });
@@ -335,6 +338,7 @@ public class SquidSwapMain extends AppCompatActivity {
         main_up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                main_men.startAnimation(slide_up);
                 main_men.setVisibility(View.VISIBLE);
                 tapImage.setClickable(false);
             }
@@ -348,6 +352,8 @@ public class SquidSwapMain extends AppCompatActivity {
         tap_to_open = (TextView) findViewById(R.id.tap_text);
         main_men = (FrameLayout) findViewById(R.id.main_menu);
         opening_layout = (FrameLayout) findViewById(R.id.opening_layout);
+        slide_up = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_up);
+        slide_down = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_down);
     }
 
     //Make sure the application has the correct permissions.
