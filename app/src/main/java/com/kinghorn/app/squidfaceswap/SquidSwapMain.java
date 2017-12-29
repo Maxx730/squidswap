@@ -58,7 +58,7 @@ public class SquidSwapMain extends AppCompatActivity {
     private TextView uri_path,tap_to_open;
     private Uri focusedUri;
     private Intent chec;
-    private FrameLayout main_men;
+    private FrameLayout main_men,opening_layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -201,6 +201,7 @@ public class SquidSwapMain extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 main_men.setVisibility(View.GONE);
+                tapImage.setClickable(true);
             }
         });
 
@@ -335,6 +336,7 @@ public class SquidSwapMain extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 main_men.setVisibility(View.VISIBLE);
+                tapImage.setClickable(false);
             }
         });
     }
@@ -345,6 +347,7 @@ public class SquidSwapMain extends AppCompatActivity {
         focusedImage = (ImageView) findViewById(R.id.focused_image);
         tap_to_open = (TextView) findViewById(R.id.tap_text);
         main_men = (FrameLayout) findViewById(R.id.main_menu);
+        opening_layout = (FrameLayout) findViewById(R.id.opening_layout);
     }
 
     //Make sure the application has the correct permissions.
