@@ -285,4 +285,14 @@ public class SquidCanvas extends View{
 
         return b;
     }
+
+    //Returns true or false if the selection value it greater than a certain value
+    //to prevent a crash.
+    private boolean check_zero(int x,int y){
+        //Check the values for the selection.
+        if((x*y) < 10){
+
+        }
+        return true;
+    }
 }

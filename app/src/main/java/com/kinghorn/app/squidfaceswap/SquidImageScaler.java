@@ -1,23 +1,31 @@
 package com.kinghorn.app.squidfaceswap;
 
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+
 public class SquidImageScaler {
 
     public SquidCanvas focused_can;
 
-    //Constructor.
+    //Needs to scale images based on the context the image is in.
     public SquidImageScaler(){
 
     }
 
-    //Getter and setter methods begin here.
-    public void set_focused(SquidCanvas c){
-        focused_can = c;
-    }
-    public SquidCanvas get_focused(){return focused_can;}
+    //Pulls in the canvas and scales the image to the size of he canvas.
+    public Bitmap scale_image(Canvas c){
+        Bitmap b = null;
 
-    //Sets the scale for the image drawn to the selected canvas.
-    public void set_scale(int s){
-        focused_can.get_foc().scale_x = s + 1;
-        focused_can.get_foc().scale_y = s + 1;
+        //Get the size of the canvas of the x and y.
+        int scale_x = c.getWidth();
+        int scale_y = c.getHeight();
+
+        //Create our matrix of the scaling.
+        Matrix m = new Matrix();
+
+
+        return b;
     }
+
 }
