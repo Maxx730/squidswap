@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/simple_dashed"
     tools:context="com.kinghorn.app.squidfaceswap.SquidSwapMain">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
@@ -170,6 +169,23 @@
                     android:background="@drawable/squid_ui_btn"
                     app:srcCompat="@drawable/ic_close_image_crop_24dp" />
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="60dp"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/camera_capture"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:background="@drawable/squid_ui_btn"
+                    app:srcCompat="@drawable/ic_camera_black_24dp" />
+
+            </LinearLayout>
+
         </FrameLayout>
 
     </RelativeLayout>

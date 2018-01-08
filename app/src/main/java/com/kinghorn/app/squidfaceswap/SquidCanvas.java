@@ -45,6 +45,7 @@ public class SquidCanvas extends View{
     public boolean cropping = false;
     public boolean draw_paint = true;
     public boolean can_select = true;
+    public boolean scaling = false;
 
     //Selection data points.
     private int start_x,start_y,end_x,end_y;
@@ -93,22 +94,8 @@ public class SquidCanvas extends View{
         //If the focused image has any data then write the data to the canvas.
         if (foc.bit != null) {
             Bitmap scale = Bitmap.createScaledBitmap(foc.bit,Math.round(foc.bit.getWidth() * foc.scale_x),Math.round(foc.bit.getHeight() * foc.scale_y),true);
-            //Use a hashmap to send our data to a function to return the values needed to place
-            //the image in the center.
-            HashMap vals = new HashMap();
-
-            canvas.scale(foc.scale_x,foc.scale_y);
-
-            vals.put("width",(float) foc.bit.getWidth() * foc.scale_x);
-            vals.put("height",(float) foc.bit.getHeight() * foc.scale_y);
-            vals.put("canvas",canvas);
 
             if(CENTER_IMAGE){
-                HashMap cent = return_center(vals);
-
-                foc.x = (float) cent.get("x");
-                foc.y = (float) cent.get("y");
-
                 canvas.drawBitmap(matrix_rotate(foc.bit),((getWidth() * foc.scale_x) - (foc.bit.getWidth() * foc.scale_x)) / 2,(getHeight() - foc.bit.getHeight()) / 2,null);
             }else{
                if(foc.is_fade){
@@ -135,9 +122,7 @@ public class SquidCanvas extends View{
             //Always draw the selection here.
             //We also want to draw a crosshair when
             //selecting to indicate that we are selecting.
-            if(drawing && check_select_size()){
-                select_paint.setStrokeWidth(6 / foc.scale_x);
-
+            if(drawing){
                 if(x_check && y_check){
                     canvas.drawRect(end_x,end_y,start_x,start_y,select_paint);
                 }else if(x_check && !y_check){
@@ -149,8 +134,6 @@ public class SquidCanvas extends View{
                 }
             }
         }
-
-        canvas.rotate(foc.rotation_angle);
     }
 
     //Returns where the values to place the image in the center should be.
@@ -197,7 +180,8 @@ public class SquidCanvas extends View{
             cropped = Bitmap.createBitmap(orig,(Integer) Math.round((float) start_x),(Integer) Math.round((float) start_y),(Integer) Math.round((float) end_x) - (Integer) Math.round((float) start_x),(Integer) Math.round((float) end_y) - (Integer) Math.round((float) start_y));
         }
 
-        select_paint.setColor(ContextCompat.getColor(this.cn,R.color.colorPrimary));
+        select_paint.setColor(Color.WHITE);
+        can_select = false;
         return cropped;
     }
 
@@ -286,13 +270,16 @@ public class SquidCanvas extends View{
         return b;
     }
 
-    //Returns true or false if the selection value it greater than a certain value
-    //to prevent a crash.
-    private boolean check_zero(int x,int y){
-        //Check the values for the selection.
-        if((x*y) < 10){
+    //Takes in the image, scales it to the size of the canvas (Rounds to the best it can) and also
+    //applies
+    private Bitmap return_matrixed(Bitmap b,Canvas c){
+        Matrix m = new Matrix();
 
-        }
-        return true;
+        m.setScale(foc.get_scale_x(),foc.get_scale_y());
+        m.setRotate(foc.rotation_angle);
+
+        Bitmap bmp = Bitmap.createBitmap(b,0,0,b.getWidth(),b.getHeight(),m,true);
+
+        return bmp;
     }
 }

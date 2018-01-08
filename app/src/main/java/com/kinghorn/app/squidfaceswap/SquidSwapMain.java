@@ -85,6 +85,9 @@ public class SquidSwapMain extends AppCompatActivity {
             focusedUri = Uri.parse(chec.getExtras().getString("FocusedUri"));
             try {
                 focusedImage.setImageBitmap(squidFiles.open_first(focusedUri));
+
+                tapImage.setVisibility(View.GONE);
+                tap_to_open.setVisibility(View.GONE);
             } catch (FileNotFoundException e) {
 
             }
@@ -204,6 +207,7 @@ public class SquidSwapMain extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 main_men.startAnimation(slide_down);
+                main_men.setVisibility(View.GONE);
                 tapImage.setClickable(true);
             }
         });
@@ -272,8 +276,36 @@ public class SquidSwapMain extends AppCompatActivity {
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                settings_int = new Intent(getApplicationContext(),SquidSwapSettings.class);
-                startActivity(settings_int);
+                //First we want to check if they really want to reset the open image.
+                AlertDialog.Builder d = new AlertDialog.Builder(SquidSwapMain.this);
+
+                d.setTitle("Save Changes").setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //Save the image and start the settings activity.
+                        if(HAS_IMAGE == 1) {
+                            squidFiles.save_image(squidFiles.load_cached_file());
+                        }
+
+                        settings_int = new Intent(getApplicationContext(),SquidSwapSettings.class);
+                        startActivity(settings_int);
+                    }
+                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //Just start the settings activity without saving the image.
+                        settings_int = new Intent(getApplicationContext(),SquidSwapSettings.class);
+                        startActivity(settings_int);
+                    }
+                });
+
+                if(HAS_IMAGE == 1){
+                    AlertDialog a = d.create();
+                    a.show();
+                }else{
+                    settings_int = new Intent(getApplicationContext(),SquidSwapSettings.class);
+                    startActivity(settings_int);
+                }
             }
         });
 

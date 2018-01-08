@@ -3,26 +3,53 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/transparent"
-    android:gravity="right"
-    android:orientation="horizontal"
-    android:padding="10dp">
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/crop_hint"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/round_squid_button"
-        android:text="@string/crop_hint"
-        android:textColor="@android:color/background_light"
-        android:textSize="18sp" />
+        android:layout_weight="0"
+        android:background="@color/black_back"
+        android:orientation="horizontal">
 
-    <ImageButton
-        android:id="@+id/crop_back"
-        android:layout_width="52dp"
+        <ImageButton
+            android:id="@+id/extra_tools_down"
+            android:layout_width="52dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_weight="1"
+            android:background="@drawable/squid_ui_btn"
+            android:padding="10dp"
+            app:srcCompat="@drawable/ic_arrow_drop_down_black_24dp" />
+
+        <ImageButton
+            android:id="@+id/crop_back"
+            android:layout_width="52dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_weight="1"
+            android:background="@drawable/squid_ui_btn"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/ic_history_black_24dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/extra_img_scale"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:layout_weight="0"
         android:background="@drawable/round_squid_button"
-        app:srcCompat="@drawable/ic_history_black_24dp" />
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:visibility="gone">
+
+        <SeekBar
+            android:id="@+id/crop_scaler"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:max="300" />
+    </LinearLayout>
 </LinearLayout>

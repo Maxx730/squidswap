@@ -37,9 +37,9 @@ import java.io.FileNotFoundException;
 public class GenericEditorActivity extends AppCompatActivity {
 
     private static int context;
-    private ImageButton suc_btn,can_btn,scale_btn;
-    private LinearLayout scal_layout;
-    private SeekBar scal_seek,fade_seek,rotate_seek;
+    private ImageButton suc_btn,can_btn,scale_btn,extra_btn;
+    private LinearLayout scal_layout,extra_scal;
+    private SeekBar scal_seek,fade_seek,rotate_seek,crop_scale;
     private Uri focusedUri;
     private Bitmap focusedBitmap,frontImage,backImage;
     private SquidFileService fil;
@@ -170,6 +170,7 @@ public class GenericEditorActivity extends AppCompatActivity {
         can_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                System.out.println("going back...");
                 Intent bac = new Intent(getApplicationContext(),SquidSwapMain.class);
                 bac.putExtra("FocusedUri",focusedUri.toString());
                 startActivity(bac);
@@ -305,8 +306,10 @@ public class GenericEditorActivity extends AppCompatActivity {
         LinearLayout.LayoutParams par = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
         l.setLayoutParams(par);
         RelativeLayout r = (RelativeLayout) findViewById(R.id.canvas_layout);
-        ImageButton bac = l.findViewById(R.id.crop_back);
-
+        final ImageButton bac = l.findViewById(R.id.crop_back);
+        extra_btn = (ImageButton) l.findViewById(R.id.extra_tools_down);
+        extra_scal = (LinearLayout) l.findViewById(R.id.extra_img_scale);
+        crop_scale = (SeekBar) l.findViewById(R.id.crop_scaler);
 
         c.set_img(focusedBitmap);
         c.invalidate();
@@ -319,23 +322,29 @@ public class GenericEditorActivity extends AppCompatActivity {
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 switch(motionEvent.getAction()){
                     case MotionEvent.ACTION_DOWN:
-                        c.set_start((int) motionEvent.getX(),(int) motionEvent.getY());
-                        c.drawing = true;
+
+                            c.set_start((int) motionEvent.getX(),(int) motionEvent.getY());
+                            c.drawing = true;
+
                         break;
                     case MotionEvent.ACTION_MOVE:
-                        c.set_end((int) motionEvent.getX(),(int) motionEvent.getY());
-                        c.drawing = true;
+
+                            c.set_end((int) motionEvent.getX(),(int) motionEvent.getY());
+                            c.drawing = true;
+
                         break;
                     case MotionEvent.ACTION_UP:
-                        c.set_end((int) motionEvent.getX(),(int) motionEvent.getY());
+                        if(c.can_select){
+                            c.set_end((int) motionEvent.getX(),(int) motionEvent.getY());
 
-                        Bitmap b = c.select_data();
+                            Bitmap b = c.select_data();
 
-                        focusedBitmap = b;
-                        c.set_img(focusedBitmap);
-
-                        c.reset_vals();
-                        c.drawing = false;
+                            focusedBitmap = b;
+                            c.set_img(focusedBitmap);
+                            bac.setVisibility(View.VISIBLE);
+                            c.reset_vals();
+                            c.drawing = false;
+                        }
                         break;
                 }
 
@@ -348,7 +357,43 @@ public class GenericEditorActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 c.set_img(c.get_foc().get_undo());
+                c.can_select = true;
+                c.drawing = true;
+                view.setVisibility(View.INVISIBLE);
                 c.invalidate();
+            }
+        });
+
+        extra_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Check if the scaling slider is visible or not, if it is we are going to want to
+                //indicate in the squid canvas that it is in scaling mode.
+                if(extra_scal.getVisibility() == View.GONE){
+                    extra_scal.setVisibility(View.VISIBLE);
+                }else{
+                    extra_scal.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        crop_scale.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                int scal_max = 3;
+                float scal = (float)(1 + (float)(i/100f));
+
+                
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
             }
         });
     }

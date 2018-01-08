@@ -107,7 +107,6 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:background="@drawable/blur_seeker"
-            android:backgroundTint="@color/black_back"
             android:padding="0dp"
             android:paddingLeft="10dp" />
 
