@@ -45,7 +45,7 @@ import java.net.URI;
  */
 public class SquidSwapMain extends AppCompatActivity {
 
-    private ImageButton  paint,crop,swit,scal,settings,save,open,restart,main_up,close_main;
+    private ImageButton  paint,crop,swit,scal,settings,save,open,restart,main_up,close_main,meme_men;
     private int SQUID_SWAP_PERMISIONS;
     private Intent sett_int,open_int,settings_int;
     private SquidFileService squidFiles;
@@ -55,6 +55,7 @@ public class SquidSwapMain extends AppCompatActivity {
     private static final int CROP_INT = 3;
     private static final int SCALE_INT = 4;
     private static final int PICK_SWAP_IMAGE = 5;
+    private static final int MEME_GEN = 6;
     private static int HAS_IMAGE = 0;
     private ImageView focusedImage,tapImage;
     private TextView uri_path,tap_to_open;
@@ -161,10 +162,30 @@ public class SquidSwapMain extends AppCompatActivity {
         restart = (ImageButton) findViewById(R.id.restart_main);
         main_up = (ImageButton) findViewById(R.id.main_menu_up);
         close_main = (ImageButton) findViewById(R.id.close_main_menu);
-
         tapImage = (ImageView) findViewById(R.id.tap_image);
+        meme_men = (ImageButton) findViewById(R.id.meme_gen);
 
+        meme_men.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(focusedUri != null){
+                    Intent edit = new Intent(getApplicationContext(),GenericEditorActivity.class);
+                    edit.putExtra("SquidContext",MEME_GEN);
+                    //Pass the focused image on to the next intent.
+                    edit.putExtra("FocusedBitmap",focusedUri.toString());
 
+                    //Pass on to the next activity that we are now dealing with a
+                    //temporary cached file.
+                    if(chec.hasExtra("tmp")){
+                        edit.putExtra("tmp",true);
+                    }
+
+                    startActivity(edit);
+                }else{
+                    Toast.makeText(getApplicationContext(),"Image to edit has not been chosen...",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         tapImage.setOnClickListener(new View.OnClickListener() {
             @Override

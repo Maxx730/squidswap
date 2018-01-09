@@ -185,7 +185,7 @@
                     app:srcCompat="@drawable/ic_camera_black_24dp" />
 
                 <ImageButton
-                    android:id="@+id/camera_capture"
+                    android:id="@+id/meme_gen"
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"

@@ -93,6 +93,9 @@ public class GenericEditorActivity extends AppCompatActivity {
                 case 4:
                     init_scaler();
                     break;
+                case 6:
+                    init_meme_gen();
+                    break;
             }
         } catch (FileNotFoundException e) {
             Toast.makeText(getApplicationContext(),"Error opening chosen file...",Toast.LENGTH_SHORT).show();
@@ -502,5 +505,15 @@ public class GenericEditorActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    //Creates the meme generator superclass of
+    private void init_meme_gen(){
+        SquidMemeGenerator c = new SquidMemeGenerator(getApplicationContext(),new SquidBitmapData(getApplicationContext()));
+        RelativeLayout r = (RelativeLayout) findViewById(R.id.canvas_layout);
+
+        r.addView(c);
+
+        c.invalidate();
     }
 }
