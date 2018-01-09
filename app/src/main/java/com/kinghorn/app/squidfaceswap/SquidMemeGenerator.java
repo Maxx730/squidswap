@@ -28,9 +28,20 @@ public class SquidMemeGenerator extends SquidCanvas {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        draw_meme_back(canvas);
+        canvas.drawBitmap(meme_img,20,20,null);
     }
 
     //Getter and setter methods here.
     public void set_meme_img(Bitmap b){meme_img = b;}
     public Bitmap get_meme_img(){return meme_img;}
+
+    private void draw_meme_back(Canvas c){
+        c.drawRect(new Rect(0,0,meme_img.getWidth() + 40,meme_img.getHeight() + 240),meme_paint);
+    }
+
+    //Takes in a bitmap and scales to the correct width of the meme border using a matrix.
+    private Bitmap scale_to_size(Bitmap b){
+        return null;
+    }
 }

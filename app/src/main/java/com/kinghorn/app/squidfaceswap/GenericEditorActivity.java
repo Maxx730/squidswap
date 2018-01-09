@@ -514,6 +514,7 @@ public class GenericEditorActivity extends AppCompatActivity {
 
         r.addView(c);
 
+        c.set_meme_img(focusedBitmap);
         c.invalidate();
     }
 }
