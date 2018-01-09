@@ -383,7 +383,10 @@ public class GenericEditorActivity extends AppCompatActivity {
                 int scal_max = 3;
                 float scal = (float)(1 + (float)(i/100f));
 
-                
+                c.foc.set_scale_x(scal);
+                c.foc.set_scale_y(scal);
+
+                c.invalidate();
             }
 
             @Override

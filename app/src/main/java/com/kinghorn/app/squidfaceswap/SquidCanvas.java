@@ -3,6 +3,7 @@ package com.kinghorn.app.squidfaceswap;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
@@ -12,6 +13,7 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RadialGradient;
+import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
@@ -93,13 +95,13 @@ public class SquidCanvas extends View{
 
         //If the focused image has any data then write the data to the canvas.
         if (foc.bit != null) {
-            Bitmap scale = Bitmap.createScaledBitmap(foc.bit,Math.round(foc.bit.getWidth() * foc.scale_x),Math.round(foc.bit.getHeight() * foc.scale_y),true);
+            Bitmap scale = matrix_scale(foc.bit,foc.get_scale_x(),foc.get_scale_y());
 
             if(CENTER_IMAGE){
-                canvas.drawBitmap(matrix_rotate(foc.bit),((getWidth() * foc.scale_x) - (foc.bit.getWidth() * foc.scale_x)) / 2,(getHeight() - foc.bit.getHeight()) / 2,null);
+                canvas.drawBitmap(scale,((getWidth() - scale.getWidth()) / 2),((getHeight() - scale.getHeight()) / 2),null);
             }else{
                if(foc.is_fade){
-                   canvas.drawBitmap(matrix_rotate(get_faded_img("square")),foc.x,foc.y,null);
+                   canvas.drawBitmap(matrix_rotate(get_faded_img("circle")),foc.x,foc.y,null);
                }else {
                    canvas.drawBitmap(matrix_rotate(foc.bit),0,0, null);
                }
@@ -191,28 +193,21 @@ public class SquidCanvas extends View{
         Bitmap orig = foc.bit;
         Bitmap b = Bitmap.createBitmap(orig.getWidth(),orig.getHeight(),Bitmap.Config.ARGB_8888);
 
+        //Create a new transparent bitmap to start drawing multiple layers onto.
         Canvas c = new Canvas(b);
         Paint p = new Paint();
-        Paint p_top = new Paint();
-
-        c.drawBitmap(orig,0,0,p);
-
-        p.setAntiAlias(true);
-        p_top.setAntiAlias(true);
+        //DST out layer mode to hide black and show trans.
         p.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
-        p_top.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
-
-        if(type == "circle"){
-            p.setShader(new RadialGradient(foc.bit.getWidth() / 2,foc.bit.getHeight() / 2,5,new int[]{Color.BLACK,Color.TRANSPARENT},new float[]{0.0f,1f}, Shader.TileMode.CLAMP));
-            c.drawCircle(0,0,1,p);
-        }else{
-            p.setShader(new LinearGradient(0,0,foc.bit.getWidth(),0,new int[]{Color.BLACK,Color.TRANSPARENT,Color.TRANSPARENT,Color.BLACK},new float[]{0.0f,(float)0.6f/fade_val,(1f - ((float)0.8f/fade_val)),1f}, Shader.TileMode.CLAMP));
-            p_top.setShader(new LinearGradient(0,0,0,foc.bit.getHeight(),new int[]{Color.BLACK,Color.TRANSPARENT,Color.TRANSPARENT,Color.BLACK},new float[]{0.0f,(float)0.6f/fade_val,(1f - ((float)0.8f/fade_val)),1f}, Shader.TileMode.CLAMP));
-
-            c.drawRect(0,0,foc.bit.getWidth(),foc.bit.getHeight(),p);
-            c.drawRect(0,0,foc.bit.getWidth(),foc.bit.getHeight(),p_top);
-        }
-
+        //Color array of the shader. also with the anchor points for when to start and stop colors.
+        final int[] cols = {Color.TRANSPARENT,Color.BLACK,Color.BLACK};
+        final float[] ancs = {.8f,.9f,1f};
+        //Create the gradient shader using the color and anchor arrays.
+        RadialGradient r = new RadialGradient(orig.getWidth() / 2,orig.getHeight() / 2,larger_dimen(orig.getWidth(),orig.getHeight()) / 1.5f - ((fade_val) * 30),cols,ancs, Shader.TileMode.CLAMP);
+        p.setShader(r);
+        //Draw the original bitmap then draw the shader over it.
+        c.drawBitmap(orig,0,0,null);
+        //c.drawCircle(orig.getWidth() / 2f,orig.getHeight() / 2f,larger_dimen(orig.getWidth(),orig.getHeight()) / .4f,p);
+        c.drawOval(new RectF(0,0,orig.getWidth(),orig.getHeight()),p);
         return b;
     }
 
@@ -239,7 +234,6 @@ public class SquidCanvas extends View{
             return false;
         }
     }
-
     private boolean check_y(){
         if(start_y > end_y){
             return true;
@@ -248,11 +242,19 @@ public class SquidCanvas extends View{
         }
     }
 
+    private float larger_dimen(float x, float y){
+        if(x > y){
+            return x;
+        }else{
+            return y;
+        }
+    }
+
     //Scales the image based on a matrix rather than scaling the canvas, this will probably
     //solve the issues we have with scaling and selection on a bitmap.
     private Bitmap matrix_scale(Bitmap orig,float scale_x,float scale_y){
         Matrix m = new Matrix();
-        m.setScale(scale_x,scale_y);
+        m.postScale(foc.get_scale_x(),foc.get_scale_y());
 
         Bitmap b = Bitmap.createBitmap(orig,0,0,orig.getWidth(),orig.getHeight(),m,true);
 

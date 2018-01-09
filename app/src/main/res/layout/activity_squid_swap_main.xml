@@ -154,7 +154,7 @@
             android:layout_height="match_parent"
             android:background="@color/black_back"
             android:padding="10dp"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -177,12 +177,21 @@
                 android:orientation="horizontal">
 
                 <ImageButton
-                    android:id="@+id/camera_capture"
+                    android:id="@+id/camera_capture2"
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
                     android:background="@drawable/squid_ui_btn"
                     app:srcCompat="@drawable/ic_camera_black_24dp" />
+
+                <ImageButton
+                    android:id="@+id/camera_capture"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="0"
+                    android:background="@drawable/squid_ui_btn"
+                    app:srcCompat="@drawable/ic_text_format_black_24dp" />
 
             </LinearLayout>
 
