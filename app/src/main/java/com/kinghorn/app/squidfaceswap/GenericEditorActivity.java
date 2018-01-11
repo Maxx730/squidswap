@@ -17,11 +17,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -38,7 +41,7 @@ public class GenericEditorActivity extends AppCompatActivity {
 
     private static int context;
     private ImageButton suc_btn,can_btn,scale_btn,extra_btn;
-    private LinearLayout scal_layout,extra_scal;
+    private LinearLayout scal_layout,extra_scal,meme_layout;
     private SeekBar scal_seek,fade_seek,rotate_seek,crop_scale;
     private Uri focusedUri;
     private Bitmap focusedBitmap,frontImage,backImage;
@@ -46,6 +49,7 @@ public class GenericEditorActivity extends AppCompatActivity {
     private SquidCanvas c,b;
     private SquidPainter p;
     private Intent i;
+    private EditText meme_text;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -509,12 +513,38 @@ public class GenericEditorActivity extends AppCompatActivity {
 
     //Creates the meme generator superclass of
     private void init_meme_gen(){
-        SquidMemeGenerator c = new SquidMemeGenerator(getApplicationContext(),new SquidBitmapData(getApplicationContext()));
+        final SquidMemeGenerator c = new SquidMemeGenerator(getApplicationContext(),new SquidBitmapData(getApplicationContext()));
         RelativeLayout r = (RelativeLayout) findViewById(R.id.canvas_layout);
+        LayoutInflater inflate = getLayoutInflater();
+        meme_layout = (LinearLayout) inflate.inflate(R.layout.meme_gen_tools,null);
+        LinearLayout.LayoutParams par = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
+        meme_layout.setLayoutParams(par);
+        meme_text = (EditText) meme_layout.findViewById(R.id.meme_gen_txt);
 
         r.addView(c);
+        r.addView(meme_layout);
 
         c.set_meme_img(focusedBitmap);
         c.invalidate();
+
+        //Change listener for the textfield that will change the text outputted onto the canvas based on the users input.
+        meme_text.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                //Change the value of what will be printed on the canvas.
+                c.set_meme_text(charSequence.toString());
+                c.invalidate();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
     }
 }

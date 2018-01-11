@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.widget.LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black_back">
+    android:padding="10dp">
 
     <EditText
         android:id="@+id/meme_gen_txt"
@@ -12,10 +12,12 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:background="@drawable/meme_text_input"
         android:ems="10"
+        android:hint="@string/meme_gen_txt"
         android:inputType="textPersonName"
-        android:text="@string/meme_gen_txt"
-        android:textColor="@android:color/background_light"
+        android:padding="10dp"
+        android:textColor="@android:color/darker_gray"
         tools:layout_editor_absoluteX="95dp"
         tools:layout_editor_absoluteY="120dp" />
-</android.widget.RelativeLayout>
+</android.widget.LinearLayout>
