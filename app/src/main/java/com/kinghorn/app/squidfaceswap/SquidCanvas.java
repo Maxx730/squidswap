@@ -284,4 +284,10 @@ public class SquidCanvas extends View{
 
         return bmp;
     }
+
+    //Takes a bitmap and scales it down if it is larger than the given canvas size.
+    private Bitmap scale_large_image(Bitmap b){
+
+        return null;
+    }
 }
