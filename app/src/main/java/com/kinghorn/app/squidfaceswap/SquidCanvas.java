@@ -21,6 +21,7 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -73,10 +74,27 @@ public class SquidCanvas extends View{
 
     //Getters and setters are below.
     public void set_img(Bitmap b){
+        Bitmap final_bit = null;
         //Here we are going to want to check if we need to scale the image to the size of the canvas, if it is a background image
         //that is.
+        DisplayMetrics d = cn.getResources().getDisplayMetrics();
+
+        //We are going to want to check the width of the chosen image compared to the
+        //width of the given squid canvas.
+        if(b.getWidth() > d.widthPixels){
+            double scale = (double) d.widthPixels / (double) b.getWidth();
+            //Now we need to check how much to scale the image down from its original size
+            //to fit within the canvas.
+            Matrix m = new Matrix();
+            m.setScale((float) scale,(float) scale);
+            final_bit = Bitmap.createBitmap(b,0,0,b.getWidth(),b.getHeight(),m,true);
+        }else{
+            //Otherwise keep the size of the bitmap the same as it was.
+            final_bit = b;
+        }
+
         foc.set_undo(foc.bit);
-        foc.set_bitmap(b);
+        foc.set_bitmap(final_bit);
         invalidate();
     }
 
