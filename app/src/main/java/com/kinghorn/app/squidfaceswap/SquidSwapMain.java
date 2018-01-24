@@ -61,7 +61,7 @@ public class SquidSwapMain extends AppCompatActivity {
     private TextView uri_path,tap_to_open;
     private Uri focusedUri;
     private Intent chec;
-    private FrameLayout main_men,opening_layout;
+    private FrameLayout main_men,opening_layout,settings_lay;
     private Animation slide_up,slide_down;
 
     @Override
@@ -160,7 +160,6 @@ public class SquidSwapMain extends AppCompatActivity {
         paint = (ImageButton) findViewById(R.id.main_paint);
         crop = (ImageButton) findViewById(R.id.main_crop);
         swit = (ImageButton) findViewById(R.id.main_swap);
-        scal = (ImageButton) findViewById(R.id.main_scale);
         settings =  (ImageButton) findViewById(R.id.settings_open);
         save = (ImageButton) findViewById(R.id.save_changes_main);
         restart = (ImageButton) findViewById(R.id.restart_main);
@@ -259,28 +258,6 @@ public class SquidSwapMain extends AppCompatActivity {
             }
         });
 
-        scal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(focusedUri != null){
-                    Intent edit = new Intent(getApplicationContext(),GenericEditorActivity.class);
-                    edit.putExtra("SquidContext",SCALE_INT);
-                    //Pass the focused image on to the next intent.
-                    edit.putExtra("FocusedBitmap",focusedUri.toString());
-
-                    //Pass on to the next activity that we are now dealing with a
-                    //temporary cached file.
-                    if(chec.hasExtra("tmp")){
-                        edit.putExtra("tmp",true);
-                    }
-
-                    startActivity(edit);
-                }else{
-                    Toast.makeText(getApplicationContext(),"Image to edit has not been chosen...",Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
         swit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -301,36 +278,7 @@ public class SquidSwapMain extends AppCompatActivity {
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //First we want to check if they really want to reset the open image.
-                AlertDialog.Builder d = new AlertDialog.Builder(SquidSwapMain.this);
 
-                d.setTitle("Save Changes").setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        //Save the image and start the settings activity.
-                        if(HAS_IMAGE == 1) {
-                            squidFiles.save_image(squidFiles.load_cached_file());
-                        }
-
-                        settings_int = new Intent(getApplicationContext(),SquidSwapSettings.class);
-                        startActivity(settings_int);
-                    }
-                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        //Just start the settings activity without saving the image.
-                        settings_int = new Intent(getApplicationContext(),SquidSwapSettings.class);
-                        startActivity(settings_int);
-                    }
-                });
-
-                if(HAS_IMAGE == 1){
-                    AlertDialog a = d.create();
-                    a.show();
-                }else{
-                    settings_int = new Intent(getApplicationContext(),SquidSwapSettings.class);
-                    startActivity(settings_int);
-                }
             }
         });
 
@@ -431,6 +379,7 @@ public class SquidSwapMain extends AppCompatActivity {
         focusedImage = (ImageView) findViewById(R.id.focused_image);
         tap_to_open = (TextView) findViewById(R.id.tap_text);
         main_men = (FrameLayout) findViewById(R.id.main_menu);
+        settings_lay = (FrameLayout) findViewById(R.id.settings_slide_up);
         opening_layout = (FrameLayout) findViewById(R.id.opening_layout);
         slide_up = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_up);
         slide_down = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_down);

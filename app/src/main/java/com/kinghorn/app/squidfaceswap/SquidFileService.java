@@ -84,7 +84,7 @@ public class SquidFileService {
                 p.setTextSize(40);
                 p.setAntiAlias(true);
                 //Draw the watermark over the completed image.
-                c.drawText("SquidSwap",(image_data.getWidth() / 2)- 50,image_data.getHeight() / 2,p);
+                //c.drawText("SquidSwap",(image_data.getWidth() / 2)- 50,image_data.getHeight() / 2,p);
 
                 //Set the completed image to the new image with the watermark.
                 image_data = b;

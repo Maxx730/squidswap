@@ -12,7 +12,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -23,6 +23,13 @@
             </RelativeLayout>
 
         </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/upper_tool_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:orientation="vertical"></LinearLayout>
 
         <LinearLayout
             android:id="@+id/editor_confirm_btns"

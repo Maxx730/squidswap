@@ -49,7 +49,7 @@ public class SquidPainter extends View {
         brush_paint.setStrokeWidth(10f);
         brush_paint.setStrokeCap(Paint.Cap.ROUND);
         brush_paint.setStrokeJoin(Paint.Join.ROUND);
-        brush_paint.setColor(Color.BLUE);
+        brush_paint.setColor(Color.parseColor("#FFFFFFFF"));
 
         change_paint = new Paint();
         change_paint.setStyle(Paint.Style.STROKE);
@@ -68,7 +68,7 @@ public class SquidPainter extends View {
         erase_paint.setColor(Color.BLACK);
 
         erase_path = new SquidPath(Color.BLACK,10);
-        pat = new SquidPath(Color.BLUE,10);
+        pat = new SquidPath(Color.parseColor("#FFFFFFFF"),10);
 
         paths = new ArrayList<SquidPath>();
 

@@ -136,14 +136,6 @@
                     android:background="@drawable/squid_ui_btn"
                     app:srcCompat="@drawable/ic_squid_draw" />
 
-                <ImageButton
-                    android:id="@+id/main_scale"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/squid_ui_btn"
-                    app:srcCompat="@drawable/ic_resize_img" />
-
             </LinearLayout>
 
         </FrameLayout>
@@ -194,6 +186,12 @@
                     app:srcCompat="@drawable/ic_text_format_black_24dp" />
 
             </LinearLayout>
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/settings_slide_up"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
         </FrameLayout>
 

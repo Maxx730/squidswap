@@ -41,7 +41,7 @@ public class GenericEditorActivity extends AppCompatActivity {
 
     private static int context;
     private ImageButton suc_btn,can_btn,scale_btn,extra_btn;
-    private LinearLayout scal_layout,extra_scal,meme_layout;
+    private LinearLayout scal_layout,extra_scal,meme_layout,upper_layout;
     private SeekBar scal_seek,fade_seek,rotate_seek,crop_scale;
     private Uri focusedUri;
     private Bitmap focusedBitmap,frontImage,backImage;
@@ -62,6 +62,8 @@ public class GenericEditorActivity extends AppCompatActivity {
         fil = new SquidFileService(getApplicationContext());
 
         Intent prev = getIntent();
+        //Grab the layout of where different tools will be going.
+        upper_layout = (LinearLayout)findViewById(R.id.upper_tool_layout);
         //Get the context of why this activity was opened and react accordingly to the
         //context integer.
         context = prev.getExtras().getInt("SquidContext");
@@ -236,7 +238,7 @@ public class GenericEditorActivity extends AppCompatActivity {
         //Add our canvases to the layout.
         r.addView(c);
         r.addView(p);
-        r.addView(tools);
+        this.upper_layout.addView(tools);
 
         //Set the touch events for the paint canvas.
         p.setOnTouchListener(new View.OnTouchListener() {
@@ -322,7 +324,7 @@ public class GenericEditorActivity extends AppCompatActivity {
         c.invalidate();
 
         r.addView(c);
-        r.addView(l);
+        this.upper_layout.addView(l);
 
         c.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -341,8 +343,26 @@ public class GenericEditorActivity extends AppCompatActivity {
 
                         break;
                     case MotionEvent.ACTION_UP:
+                        //We need to write logic to check if there even is a value for when
+                        //just in case they dragged to off of the screen.
                         if(c.can_select){
-                            c.set_end((int) motionEvent.getX(),(int) motionEvent.getY());
+                            int xUpCheck,yUpCheck;
+
+                            System.out.println("UPX: "+motionEvent.getX()+" UPY: "+motionEvent.getY());
+
+                            if((int) motionEvent.getY() > 0){
+                                yUpCheck = (int) motionEvent.getY();
+                            }else{
+                                yUpCheck = 0;
+                            }
+
+                            if((int) motionEvent.getX() > 0){
+                                xUpCheck = (int) motionEvent.getX();
+                            }else{
+                                xUpCheck = 0;
+                            }
+
+                            c.set_end(xUpCheck,yUpCheck);
 
                             Bitmap b = c.select_data();
 
