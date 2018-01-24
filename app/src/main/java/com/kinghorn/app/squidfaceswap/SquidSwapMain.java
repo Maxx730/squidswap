@@ -338,17 +338,33 @@ public class SquidSwapMain extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(HAS_IMAGE == 1){
-                    squidFiles.save_image(squidFiles.load_cached_file());
+                    AlertDialog.Builder d = new AlertDialog.Builder(SquidSwapMain.this);
 
-                    Toast.makeText(getApplicationContext(),"Image Saved",Toast.LENGTH_SHORT).show();
+                    d.setTitle("Save edits to photo?").setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            squidFiles.save_image(squidFiles.load_cached_file());
 
-                    squidFiles.delete_tmp();
-                    focusedImage.setImageDrawable(null);
-                    HAS_IMAGE = 0;
+                            Toast.makeText(getApplicationContext(),"Image Saved",Toast.LENGTH_SHORT).show();
 
-                    //Show the tap to open image.
-                    tapImage.setVisibility(View.VISIBLE);
-                    tap_to_open.setVisibility(View.VISIBLE);
+                            squidFiles.delete_tmp();
+                            focusedImage.setImageDrawable(null);
+                            HAS_IMAGE = 0;
+
+                            //Show the tap to open image.
+                            tapImage.setVisibility(View.VISIBLE);
+                            tap_to_open.setVisibility(View.VISIBLE);
+
+                        }
+                    }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    });
+
+                    AlertDialog a = d.create();
+                    a.show();
                 }else{
                     Toast.makeText(getApplicationContext(),"No Image has been Edited",Toast.LENGTH_SHORT).show();
                 }

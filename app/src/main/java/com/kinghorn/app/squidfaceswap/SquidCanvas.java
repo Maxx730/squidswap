@@ -30,7 +30,7 @@ public class SquidCanvas extends View{
     public float fade_val = .5f;
     public boolean CENTER_IMAGE = true;
     public boolean DEBUG_CAN = true;
-    public boolean WATERMARK = true;
+    public boolean WATERMARK = false;
 
     //Check to see if the user is drawing to the canvas or not.
     public boolean drawing = false;
