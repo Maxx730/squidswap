@@ -119,6 +119,10 @@ public class SquidSwapMain extends AppCompatActivity {
                 case PICK_IMAGE:
                     //We want to load the chosen image from the provided URI.
                     try {
+                        //Here we are going to want to determine the size of the image and
+                        //scaled it down / get a lower bitrate for lower end phones.
+
+
                         Bitmap b = squidFiles.open_first(data.getData());
                         focusedImage.setImageBitmap(b);
                         squidFiles.save_tmp(b);
@@ -396,6 +400,13 @@ public class SquidSwapMain extends AppCompatActivity {
                 tapImage.setClickable(false);
             }
         });
+    }
+
+    //Check the size of the uri image before trying to load it into memory, if it is too large
+    //we will want to load it with a lower bit rate.
+    private Bitmap check_bitmap_rate(URI i){
+
+        return null;
     }
 
     //Initializes the rest of the elements on the page that are not buttons
