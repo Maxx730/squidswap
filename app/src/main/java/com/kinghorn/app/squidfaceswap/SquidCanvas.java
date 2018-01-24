@@ -38,7 +38,7 @@ public class SquidCanvas extends View{
 
     //Public variables that can be edited from outsite the
     //object.
-    public int fade_val = 10;
+    public int fade_val = 2;
     public boolean CENTER_IMAGE = true;
     public boolean DEBUG_CAN = true;
     public boolean WATERMARK = true;
@@ -217,15 +217,15 @@ public class SquidCanvas extends View{
         //DST out layer mode to hide black and show trans.
         p.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
         //Color array of the shader. also with the anchor points for when to start and stop colors.
-        final int[] cols = {Color.BLACK,Color.BLACK,Color.BLACK};
-        final float[] ancs = {1f,1f,1f};
+        final int[] cols = {Color.TRANSPARENT,Color.BLACK,Color.BLACK};
+        final float[] ancs = {.6f,.8f,1f};
         //Create the gradient shader using the color and anchor arrays.
-        RadialGradient r = new RadialGradient(orig.getWidth() * 2,orig.getHeight() / 2,orig.getWidth() * 2,cols,ancs, Shader.TileMode.CLAMP);
+        RadialGradient r = new RadialGradient((orig.getWidth()) / 2,orig.getHeight() / 2,orig.getWidth() / fade_val,cols,ancs, Shader.TileMode.CLAMP);
         p.setShader(r);
         //Draw the original bitmap then draw the shader over it.
         c.drawBitmap(orig,0,0,null);
         //c.drawCircle(orig.getWidth() / 2f,orig.getHeight() / 2f,larger_dimen(orig.getWidth(),orig.getHeight()) / .4f,p);
-        c.drawOval(new RectF(0,0,orig.getWidth() + (orig.getWidth() / 2),orig.getHeight() + (orig.getHeight() / 2)),p);
+        c.drawOval(new RectF((orig.getWidth() / 2) * -1,(orig.getHeight()) * -1,orig.getWidth() + (orig.getWidth() / 2),orig.getHeight() + (orig.getHeight() / 2)),p);
         return b;
     }
 
