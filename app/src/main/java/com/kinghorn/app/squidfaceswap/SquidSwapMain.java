@@ -278,7 +278,9 @@ public class SquidSwapMain extends AppCompatActivity {
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+            settings_lay.startAnimation(slide_up);
+            settings_lay.setVisibility(View.VISIBLE);
+            tapImage.setClickable(false);
             }
         });
 
