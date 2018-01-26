@@ -14,13 +14,14 @@ public class SquidMenuItem {
     public String lab;
     public Drawable ico;
     public Intent next;
-    public String typ;
+    public String typ,pref;
 
-    public SquidMenuItem(Context con, String label, Drawable icon, Intent nex,String type){
+    public SquidMenuItem(Context con, String label, Drawable icon, Intent nex,String type,String pref_name){
         context = con;
         next = nex;
         lab = label;
         ico = icon;
         typ = type;
+        pref = pref_name;
     }
 }

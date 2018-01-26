@@ -8,7 +8,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/round_squid_button"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/squid_ui_btn"
         android:orientation="horizontal"
         android:padding="10dp">
 
@@ -17,6 +18,7 @@
             android:layout_width="29dp"
             android:layout_height="31dp"
             android:padding="5dp"
+            android:visibility="gone"
             app:srcCompat="@drawable/ic_info_black_24dp" />
 
         <LinearLayout
@@ -40,9 +42,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:button="@android:color/holo_green_dark"
-                android:buttonTint="@android:color/holo_green_dark"
-                android:textColorLink="@android:color/holo_green_dark" />
+                android:button="@color/colorPrimary"
+                android:buttonTint="@color/colorPrimary"
+                android:textColorLink="@color/colorPrimary" />
 
         </LinearLayout>
 

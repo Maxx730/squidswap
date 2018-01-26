@@ -51,6 +51,7 @@ public class SquidSwapMain extends AppCompatActivity {
     private int SQUID_SWAP_PERMISIONS;
     private Intent sett_int,open_int,settings_int;
     private SquidFileService squidFiles;
+    private SquidSettingsHandler squidsettings;
     private static final int PICK_IMAGE = 1;
     private static final int SWAP_INT = 1;
     private static final int PAINT_INT = 2;
@@ -73,6 +74,7 @@ public class SquidSwapMain extends AppCompatActivity {
 
         //Initialize our needed objects.
         squidFiles = new SquidFileService(getApplicationContext());
+        squidsettings = new SquidSettingsHandler(getApplicationContext());
 
         //Check if there is already a focused button.
         chec = getIntent();
@@ -402,8 +404,9 @@ public class SquidSwapMain extends AppCompatActivity {
         settings_list = (ListView) findViewById(R.id.settings_list);
         SquidFileService file = new SquidFileService(getApplicationContext(),null);
         ArrayList<SquidMenuItem> items = new ArrayList<SquidMenuItem>();
-        items.add(0,new SquidMenuItem(this,"About",file.load_drawable(this,R.drawable.ic_info_black_24dp),new Intent(this,SquidAboutPage.class),"Link"));
-        items.add(0,new SquidMenuItem(this,"Image Quaility",file.load_drawable(this,R.drawable.ic_image_black_24dp),new Intent(this,SquidAboutPage.class),"Toggle"));
+        items.add(0,new SquidMenuItem(this,"SquidSwap Ink. (Version 1.0)",file.load_drawable(this,R.drawable.ic_info_black_24dp),new Intent(this,SquidAboutPage.class),"Link",""));
+        items.add(0,new SquidMenuItem(this,"High Image Quaility",file.load_drawable(this,R.drawable.ic_image_black_24dp),new Intent(this,SquidAboutPage.class),"Toggle","save_high_res"));
+        items.add(0,new SquidMenuItem(this,"Watermark",file.load_drawable(this,R.drawable.ic_image_black_24dp),new Intent(this,SquidAboutPage.class),"Toggle","watermark"));
         SquidListAdapter adapt = new SquidListAdapter(getApplicationContext(),R.layout.squidswap_menu_layout,items);
         settings_list.setAdapter(adapt);
     }

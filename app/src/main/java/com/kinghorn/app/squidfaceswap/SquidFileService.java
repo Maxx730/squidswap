@@ -32,6 +32,7 @@ public class SquidFileService {
     private String dir_string;
     private static Context con;
     private boolean WATERMARK = true;
+    private SquidSettingsHandler settings;
 
     //Constructor for using the file service to load stuff.
     public SquidFileService(Context cont,SquidSelector s){
@@ -41,7 +42,7 @@ public class SquidFileService {
     public SquidFileService(Context cont){
         dir_string = Environment.getExternalStorageDirectory().toString();
         con = cont;
-
+        settings = new SquidSettingsHandler(con);
         //Make the directory to house the squidswap photos.
         newDir = new File(dir_string + "/squidswap");
         newDir.mkdirs();
@@ -83,9 +84,11 @@ public class SquidFileService {
                 p.setAlpha(90);
                 p.setTextSize(40);
                 p.setAntiAlias(true);
-                //Draw the watermark over the completed image.
-                //c.drawText("SquidSwap",(image_data.getWidth() / 2)- 50,image_data.getHeight() / 2,p);
 
+                if(settings.load_pref("watermark") == 1){
+                    //Draw the watermark over the completed image.
+                    c.drawText("SquidSwap",(image_data.getWidth() / 2)- 50,image_data.getHeight() / 2,p);
+                }
                 //Set the completed image to the new image with the watermark.
                 image_data = b;
             }

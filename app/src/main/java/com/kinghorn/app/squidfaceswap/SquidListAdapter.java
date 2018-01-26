@@ -18,6 +18,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -34,6 +35,7 @@ public class SquidListAdapter extends ArrayAdapter {
     public SquidListAdapter(@NonNull Context con, @LayoutRes int resource,ArrayList<SquidMenuItem> items) {
         super(con, resource,items);
 
+        settings = new SquidSettingsHandler(con);
         context = con;
         it = items;
     }
@@ -59,12 +61,20 @@ public class SquidListAdapter extends ArrayAdapter {
                 v = infl.inflate(R.layout.squidswap_menu_toggle,null);
 
                 //Set the onclick event for the given toggle.
-                Switch s = (Switch) v.findViewById(R.id.squid_menu_switch);
+                final Switch s = (Switch) v.findViewById(R.id.squid_menu_switch);
+
+                if(settings.load_pref(it.get(position).pref) == 1){
+                    s.setChecked(true);
+                }
 
                 s.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        System.out.println("working");
+                        if(s.isChecked()){
+                            settings.save_pref(it.get(position).pref,1);
+                        }else{
+                            settings.save_pref(it.get(position).pref,0);
+                        }
                     }
                 });
                 break;
@@ -80,14 +90,11 @@ public class SquidListAdapter extends ArrayAdapter {
                 });
                 break;
         }
-
         TextView label = v.findViewById(R.id.textView);
-        ImageView icon = (ImageView) v.findViewById(R.id.menu_icon);
+        //ImageView icon = (ImageView) v.findViewById(R.id.menu_icon);
 
-        icon.setImageDrawable(it.get(position).ico);
+        //icon.setImageDrawable(it.get(position).ico);
         label.setText(it.get(position).lab);
-
-
         return v;
     }
 }
