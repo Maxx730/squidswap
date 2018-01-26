@@ -193,19 +193,68 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/black_back"
-            android:visibility="gone">
+            android:padding="10dp"
+            android:visibility="visible">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
                 android:orientation="horizontal">
 
                 <ImageButton
-                    android:id="@+id/imageButton"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/close_settings_slider"
+                    android:layout_width="50dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:srcCompat="@android:drawable/checkbox_on_background" />
+                    android:background="@drawable/squid_ui_btn"
+                    app:srcCompat="@drawable/ic_close_image_crop_24dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="60dp"
+                android:gravity="bottom"
+                android:orientation="vertical">
+
+                <ListView
+                    android:id="@+id/settings_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="top" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:background="@drawable/color_pick"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/version_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layout_weight="1"
+                        android:text="Version 1.0"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/background_light"
+                        android:textColorHighlight="@android:color/background_light"
+                        android:textColorHint="@android:color/background_light" />
+
+                    <TextView
+                        android:id="@+id/squidswap_ink"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layout_weight="1"
+                        android:padding="10dp"
+                        android:text="SquidSwap Ink."
+                        android:textAlignment="center"
+                        android:textColor="@android:color/background_light"
+                        android:textSize="18sp" />
+                </LinearLayout>
+
             </LinearLayout>
         </FrameLayout>
 

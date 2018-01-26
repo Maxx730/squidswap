@@ -30,6 +30,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +39,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.net.URI;
+import java.util.ArrayList;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -45,7 +47,7 @@ import java.net.URI;
  */
 public class SquidSwapMain extends AppCompatActivity {
 
-    private ImageButton  paint,crop,swit,scal,settings,save,open,restart,main_up,close_main,meme_men;
+    private ImageButton  settings_close,paint,crop,swit,scal,settings,save,open,restart,main_up,close_main,meme_men;
     private int SQUID_SWAP_PERMISIONS;
     private Intent sett_int,open_int,settings_int;
     private SquidFileService squidFiles;
@@ -63,6 +65,7 @@ public class SquidSwapMain extends AppCompatActivity {
     private Intent chec;
     private FrameLayout main_men,opening_layout,settings_lay;
     private Animation slide_up,slide_down;
+    private ListView settings_list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,6 +170,7 @@ public class SquidSwapMain extends AppCompatActivity {
         close_main = (ImageButton) findViewById(R.id.close_main_menu);
         tapImage = (ImageView) findViewById(R.id.tap_image);
         meme_men = (ImageButton) findViewById(R.id.meme_gen);
+        settings_close = (ImageButton) findViewById(R.id.close_settings_slider);
 
         meme_men.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -284,6 +288,15 @@ public class SquidSwapMain extends AppCompatActivity {
             }
         });
 
+        settings_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                settings_lay.startAnimation(slide_down);
+                settings_lay.setVisibility(View.GONE);
+                tapImage.setClickable(true);
+            }
+        });
+
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -385,6 +398,14 @@ public class SquidSwapMain extends AppCompatActivity {
         opening_layout = (FrameLayout) findViewById(R.id.opening_layout);
         slide_up = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_up);
         slide_down = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_down);
+
+        settings_list = (ListView) findViewById(R.id.settings_list);
+        SquidFileService file = new SquidFileService(getApplicationContext(),null);
+        ArrayList<SquidMenuItem> items = new ArrayList<SquidMenuItem>();
+        items.add(0,new SquidMenuItem(this,"About",file.load_drawable(this,R.drawable.ic_info_black_24dp),new Intent(this,SquidAboutPage.class),"Link"));
+        items.add(0,new SquidMenuItem(this,"Image Quaility",file.load_drawable(this,R.drawable.ic_image_black_24dp),new Intent(this,SquidAboutPage.class),"Toggle"));
+        SquidListAdapter adapt = new SquidListAdapter(getApplicationContext(),R.layout.squidswap_menu_layout,items);
+        settings_list.setAdapter(adapt);
     }
 
     //Make sure the application has the correct permissions.
