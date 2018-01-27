@@ -179,7 +179,6 @@ public class GenericEditorActivity extends AppCompatActivity {
         can_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("going back...");
                 Intent bac = new Intent(getApplicationContext(),SquidSwapMain.class);
                 bac.putExtra("FocusedUri",focusedUri.toString());
                 startActivity(bac);
@@ -303,6 +302,15 @@ public class GenericEditorActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 p.undo_last_paint();
+            }
+        });
+
+        can_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent bac = new Intent(getApplicationContext(),SquidSwapMain.class);
+                bac.putExtra("FocusedUri",focusedUri.toString());
+                startActivity(bac);
             }
         });
     }

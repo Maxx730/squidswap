@@ -286,6 +286,7 @@ public class SquidSwapMain extends AppCompatActivity {
             public void onClick(View view) {
             settings_lay.startAnimation(slide_up);
             settings_lay.setVisibility(View.VISIBLE);
+            settings.setClickable(false);
             tapImage.setClickable(false);
             }
         });
@@ -424,6 +425,17 @@ public class SquidSwapMain extends AppCompatActivity {
                         SQUID_SWAP_PERMISIONS);
             }
         }
+    }
+
+
+    //Functions below set all the buttons on the main screen clickable
+    //also not clickable.
+    private void set_all_false(){
+
+    }
+
+    private void set_all_true(){
+
     }
 }
 

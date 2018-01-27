@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 //Class that gives the user the ability to draw onto a canvas as well as erase.
 public class SquidPainter extends View {
@@ -166,4 +167,6 @@ public class SquidPainter extends View {
             r.setAlpha(.5f);
         }
     }
+
+    
 }
