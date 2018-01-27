@@ -47,7 +47,7 @@ import java.util.ArrayList;
  */
 public class SquidSwapMain extends AppCompatActivity {
 
-    private ImageButton  settings_close,paint,crop,swit,scal,settings,save,open,restart,main_up,close_main,meme_men;
+    private ImageButton  settings_close,paint,crop,swit,settings,save,open,restart,main_up,close_main,meme_men;
     private int SQUID_SWAP_PERMISIONS;
     private Intent sett_int,open_int,settings_int;
     private SquidFileService squidFiles;
@@ -286,7 +286,7 @@ public class SquidSwapMain extends AppCompatActivity {
             public void onClick(View view) {
             settings_lay.startAnimation(slide_up);
             settings_lay.setVisibility(View.VISIBLE);
-            settings.setClickable(false);
+            set_all_false();
             tapImage.setClickable(false);
             }
         });
@@ -296,6 +296,7 @@ public class SquidSwapMain extends AppCompatActivity {
             public void onClick(View view) {
                 settings_lay.startAnimation(slide_down);
                 settings_lay.setVisibility(View.GONE);
+                set_all_true();
                 tapImage.setClickable(true);
             }
         });
@@ -431,11 +432,23 @@ public class SquidSwapMain extends AppCompatActivity {
     //Functions below set all the buttons on the main screen clickable
     //also not clickable.
     private void set_all_false(){
-
+        paint.setClickable(false);
+        crop.setClickable(false);
+        save.setClickable(false);
+        restart.setClickable(false);
+        main_up.setClickable(false);
+        swit.setClickable(false);
+        settings.setClickable(false);
     }
 
     private void set_all_true(){
-
+        paint.setClickable(true);
+        crop.setClickable(true);
+        save.setClickable(true);
+        restart.setClickable(true);
+        main_up.setClickable(true);
+        swit.setClickable(true);
+        settings.setClickable(true);
     }
 }
 
