@@ -45,6 +45,7 @@ public class GenericEditorActivity extends AppCompatActivity {
     private SeekBar scal_seek,fade_seek,rotate_seek,crop_scale;
     private Uri focusedUri;
     private Bitmap focusedBitmap,frontImage,backImage;
+    private SquidSettingsHandler settings;
     private SquidFileService fil;
     private SquidCanvas c,b;
     private SquidPainter p;
@@ -60,6 +61,7 @@ public class GenericEditorActivity extends AppCompatActivity {
 
         //Init the objects we need.
         fil = new SquidFileService(getApplicationContext());
+        settings = new SquidSettingsHandler(getApplicationContext());
 
         Intent prev = getIntent();
         //Grab the layout of where different tools will be going.
@@ -145,6 +147,12 @@ public class GenericEditorActivity extends AppCompatActivity {
                         //apply them over the bitmap, then we want to convert the bitmap
                         //to a byte array and send it back to the main activity.
                         i = new Intent(getApplicationContext(),SquidSwapMain.class);
+
+                        if(settings.load_pref("crop_to_original") == 1){
+
+                        }else{
+
+                        }
 
                         i.putExtra("FocusedFileName",fil.save_tmp(p.apply_paint(c)));
                         //Set tmp to true if the image has been changed etc.

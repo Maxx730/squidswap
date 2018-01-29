@@ -27,7 +27,7 @@ public class SquidCanvas extends View{
 
     //Public variables that can be edited from outsite the
     //object.
-    public float fade_val = .5f;
+    public float fade_val = .1f;
     public boolean CENTER_IMAGE = true;
     public boolean DEBUG_CAN = true;
     public boolean WATERMARK = false;
@@ -207,9 +207,9 @@ public class SquidCanvas extends View{
         p.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
         //Color array of the shader. also with the anchor points for when to start and stop colors.
         final int[] cols = {Color.TRANSPARENT,Color.BLACK,Color.BLACK};
-        final float[] ancs = {.6f,.8f,1f};
+        final float[] ancs = {.2f,.6f,1f};
         //Create the gradient shader using the color and anchor arrays.
-        RadialGradient r = new RadialGradient((orig.getWidth()) / 2,orig.getHeight() / 2,orig.getWidth() / fade_val,cols,ancs, Shader.TileMode.CLAMP);
+        RadialGradient r = new RadialGradient((orig.getWidth()) / 2,orig.getHeight(),(orig.getWidth() / fade_val) * .5f,cols,ancs, Shader.TileMode.CLAMP);
         p.setShader(r);
         //Draw the original bitmap then draw the shader over it.
         c.drawBitmap(orig,0,0,null);

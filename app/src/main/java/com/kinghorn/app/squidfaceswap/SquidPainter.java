@@ -25,6 +25,7 @@ public class SquidPainter extends View {
     private SquidBitmapData foc_btn;
     private Bitmap canvas_bmp;
     private Paint brush_paint,change_paint,erase_paint;
+    private SquidSettingsHandler settings;
     private SquidPath pat,erase_path;
     private float stroke_width;
     private ArrayList<SquidPath> paths;
@@ -43,6 +44,7 @@ public class SquidPainter extends View {
 
         setDrawingCacheEnabled(true);
         setDrawingCacheQuality(DRAWING_CACHE_QUALITY_AUTO);
+        settings = new SquidSettingsHandler(con);
 
         brush_paint = new Paint();
         brush_paint.setStyle(Paint.Style.STROKE);
@@ -156,10 +158,20 @@ public class SquidPainter extends View {
         Bitmap b = Bitmap.createBitmap(orig.getWidth(),orig.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas fin = new Canvas(b);
 
+        Bitmap cropped = null;
+
+        int start_x = (orig.getWidth() - orig.get_foc().bit.getWidth())/2;
+        int start_y = (orig.getHeight() - orig.get_foc().bit.getHeight())/2;
         fin.drawBitmap(orig.getDrawingCache(),0,0,null);
         fin.drawBitmap(getDrawingCache(),0,0,null);
 
-        return b;
+        if(settings.load_pref("crop_to_original") == 1){
+            cropped = Bitmap.createBitmap(b,start_x,start_y,orig.get_foc().bit.getWidth(),orig.get_foc().bit.getHeight());
+        }else{
+            cropped = b;
+        }
+
+        return cropped;
     }
 
     public void reset_color_alpha(){
