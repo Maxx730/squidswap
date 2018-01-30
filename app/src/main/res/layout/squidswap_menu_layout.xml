@@ -7,19 +7,11 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="31dp"
         android:layout_marginTop="5dp"
         android:background="@drawable/squid_ui_btn"
         android:orientation="horizontal"
         android:padding="10dp">
-
-        <ImageView
-            android:id="@+id/menu_icon"
-            android:layout_width="29dp"
-            android:layout_height="31dp"
-            android:padding="5dp"
-            android:visibility="visible"
-            app:srcCompat="@drawable/ic_info_black_24dp" />
 
         <LinearLayout
             android:layout_width="match_parent"

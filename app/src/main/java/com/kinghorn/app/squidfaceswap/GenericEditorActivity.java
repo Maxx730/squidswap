@@ -80,6 +80,7 @@ public class GenericEditorActivity extends AppCompatActivity {
             }else if(prev.hasExtra("BackgroundImage") && prev.hasExtra("FrontImage")){
                 backImage = fil.open_first(Uri.parse(prev.getStringExtra("BackgroundImage")));
                 frontImage = fil.load_cached_file();
+                focusedUri = Uri.parse(prev.getExtras().getString("FrontImage"));
             }else{
                 focusedBitmap = fil.open_first(focusedUri);
             }
@@ -101,6 +102,9 @@ public class GenericEditorActivity extends AppCompatActivity {
                 case 4:
                     init_scaler();
                     break;
+                case 5:
+                    Toast.makeText(getApplicationContext(),"made ti to swapping",Toast.LENGTH_SHORT).show();
+                    break;
                 case 6:
                     init_meme_gen();
                     break;
@@ -118,7 +122,6 @@ public class GenericEditorActivity extends AppCompatActivity {
         suc_btn = (ImageButton) findViewById(R.id.editor_apply);
         can_btn = (ImageButton) findViewById(R.id.editor_cancel);
         scale_btn = (ImageButton) findViewById(R.id.toggle_scaling);
-
         scal_layout = (LinearLayout) findViewById(R.id.scale_layout);
         scal_seek = (SeekBar) findViewById(R.id.scale_bar);
 
@@ -147,13 +150,6 @@ public class GenericEditorActivity extends AppCompatActivity {
                         //apply them over the bitmap, then we want to convert the bitmap
                         //to a byte array and send it back to the main activity.
                         i = new Intent(getApplicationContext(),SquidSwapMain.class);
-
-                        if(settings.load_pref("crop_to_original") == 1){
-
-                        }else{
-
-                        }
-
                         i.putExtra("FocusedFileName",fil.save_tmp(p.apply_paint(c)));
                         //Set tmp to true if the image has been changed etc.
                         i.putExtra("tmp",true);
@@ -179,6 +175,9 @@ public class GenericEditorActivity extends AppCompatActivity {
                         i.putExtra("tmp",true);
 
                         startActivity(i);
+                        break;
+                    case 5:
+                        Toast.makeText(getApplicationContext(),"made it to the swapper",Toast.LENGTH_SHORT).show();
                         break;
                 }
             }

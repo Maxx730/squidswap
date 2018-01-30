@@ -21,7 +21,7 @@ public class SquidMemeGenerator extends SquidCanvas {
 
         //Initialize the color for the background of the memed image.
         meme_paint = new Paint();
-        meme_paint.setColor(Color.RED);
+        meme_paint.setColor(Color.TRANSPARENT);
         meme_paint.setStyle(Paint.Style.FILL);
 
         text_paint = new Paint();
@@ -37,7 +37,7 @@ public class SquidMemeGenerator extends SquidCanvas {
         super.onDraw(canvas);
         draw_meme_back(canvas);
         canvas.drawBitmap(meme_img,(getWidth() - meme_img.getWidth()) / 2,((getHeight() - meme_img.getHeight()) / 2) - 20,null);
-        canvas.drawText("testing",400,400,text_paint);
+        canvas.drawText(meme_text,400,400,text_paint);
     }
 
     //Getter and setter methods here.

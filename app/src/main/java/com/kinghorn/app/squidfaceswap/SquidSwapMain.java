@@ -53,10 +53,8 @@ public class SquidSwapMain extends AppCompatActivity {
     private SquidFileService squidFiles;
     private SquidSettingsHandler squidsettings;
     private static final int PICK_IMAGE = 1;
-    private static final int SWAP_INT = 1;
     private static final int PAINT_INT = 2;
     private static final int CROP_INT = 3;
-    private static final int SCALE_INT = 4;
     private static final int PICK_SWAP_IMAGE = 5;
     private static final int MEME_GEN = 6;
     private static int HAS_IMAGE = 0;

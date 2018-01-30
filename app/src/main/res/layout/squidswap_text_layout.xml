@@ -44,7 +44,6 @@
                 android:layout_weight="1"
                 android:button="@color/colorPrimary"
                 android:buttonTint="@color/colorPrimary"
-                android:foregroundTint="@color/colorPrimary"
                 android:textColorLink="@color/colorPrimary" />
 
         </LinearLayout>
