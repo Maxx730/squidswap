@@ -59,7 +59,7 @@ public class SquidSwapMain extends AppCompatActivity {
     private static final int MEME_GEN = 6;
     private static int HAS_IMAGE = 0;
     private ImageView focusedImage,tapImage;
-    private TextView uri_path;
+    private TextView uri_path,tap_to_open;
     private Uri focusedUri;
     private Intent chec;
     private FrameLayout main_men,opening_layout,settings_lay;
@@ -91,6 +91,7 @@ public class SquidSwapMain extends AppCompatActivity {
                 focusedImage.setImageBitmap(squidFiles.open_first(focusedUri));
 
                 tapImage.setVisibility(View.GONE);
+                tap_to_open.setVisibility(View.GONE);
             } catch (FileNotFoundException e) {
 
             }
@@ -102,6 +103,7 @@ public class SquidSwapMain extends AppCompatActivity {
 
             //Hide the tap to open image.
             tapImage.setVisibility(View.GONE);
+            tap_to_open.setVisibility(View.GONE);
         }
 
     }
@@ -131,6 +133,7 @@ public class SquidSwapMain extends AppCompatActivity {
 
                         //Hide the tap to open image.
                         tapImage.setVisibility(View.GONE);
+                        tap_to_open.setVisibility(View.GONE);
                         //Set our has image variable to true so that the other buttons can be used.
                         HAS_IMAGE = 1;
                     } catch (FileNotFoundException e) {
@@ -166,30 +169,8 @@ public class SquidSwapMain extends AppCompatActivity {
         main_up = (ImageButton) findViewById(R.id.main_menu_up);
         close_main = (ImageButton) findViewById(R.id.close_main_menu);
         tapImage = (ImageView) findViewById(R.id.tap_image);
-        meme_men = (ImageButton) findViewById(R.id.meme_gen);
         settings_close = (ImageButton) findViewById(R.id.close_settings_slider);
 
-        meme_men.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(focusedUri != null){
-                    Intent edit = new Intent(getApplicationContext(),GenericEditorActivity.class);
-                    edit.putExtra("SquidContext",MEME_GEN);
-                    //Pass the focused image on to the next intent.
-                    edit.putExtra("FocusedBitmap",focusedUri.toString());
-
-                    //Pass on to the next activity that we are now dealing with a
-                    //temporary cached file.
-                    if(chec.hasExtra("tmp")){
-                        edit.putExtra("tmp",true);
-                    }
-
-                    startActivity(edit);
-                }else{
-                    Toast.makeText(getApplicationContext(),"Image to edit has not been chosen...",Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
 
         tapImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -315,6 +296,7 @@ public class SquidSwapMain extends AppCompatActivity {
 
                             //Show the tap to open image.
                             tapImage.setVisibility(View.VISIBLE);
+                            tap_to_open.setVisibility(View.VISIBLE);
 
                         }
                     }).setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -353,6 +335,7 @@ public class SquidSwapMain extends AppCompatActivity {
 
                                 //Hide the tap to open image.
                                 tapImage.setVisibility(View.VISIBLE);
+                                tap_to_open.setVisibility(View.VISIBLE);
                             }
                         })
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -389,6 +372,7 @@ public class SquidSwapMain extends AppCompatActivity {
     //in particular.
     private void init_elements(){
         focusedImage = (ImageView) findViewById(R.id.focused_image);
+        tap_to_open = (TextView) findViewById(R.id.tap_text);
         main_men = (FrameLayout) findViewById(R.id.main_menu);
         settings_lay = (FrameLayout) findViewById(R.id.settings_slide_up);
         opening_layout = (FrameLayout) findViewById(R.id.opening_layout);
@@ -401,6 +385,8 @@ public class SquidSwapMain extends AppCompatActivity {
         items.add(0,new SquidMenuItem(this,"SquidSwap Ink. (Version 1.0)",file.load_drawable(this,R.drawable.ic_info_black_24dp),new Intent(this,SquidAboutPage.class),"Link",""));
         items.add(0,new SquidMenuItem(this,"High Image Quaility",file.load_drawable(this,R.drawable.ic_image_black_24dp),new Intent(this,SquidAboutPage.class),"Toggle","save_high_res"));
         items.add(0,new SquidMenuItem(this,"Autocrop Paint/Swap",file.load_drawable(this,R.drawable.ic_image_black_24dp),new Intent(this,SquidAboutPage.class),"Toggle","crop_to_original"));
+        items.add(0,new SquidMenuItem(this,"Menu Drawer",file.load_drawable(this,R.drawable.ic_image_black_24dp),new Intent(this,SquidAboutPage.class),"Toggle","main_drawer"));
+        items.add(0,new SquidMenuItem(this,"Dark Theme",file.load_drawable(this,R.drawable.ic_image_black_24dp),new Intent(this,SquidAboutPage.class),"Toggle","dark_theme"));
         items.add(0,new SquidMenuItem(this,"Watermark",file.load_drawable(this,R.drawable.ic_image_black_24dp),new Intent(this,SquidAboutPage.class),"Toggle","watermark"));
         SquidListAdapter adapt = new SquidListAdapter(getApplicationContext(),R.layout.squidswap_menu_layout,items);
         settings_list.setAdapter(adapt);

@@ -9,7 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="5dp"
-        android:background="@drawable/squid_ui_btn"
         android:orientation="horizontal"
         android:padding="10dp">
 
@@ -32,20 +31,18 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:paddingLeft="10dp"
-                android:paddingTop="5dp"
                 android:text="About"
-                android:textColor="@android:color/background_light"
+                android:textColor="@color/black_back"
                 android:textSize="14sp" />
 
             <Switch
                 android:id="@+id/squid_menu_switch"
+                style="@style/MySwitch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:button="@color/colorPrimary"
                 android:buttonTint="@color/colorPrimary"
-                android:foregroundTint="@color/colorPrimary"
-                android:textColorLink="@color/colorPrimary" />
+                android:theme="@style/MySwitch" />
 
         </LinearLayout>
 

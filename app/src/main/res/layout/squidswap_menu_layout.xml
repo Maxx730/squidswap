@@ -9,7 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="31dp"
         android:layout_marginTop="5dp"
-        android:background="@drawable/squid_ui_btn"
         android:orientation="horizontal"
         android:padding="10dp">
 

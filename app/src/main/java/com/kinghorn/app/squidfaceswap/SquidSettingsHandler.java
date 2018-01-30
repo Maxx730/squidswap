@@ -50,5 +50,9 @@ public class SquidSettingsHandler {
         if(!prefs.contains("crop_to_original")){
             this.save_pref("crop_to_original",0);
         }
+
+        if(!prefs.contains("dark_theme")){
+            this.save_pref("crop_to_original",0);
+        }
     }
 }
