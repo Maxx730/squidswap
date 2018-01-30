@@ -187,7 +187,15 @@ public class GenericEditorActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent bac = new Intent(getApplicationContext(),SquidSwapMain.class);
-                bac.putExtra("FocusedUri",focusedUri.toString());
+
+                //Change the name of the extra based on the context of where we are going back
+                //from.
+                if(context == 1){
+                    bac.putExtra("FocusedFileName",focusedUri.toString());
+                }else{
+                    bac.putExtra("FocusedUri",focusedUri.toString());
+                }
+
                 startActivity(bac);
             }
         });

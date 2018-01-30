@@ -59,7 +59,7 @@ public class SquidSwapMain extends AppCompatActivity {
     private static final int MEME_GEN = 6;
     private static int HAS_IMAGE = 0;
     private ImageView focusedImage,tapImage;
-    private TextView uri_path,tap_to_open;
+    private TextView uri_path;
     private Uri focusedUri;
     private Intent chec;
     private FrameLayout main_men,opening_layout,settings_lay;
@@ -91,7 +91,6 @@ public class SquidSwapMain extends AppCompatActivity {
                 focusedImage.setImageBitmap(squidFiles.open_first(focusedUri));
 
                 tapImage.setVisibility(View.GONE);
-                tap_to_open.setVisibility(View.GONE);
             } catch (FileNotFoundException e) {
 
             }
@@ -103,7 +102,6 @@ public class SquidSwapMain extends AppCompatActivity {
 
             //Hide the tap to open image.
             tapImage.setVisibility(View.GONE);
-            tap_to_open.setVisibility(View.GONE);
         }
 
     }
@@ -133,7 +131,6 @@ public class SquidSwapMain extends AppCompatActivity {
 
                         //Hide the tap to open image.
                         tapImage.setVisibility(View.GONE);
-                        tap_to_open.setVisibility(View.GONE);
                         //Set our has image variable to true so that the other buttons can be used.
                         HAS_IMAGE = 1;
                     } catch (FileNotFoundException e) {
@@ -318,7 +315,6 @@ public class SquidSwapMain extends AppCompatActivity {
 
                             //Show the tap to open image.
                             tapImage.setVisibility(View.VISIBLE);
-                            tap_to_open.setVisibility(View.VISIBLE);
 
                         }
                     }).setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -357,7 +353,6 @@ public class SquidSwapMain extends AppCompatActivity {
 
                                 //Hide the tap to open image.
                                 tapImage.setVisibility(View.VISIBLE);
-                                tap_to_open.setVisibility(View.VISIBLE);
                             }
                         })
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -394,7 +389,6 @@ public class SquidSwapMain extends AppCompatActivity {
     //in particular.
     private void init_elements(){
         focusedImage = (ImageView) findViewById(R.id.focused_image);
-        tap_to_open = (TextView) findViewById(R.id.tap_text);
         main_men = (FrameLayout) findViewById(R.id.main_menu);
         settings_lay = (FrameLayout) findViewById(R.id.settings_slide_up);
         opening_layout = (FrameLayout) findViewById(R.id.opening_layout);

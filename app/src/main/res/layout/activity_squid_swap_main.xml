@@ -26,29 +26,25 @@
 
             <ImageView
                 android:id="@+id/tap_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:alpha=".2"
-                android:padding="50dp"
-                app:srcCompat="@drawable/ic_add_box_black_24dp" />
-
-            <TextView
-                android:id="@+id/tap_text"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_marginBottom="90dp"
-                android:alpha=".05"
-                android:text="Tap to open Image"
-                android:textAlignment="center"
-                android:textColor="@android:color/background_light"
-                android:textSize="24sp" />
+                android:layout_height="match_parent"
+                android:padding="90dp"
+                app:srcCompat="@drawable/white_tap_open" />
 
             <ImageView
                 android:id="@+id/focused_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="10dp" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="@string/tap_to_open"
+                android:textSize="30sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
