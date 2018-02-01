@@ -22,7 +22,7 @@
             android:id="@+id/opening_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="?attr/colorButtonNormal">
+            android:background="@color/black_back">
 
             <ImageView
                 android:id="@+id/tap_image"
@@ -31,8 +31,7 @@
                 android:paddingBottom="120dp"
                 android:paddingLeft="90dp"
                 android:paddingRight="90dp"
-                android:paddingTop="120dp"
-                app:srcCompat="@drawable/white_tap_open" />
+                android:paddingTop="120dp" />
 
             <ImageView
                 android:id="@+id/focused_image"
@@ -42,11 +41,12 @@
 
             <TextView
                 android:id="@+id/tap_text"
-                android:layout_width="100dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:gravity="center_vertical|center_horizontal"
                 android:text="@string/tap_to_open"
+                android:textColor="@android:color/background_light"
                 android:textSize="20sp"
                 android:typeface="sans" />
 
