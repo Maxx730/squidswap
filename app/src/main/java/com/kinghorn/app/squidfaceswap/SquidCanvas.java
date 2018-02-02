@@ -207,7 +207,7 @@ public class SquidCanvas extends View{
         p.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
         //Color array of the shader. also with the anchor points for when to start and stop colors.
         final int[] cols = {Color.TRANSPARENT,Color.BLACK,Color.BLACK};
-        final float[] ancs = {.2f,.6f,1f};
+        final float[] ancs = {.4f,.7f,1f};
         //Create the gradient shader using the color and anchor arrays.
         RadialGradient r = new RadialGradient((orig.getWidth()) / 2,orig.getHeight() / 2,(orig.getWidth() / fade_val) * 2f,cols,ancs, Shader.TileMode.CLAMP);
         p.setShader(r);
@@ -246,14 +246,6 @@ public class SquidCanvas extends View{
             return true;
         }else{
             return false;
-        }
-    }
-
-    private float larger_dimen(float x, float y){
-        if(x > y){
-            return x;
-        }else{
-            return y;
         }
     }
 

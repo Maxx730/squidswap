@@ -42,70 +42,32 @@
             android:padding="2dp">
 
             <LinearLayout
-                android:id="@+id/scale_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="bottom"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/round_squid_button"
-                android:orientation="vertical"
-                android:padding="5dp"
-                android:visibility="gone">
-
-                <SeekBar
-                    android:id="@+id/scale_bar"
-                    style="@style/Widget.AppCompat.SeekBar.Discrete"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:max="3"
-                    android:progress="0" />
-            </LinearLayout>
-
-            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
-                android:orientation="horizontal"
-                android:padding="10dp">
+                android:orientation="horizontal">
 
                 <ImageButton
                     android:id="@+id/editor_apply"
                     android:layout_width="52dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/round_squid_button"
+                    android:background="@drawable/editor_dark_background"
                     app:srcCompat="@drawable/ic_image_crop_success_24dp" />
 
-                <LinearLayout
-                    android:id="@+id/global_tools"
-                    android:layout_width="match_parent"
+                <SeekBar
+                    android:id="@+id/general_scaling_bar"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:visibility="invisible">
-
-                    <ImageButton
-                        android:id="@+id/toggle_scaling"
-                        android:layout_width="52dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:background="@drawable/round_squid_button"
-                        app:srcCompat="@drawable/ic_resize_img" />
-
-                    <ImageButton
-                        android:id="@+id/imageButton2"
-                        android:layout_width="53dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:background="@drawable/round_squid_button"
-                        app:srcCompat="@drawable/ic_open_with_black_24dp" />
-                </LinearLayout>
+                    android:background="@drawable/editor_dark_background"
+                    android:max="500"
+                    android:progressTint="@color/colorPrimary" />
 
                 <ImageButton
                     android:id="@+id/editor_cancel"
                     android:layout_width="52dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/round_squid_button"
+                    android:background="@drawable/editor_dark_background"
                     app:srcCompat="@drawable/ic_close_image_crop_24dp" />
             </LinearLayout>
         </LinearLayout>

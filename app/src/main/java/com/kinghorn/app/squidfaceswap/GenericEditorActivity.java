@@ -40,9 +40,10 @@ import java.io.FileNotFoundException;
 public class GenericEditorActivity extends AppCompatActivity {
 
     private static int context;
-    private ImageButton suc_btn,can_btn,scale_btn,extra_btn;
-    private LinearLayout scal_layout,extra_scal,meme_layout,upper_layout;
-    private SeekBar scal_seek,fade_seek,rotate_seek,crop_scale;
+    private ImageButton suc_btn,can_btn;
+    private Button front_foc,back_foc;
+    private LinearLayout meme_layout,upper_layout;
+    private SeekBar fade_seek,rotate_seek,crop_scale;
     private Uri focusedUri;
     private Bitmap focusedBitmap,frontImage,backImage;
     private SquidSettingsHandler settings;
@@ -85,9 +86,6 @@ public class GenericEditorActivity extends AppCompatActivity {
                 focusedBitmap = fil.open_first(focusedUri);
             }
 
-            //Initialize the elements we need.
-            init_bottom_btns();
-
             //Initialize the rest of the editor if the file that was sent has been found.
             switch(context){
                 case 1:
@@ -109,6 +107,9 @@ public class GenericEditorActivity extends AppCompatActivity {
                     init_meme_gen();
                     break;
             }
+
+            //Initialize the elements we need.
+            init_bottom_btns();
         } catch (FileNotFoundException e) {
             Toast.makeText(getApplicationContext(),"Error opening chosen file...",Toast.LENGTH_SHORT).show();
 
@@ -121,9 +122,7 @@ public class GenericEditorActivity extends AppCompatActivity {
     private void init_bottom_btns(){
         suc_btn = (ImageButton) findViewById(R.id.editor_apply);
         can_btn = (ImageButton) findViewById(R.id.editor_cancel);
-        scale_btn = (ImageButton) findViewById(R.id.toggle_scaling);
-        scal_layout = (LinearLayout) findViewById(R.id.scale_layout);
-        scal_seek = (SeekBar) findViewById(R.id.scale_bar);
+        crop_scale = (SeekBar) findViewById(R.id.general_scaling_bar);
 
         suc_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -183,6 +182,28 @@ public class GenericEditorActivity extends AppCompatActivity {
             }
         });
 
+        crop_scale.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                int scal_max = 5;
+                float scal = (float)(1 + (float)(i/100f));
+                c.foc.set_scale_x(scal);
+                c.foc.set_scale_y(scal);
+                System.out.println(i);
+                c.invalidate();
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
         can_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -197,37 +218,6 @@ public class GenericEditorActivity extends AppCompatActivity {
                 }
 
                 startActivity(bac);
-            }
-        });
-
-        scale_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(scal_layout.getVisibility() == View.GONE){
-                    scal_layout.setVisibility(View.VISIBLE);
-                }else{
-                    scal_layout.setVisibility(View.GONE);
-                }
-            }
-        });
-
-        scal_seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                c.get_foc().scale_x = i + 1;
-                c.get_foc().scale_y = i + 1;
-
-                c.invalidate();
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
             }
         });
     }
@@ -333,21 +323,12 @@ public class GenericEditorActivity extends AppCompatActivity {
     //Initializes the cropping tool
     private void init_cropper(){
         c = new SquidCanvas(getApplicationContext(),new SquidBitmapData(getApplicationContext()));
-        LayoutInflater inflate = getLayoutInflater();
-        final LinearLayout l = (LinearLayout) inflate.inflate(R.layout.cropping_tools,null);
-        LinearLayout.LayoutParams par = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
-        l.setLayoutParams(par);
         RelativeLayout r = (RelativeLayout) findViewById(R.id.canvas_layout);
-        final ImageButton bac = l.findViewById(R.id.crop_back);
-        extra_btn = (ImageButton) l.findViewById(R.id.extra_tools_down);
-        extra_scal = (LinearLayout) l.findViewById(R.id.extra_img_scale);
-        crop_scale = (SeekBar) l.findViewById(R.id.crop_scaler);
 
         c.set_img(focusedBitmap);
         c.invalidate();
 
         r.addView(c);
-        this.upper_layout.addView(l);
 
         c.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -391,7 +372,7 @@ public class GenericEditorActivity extends AppCompatActivity {
 
                             focusedBitmap = b;
                             c.set_img(focusedBitmap);
-                            bac.setVisibility(View.VISIBLE);
+
                             c.reset_vals();
                             c.drawing = false;
                         }
@@ -402,61 +383,12 @@ public class GenericEditorActivity extends AppCompatActivity {
                 return true;
             }
         });
-
-        bac.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                c.set_img(c.get_foc().get_undo());
-                c.can_select = true;
-                c.drawing = true;
-                view.setVisibility(View.INVISIBLE);
-                c.invalidate();
-            }
-        });
-
-        extra_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Check if the scaling slider is visible or not, if it is we are going to want to
-                //indicate in the squid canvas that it is in scaling mode.
-                if(extra_scal.getVisibility() == View.GONE){
-                    extra_scal.setVisibility(View.VISIBLE);
-                }else{
-                    extra_scal.setVisibility(View.GONE);
-                }
-            }
-        });
-
-        crop_scale.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                int scal_max = 3;
-                float scal = (float)(1 + (float)(i/100f));
-
-                c.foc.set_scale_x(scal);
-                c.foc.set_scale_y(scal);
-
-                c.invalidate();
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
     }
 
     //Initializes the scaling tool.
     private void init_scaler(){
         c = new SquidCanvas(getApplicationContext(),new SquidBitmapData(getApplicationContext()));
         RelativeLayout r = (RelativeLayout) findViewById(R.id.canvas_layout);
-
-        scal_layout.setVisibility(View.VISIBLE);
 
         c.set_img(focusedBitmap);
         c.CENTER_IMAGE = false;
@@ -477,6 +409,9 @@ public class GenericEditorActivity extends AppCompatActivity {
         LinearLayout.LayoutParams par = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         l.setLayoutParams(par);
 
+        front_foc = (Button) l.findViewById(R.id.foreground_toggle);
+        back_foc = (Button) l.findViewById(R.id.background_toggle);
+
         rotate_seek = (SeekBar) l.findViewById(R.id.rotation_seek);
 
         b.set_img(backImage);
@@ -493,6 +428,22 @@ public class GenericEditorActivity extends AppCompatActivity {
         r.addView(l);
 
         fade_seek = (SeekBar) l.findViewById(R.id.fade_seeker);
+
+        front_foc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                back_foc.setTextColor(Color.WHITE);
+                front_foc.setTextColor(getResources().getColor(R.color.colorAccent));
+            }
+        });
+
+        back_foc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                front_foc.setTextColor(Color.WHITE);
+                back_foc.setTextColor(getResources().getColor(R.color.colorAccent));
+            }
+        });
 
         fade_seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override

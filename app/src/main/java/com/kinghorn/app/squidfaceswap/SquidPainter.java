@@ -160,13 +160,22 @@ public class SquidPainter extends View {
 
         Bitmap cropped = null;
 
+        float scaled_width = orig.get_foc().bit.getWidth() * orig.get_foc().get_scale_x();
+        float scaled_height = orig.get_foc().bit.getHeight() * orig.get_foc().get_scale_y();
+
         int start_x = (orig.getWidth() - orig.get_foc().bit.getWidth())/2;
         int start_y = (orig.getHeight() - orig.get_foc().bit.getHeight())/2;
         fin.drawBitmap(orig.getDrawingCache(),0,0,null);
         fin.drawBitmap(getDrawingCache(),0,0,null);
 
         if(settings.load_pref("crop_to_original") == 1){
-            cropped = Bitmap.createBitmap(b,start_x,start_y,orig.get_foc().bit.getWidth(),orig.get_foc().bit.getHeight());
+            //Check the size of the scaled background image and determine whether or not to crop
+            //the smallest version or a scaled up version.
+            if(scaled_width > orig.getDrawingCache().getWidth()){
+                cropped = Bitmap.createBitmap(b,0,0,orig.getWidth(),orig.getHeight());
+            }else{
+                cropped = Bitmap.createBitmap(b,start_x,start_y,orig.get_foc().bit.getWidth() ,orig.get_foc().bit.getHeight());
+            }
         }else{
             cropped = b;
         }
