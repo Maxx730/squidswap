@@ -103,4 +103,6 @@ public class SquidListAdapter extends ArrayAdapter {
         label.setText(it.get(position).lab);
         return v;
     }
+
+    public void set_has_img(int val){this.has_img = val;}
 }
