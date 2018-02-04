@@ -52,7 +52,7 @@ public class SquidSettingsHandler {
         }
 
         if(!prefs.contains("dark_theme")){
-            this.save_pref("crop_to_original",0);
+            this.save_pref("dark_theme",0);
         }
     }
 }
