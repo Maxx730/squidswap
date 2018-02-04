@@ -52,6 +52,8 @@ public class GenericEditorActivity extends AppCompatActivity {
     private SquidPainter p;
     private Intent i;
     private EditText meme_text;
+    //Integer that handles which layer we are focused on when using the swapping tool. 1 - front 2 - back
+    private int focused_layer = 1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -432,6 +434,7 @@ public class GenericEditorActivity extends AppCompatActivity {
         front_foc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                focused_layer = 1;
                 back_foc.setTextColor(Color.WHITE);
                 front_foc.setTextColor(getResources().getColor(R.color.colorAccent));
             }
@@ -440,6 +443,7 @@ public class GenericEditorActivity extends AppCompatActivity {
         back_foc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                focused_layer = 2;
                 front_foc.setTextColor(Color.WHITE);
                 back_foc.setTextColor(getResources().getColor(R.color.colorAccent));
             }
