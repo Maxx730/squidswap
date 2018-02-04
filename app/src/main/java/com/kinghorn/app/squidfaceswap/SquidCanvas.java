@@ -104,13 +104,15 @@ public class SquidCanvas extends View{
         if (foc.bit != null) {
             Bitmap scale = matrix_scale(foc.bit,foc.get_scale_x(),foc.get_scale_y());
 
+            System.out.println(foc.get_scale_x());
+
             if(CENTER_IMAGE){
                 canvas.drawBitmap(scale,((getWidth() - scale.getWidth()) / 2),((getHeight() - scale.getHeight()) / 2),null);
             }else{
                if(foc.is_fade){
                    canvas.drawBitmap(matrix_rotate(get_faded_img("circle")),foc.x,foc.y,null);
                }else {
-                   canvas.drawBitmap(matrix_rotate(foc.bit),0,0, null);
+                   canvas.drawBitmap(scale,0,0, null);
                }
             }
         }
@@ -269,24 +271,5 @@ public class SquidCanvas extends View{
         b = Bitmap.createBitmap(orig,0,0,orig.getWidth(),orig.getHeight(),m,true);
 
         return b;
-    }
-
-    //Takes in the image, scales it to the size of the canvas (Rounds to the best it can) and also
-    //applies
-    private Bitmap return_matrixed(Bitmap b,Canvas c){
-        Matrix m = new Matrix();
-
-        m.setScale(foc.get_scale_x(),foc.get_scale_y());
-        m.setRotate(foc.rotation_angle);
-
-        Bitmap bmp = Bitmap.createBitmap(b,0,0,b.getWidth(),b.getHeight(),m,true);
-
-        return bmp;
-    }
-
-    //Takes a bitmap and scales it down if it is larger than the given canvas size.
-    private Bitmap scale_large_image(Bitmap b){
-
-        return null;
     }
 }

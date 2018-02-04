@@ -69,6 +69,7 @@ public class GenericEditorActivity extends AppCompatActivity {
         Intent prev = getIntent();
         //Grab the layout of where different tools will be going.
         upper_layout = (LinearLayout)findViewById(R.id.upper_tool_layout);
+        crop_scale = (SeekBar) findViewById(R.id.general_scaling_bar);
         //Get the context of why this activity was opened and react accordingly to the
         //context integer.
         context = prev.getExtras().getInt("SquidContext");
@@ -100,7 +101,7 @@ public class GenericEditorActivity extends AppCompatActivity {
                     init_cropper();
                     break;
                 case 4:
-                    init_scaler();
+
                     break;
                 case 5:
                     Toast.makeText(getApplicationContext(),"made ti to swapping",Toast.LENGTH_SHORT).show();
@@ -124,7 +125,6 @@ public class GenericEditorActivity extends AppCompatActivity {
     private void init_bottom_btns(){
         suc_btn = (ImageButton) findViewById(R.id.editor_apply);
         can_btn = (ImageButton) findViewById(R.id.editor_cancel);
-        crop_scale = (SeekBar) findViewById(R.id.general_scaling_bar);
 
         suc_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -184,27 +184,6 @@ public class GenericEditorActivity extends AppCompatActivity {
             }
         });
 
-        crop_scale.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                int scal_max = 5;
-                float scal = (float)(1 + (float)(i/100f));
-                c.foc.set_scale_x(scal);
-                c.foc.set_scale_y(scal);
-                System.out.println(i);
-                c.invalidate();
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
 
         can_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -320,6 +299,28 @@ public class GenericEditorActivity extends AppCompatActivity {
                 startActivity(bac);
             }
         });
+
+        crop_scale.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                int scal_max = 5;
+                float scal = (float)(1 + (float)(i/100f));
+                c.foc.set_scale_x(scal);
+                c.foc.set_scale_y(scal);
+                System.out.println(i);
+                c.invalidate();
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
     }
 
     //Initializes the cropping tool
@@ -385,19 +386,28 @@ public class GenericEditorActivity extends AppCompatActivity {
                 return true;
             }
         });
-    }
 
-    //Initializes the scaling tool.
-    private void init_scaler(){
-        c = new SquidCanvas(getApplicationContext(),new SquidBitmapData(getApplicationContext()));
-        RelativeLayout r = (RelativeLayout) findViewById(R.id.canvas_layout);
+        crop_scale.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                int scal_max = 5;
+                float scal = (float)(1 + (float)(i/100f));
+                c.foc.set_scale_x(scal);
+                c.foc.set_scale_y(scal);
+                System.out.println(i);
+                c.invalidate();
+            }
 
-        c.set_img(focusedBitmap);
-        c.CENTER_IMAGE = false;
-        c.get_foc().is_fade = false;
-        c.invalidate();
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
 
-        r.addView(c);
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
     }
 
     //Initializes the face swapping tool.
@@ -499,6 +509,34 @@ public class GenericEditorActivity extends AppCompatActivity {
                 b.invalidate();
                 c.invalidate();
                 return true;
+            }
+        });
+
+        crop_scale.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean bol) {
+                float scal = (float)(1 + (float)(i/100f));
+
+                if(focused_layer == 2){
+                    b.foc.set_scale_x(scal);
+                    b.foc.set_scale_y(scal);
+                }else{
+                    c.foc.set_scale_x(scal);
+                    c.foc.set_scale_y(scal);
+                }
+
+                b.invalidate();
+                c.invalidate();
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
             }
         });
 

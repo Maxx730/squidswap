@@ -385,18 +385,17 @@ public class SquidSwapMain extends AppCompatActivity {
         items.add(0,new SquidMenuItem(this,"High Image Quaility",file.load_drawable(this,R.drawable.ic_image_black_24dp),new Intent(this,SquidAboutPage.class),"Toggle","save_high_res"));
         items.add(0,new SquidMenuItem(this,"Autocrop Paint/Swap",file.load_drawable(this,R.drawable.ic_image_black_24dp),new Intent(this,SquidAboutPage.class),"Toggle","crop_to_original"));
         items.add(0,new SquidMenuItem(this,"Watermark",file.load_drawable(this,R.drawable.ic_image_black_24dp),new Intent(this,SquidAboutPage.class),"Toggle","watermark"));
-        SquidListAdapter adapt = new SquidListAdapter(getApplicationContext(),R.layout.squidswap_menu_layout,items);
+        SquidListAdapter adapt = new SquidListAdapter(getApplicationContext(),R.layout.squidswap_menu_layout,items,HAS_IMAGE);
         settings_list.setAdapter(adapt);
 
         //Next we want to set up the menu for the main menu.
         ArrayList<SquidMenuItem> main_items = new ArrayList<SquidMenuItem>();
+        main_items.add(0,new SquidMenuItem(this,"Settings",file.load_drawable(this,R.drawable.ic_image_black_24dp),new Intent(this,SquidAboutPage.class),"Link","watermark"));
+        main_items.add(0,new SquidMenuItem(this,"About",file.load_drawable(this,R.drawable.ic_image_black_24dp),new Intent(this,SquidAboutPage.class),"Link","watermark"));
         main_items.add(0,new SquidMenuItem(this,"Crop",file.load_drawable(this,R.drawable.ic_image_black_24dp),new Intent(this,SquidAboutPage.class),"Link","watermark"));
         main_items.add(0,new SquidMenuItem(this,"Paint",file.load_drawable(this,R.drawable.ic_image_black_24dp),new Intent(this,SquidAboutPage.class),"Link","watermark"));
         main_items.add(0,new SquidMenuItem(this,"Swap",file.load_drawable(this,R.drawable.ic_image_black_24dp),new Intent(this,SquidAboutPage.class),"Link","watermark"));
-        main_items.add(0,new SquidMenuItem(this,"Settings",file.load_drawable(this,R.drawable.ic_image_black_24dp),new Intent(this,SquidAboutPage.class),"Link","watermark"));
-        main_items.add(0,new SquidMenuItem(this,"About",file.load_drawable(this,R.drawable.ic_image_black_24dp),new Intent(this,SquidAboutPage.class),"Link","watermark"));
-
-        SquidListAdapter main_adapt = new SquidListAdapter(getApplicationContext(),R.layout.squidswap_menu_layout,main_items);
+        SquidListAdapter main_adapt = new SquidListAdapter(getApplicationContext(),R.layout.squidswap_menu_layout,main_items,HAS_IMAGE);
         main_list.setAdapter(main_adapt);
     }
 

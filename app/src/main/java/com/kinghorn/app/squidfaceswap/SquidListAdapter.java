@@ -26,18 +26,17 @@ import java.util.ArrayList;
 public class SquidListAdapter extends ArrayAdapter {
 
     private Context context;
-    private String type;
-    private LayoutInflater inflate;
-    private ArrayList<String> settings_options;
     private ArrayList<SquidMenuItem> it;
     private SquidSettingsHandler settings;
+    private int has_img;
 
-    public SquidListAdapter(@NonNull Context con, @LayoutRes int resource,ArrayList<SquidMenuItem> items) {
+    public SquidListAdapter(@NonNull Context con, @LayoutRes int resource,ArrayList<SquidMenuItem> items,int has_image) {
         super(con, resource,items);
 
         settings = new SquidSettingsHandler(con);
         context = con;
         it = items;
+        has_img = has_image;
     }
 
     public SquidListAdapter(@NonNull Context con, @LayoutRes int resource,ArrayList<SquidMenuItem> items,SquidSettingsHandler set) {
@@ -84,8 +83,15 @@ public class SquidListAdapter extends ArrayAdapter {
                 v.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent next = it.get(position).next;
-                        context.startActivity(next);
+                        //In here we want to determine the type of link that is being clicked on, specifically
+                        //if the next activity requires a temporary image which means we will have to check if there
+                        //is even an image or not open.
+                        if(has_img == 1){
+                            Intent next = it.get(position).next;
+                            context.startActivity(next);
+                        }else{
+                            Toast.makeText(context,"No image has been chosen to edit.",Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
                 break;
