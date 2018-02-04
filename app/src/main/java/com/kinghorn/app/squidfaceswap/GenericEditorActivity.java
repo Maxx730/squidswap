@@ -284,22 +284,6 @@ public class GenericEditorActivity extends AppCompatActivity {
             });
         }
 
-        revert.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                p.undo_last_paint();
-            }
-        });
-
-        can_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent bac = new Intent(getApplicationContext(),SquidSwapMain.class);
-                bac.putExtra("FocusedUri",focusedUri.toString());
-                startActivity(bac);
-            }
-        });
-
         crop_scale.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
@@ -307,7 +291,6 @@ public class GenericEditorActivity extends AppCompatActivity {
                 float scal = (float)(1 + (float)(i/100f));
                 c.foc.set_scale_x(scal);
                 c.foc.set_scale_y(scal);
-                System.out.println(i);
                 c.invalidate();
             }
 
