@@ -413,12 +413,12 @@ public class GenericEditorActivity extends AppCompatActivity {
 
         front_foc = (Button) l.findViewById(R.id.foreground_toggle);
         back_foc = (Button) l.findViewById(R.id.background_toggle);
-
         rotate_seek = (SeekBar) l.findViewById(R.id.rotation_seek);
 
         b.set_img(backImage);
         c.set_img(frontImage);
 
+        b.CENTER_IMAGE = false;
         c.CENTER_IMAGE = false;
         c.get_foc().is_fade = true;
 
@@ -435,6 +435,7 @@ public class GenericEditorActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 focused_layer = 1;
+                c.setAlpha(1f);
                 back_foc.setTextColor(Color.WHITE);
                 front_foc.setTextColor(getResources().getColor(R.color.colorAccent));
             }
@@ -444,6 +445,7 @@ public class GenericEditorActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 focused_layer = 2;
+                c.setAlpha(.3f);
                 front_foc.setTextColor(Color.WHITE);
                 back_foc.setTextColor(getResources().getColor(R.color.colorAccent));
             }
@@ -472,17 +474,29 @@ public class GenericEditorActivity extends AppCompatActivity {
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 switch(motionEvent.getAction()){
                     case MotionEvent.ACTION_DOWN:
-                        c.get_foc().x = motionEvent.getX() - (c.get_foc().bit.getWidth() / 2);
-                        c.get_foc().y = motionEvent.getY() - (c.get_foc().bit.getHeight() / 2);
+                        if(focused_layer == 2) {
+                            b.get_foc().x = motionEvent.getX() - (b.get_foc().bit.getWidth() / 2);
+                            b.get_foc().y = motionEvent.getY() - (b.get_foc().bit.getHeight() / 2);
+                        }else{
+                            c.get_foc().x = motionEvent.getX() - (c.get_foc().bit.getWidth() / 2);
+                            c.get_foc().y = motionEvent.getY() - (c.get_foc().bit.getHeight() / 2);
+                        }
                         break;
                     case MotionEvent.ACTION_MOVE:
-                        c.get_foc().x = motionEvent.getX() - (c.get_foc().bit.getWidth() / 2);
-                        c.get_foc().y = motionEvent.getY() - (c.get_foc().bit.getHeight() / 2);
+                        if(focused_layer == 2) {
+                            b.get_foc().x = motionEvent.getX() - (b.get_foc().bit.getWidth() / 2);
+                            b.get_foc().y = motionEvent.getY() - (b.get_foc().bit.getHeight() / 2);
+                            System.out.println(b.get_foc().x);
+                        }else{
+                            c.get_foc().x = motionEvent.getX() - (c.get_foc().bit.getWidth() / 2);
+                            c.get_foc().y = motionEvent.getY() - (c.get_foc().bit.getHeight() / 2);
+                        }
                         break;
                     case MotionEvent.ACTION_UP:
 
                         break;
                 }
+                b.invalidate();
                 c.invalidate();
                 return true;
             }
