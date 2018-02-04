@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Squid Faceswap</string>
+    <string name="app_name">Squidswap</string>
     <string name="title_activity_squid_swap_main">SquidSwapMain</string>
     <string name="title_activity_squid_swap_editor">SquidSwapEditor</string>
     <string name="app_title">Squid Swap</string>

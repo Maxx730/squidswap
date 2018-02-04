@@ -110,9 +110,11 @@ public class SquidCanvas extends View{
                 canvas.drawBitmap(scale,((getWidth() - scale.getWidth()) / 2),((getHeight() - scale.getHeight()) / 2),null);
             }else{
                if(foc.is_fade){
+                   System.out.println("fade it to fading");
                    canvas.drawBitmap(matrix_rotate(get_faded_img("circle")),foc.x,foc.y,null);
                }else {
-                   canvas.drawBitmap(scale,0,0, null);
+                   System.out.println("made it the the final default ");
+                   canvas.drawBitmap(scale,foc.x,foc.y, null);
                }
             }
         }

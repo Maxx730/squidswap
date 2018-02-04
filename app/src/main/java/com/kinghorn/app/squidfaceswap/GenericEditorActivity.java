@@ -414,6 +414,7 @@ public class GenericEditorActivity extends AppCompatActivity {
         b.CENTER_IMAGE = false;
         c.CENTER_IMAGE = false;
         c.get_foc().is_fade = true;
+        b.get_foc().is_fade = false;
 
         b.invalidate();
         c.invalidate();
@@ -479,7 +480,6 @@ public class GenericEditorActivity extends AppCompatActivity {
                         if(focused_layer == 2) {
                             b.get_foc().x = motionEvent.getX() - (b.get_foc().bit.getWidth() / 2);
                             b.get_foc().y = motionEvent.getY() - (b.get_foc().bit.getHeight() / 2);
-                            System.out.println(b.get_foc().x);
                         }else{
                             c.get_foc().x = motionEvent.getX() - (c.get_foc().bit.getWidth() / 2);
                             c.get_foc().y = motionEvent.getY() - (c.get_foc().bit.getHeight() / 2);
@@ -489,6 +489,7 @@ public class GenericEditorActivity extends AppCompatActivity {
 
                         break;
                 }
+
                 b.invalidate();
                 c.invalidate();
                 return true;
