@@ -88,7 +88,7 @@ public class SquidSwapMain extends AppCompatActivity {
         if(chec.getExtras() != null && chec.hasExtra("FocusedUri")){
             focusedUri = Uri.parse(chec.getExtras().getString("FocusedUri"));
             try {
-                focusedImage.setImageBitmap(squidFiles.open_first(focusedUri));
+                focusedImage.setImageBitmap(squidFiles.open_first(focusedUri,new BitmapFactory.Options()));
 
                 tapImage.setVisibility(View.GONE);
             } catch (FileNotFoundException e) {
@@ -120,15 +120,11 @@ public class SquidSwapMain extends AppCompatActivity {
                 case PICK_IMAGE:
                     //We want to load the chosen image from the provided URI.
                     try {
-                        //Here we are going to want to determine the size of the image and
-                        //scaled it down / get a lower bitrate for lower end phones.
 
-
-                        Bitmap b = squidFiles.open_first(data.getData());
+                        Bitmap b = squidFiles.open_first(data.getData(),new BitmapFactory.Options());
                         focusedImage.setImageBitmap(b);
-                        squidFiles.save_tmp(b);
                         focusedUri = data.getData();
-
+                        squidFiles.save_tmp(b);
                         //Hide the tap to open image.
                         tapImage.setVisibility(View.GONE);
                         //Set our has image variable to true so that the other buttons can be used.
@@ -391,6 +387,7 @@ public class SquidSwapMain extends AppCompatActivity {
         settings_list.setAdapter(adapt);
 
         //Next we want to set up the menu for the main menu.
+
         ArrayList<SquidMenuItem> main_items = new ArrayList<SquidMenuItem>();
         main_items.add(0,new SquidMenuItem(this,"Settings",file.load_drawable(this,R.drawable.ic_image_black_24dp),new Intent(this,SquidAboutPage.class),"Link","watermark"));
         main_items.add(0,new SquidMenuItem(this,"About",file.load_drawable(this,R.drawable.ic_image_black_24dp),new Intent(this,SquidAboutPage.class),"Link","watermark"));

@@ -33,6 +33,7 @@ public class SquidFileService {
     private static Context con;
     private boolean WATERMARK = true;
     private SquidSettingsHandler settings;
+    private int MAX_RESOLUTION = 1500;
 
     //Constructor for using the file service to load stuff.
     public SquidFileService(Context cont,SquidSelector s){
@@ -141,7 +142,17 @@ public class SquidFileService {
     }
 
     //Function will check and return a bitmap if the image was sent along with the intent.
-    public Bitmap open_first(Uri img_path) throws FileNotFoundException {
+    public Bitmap open_first(Uri img_path,BitmapFactory.Options img_ops) throws FileNotFoundException {
+        BitmapFactory.Options check_op = new BitmapFactory.Options();
+        check_op.inJustDecodeBounds = true;
+        //Check the size of the incoming file.
+        InputStream img_res_check = con.getContentResolver().openInputStream(img_path);
+        Bitmap img_check = BitmapFactory.decodeStream(img_res_check,null,check_op);
+        //Increase the sample size if the given image resolution is higher than our max resolution.
+        if(check_op.outWidth > MAX_RESOLUTION){
+            img_ops.inSampleSize = 2;
+        }
+
         InputStream i = con.getContentResolver().openInputStream(img_path);
         Bitmap b = BitmapFactory.decodeStream(i);
         return b;

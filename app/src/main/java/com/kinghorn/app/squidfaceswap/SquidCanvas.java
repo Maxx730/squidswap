@@ -31,13 +31,13 @@ public class SquidCanvas extends View{
     public boolean CENTER_IMAGE = true;
     public boolean DEBUG_CAN = true;
     public boolean WATERMARK = false;
+    public boolean REDICULES = true;
+    public String CANVAS_STATE = "IDLE";
 
     //Check to see if the user is drawing to the canvas or not.
     public boolean drawing = false;
-    public boolean cropping = false;
     public boolean draw_paint = true;
     public boolean can_select = true;
-    public boolean scaling = false;
 
     //Selection data points.
     private int start_x,start_y,end_x,end_y;
@@ -50,9 +50,9 @@ public class SquidCanvas extends View{
 
         select_paint = new Paint();
         select_paint.setAntiAlias(true);
-        select_paint.setStyle(Paint.Style.STROKE);
-        select_paint.setColor(Color.WHITE);
-        select_paint.setStrokeWidth(6);
+        select_paint.setStyle(Paint.Style.FILL);
+        select_paint.setColor(Color.parseColor("#800080"));
+        select_paint.setAlpha(50);
 
         paths = new ArrayList<SquidPath>();
 
@@ -104,17 +104,13 @@ public class SquidCanvas extends View{
         if (foc.bit != null) {
             Bitmap scale = matrix_scale(foc.bit,foc.get_scale_x(),foc.get_scale_y());
 
-            System.out.println(foc.get_scale_x());
-
             if(CENTER_IMAGE){
                 canvas.drawBitmap(scale,((getWidth() - scale.getWidth()) / 2),((getHeight() - scale.getHeight()) / 2),null);
             }else{
                if(foc.is_fade){
-                   System.out.println("fade it to fading");
                    canvas.drawBitmap(matrix_rotate(get_faded_img("circle")),foc.x,foc.y,null);
                }else {
-                   System.out.println("made it the the final default ");
-                   canvas.drawBitmap(scale,foc.x,foc.y, null);
+                   canvas.drawBitmap(scale,(foc.x - (scale.getWidth() / 4)),(foc.y - (scale.getHeight() / 4)), null);
                }
             }
         }
@@ -268,10 +264,8 @@ public class SquidCanvas extends View{
     private Bitmap matrix_rotate(Bitmap orig){
         Matrix m = new Matrix();
         Bitmap b = null;
-
         m.setRotate(foc.rotation_angle);
         b = Bitmap.createBitmap(orig,0,0,orig.getWidth(),orig.getHeight(),m,true);
-
         return b;
     }
 }

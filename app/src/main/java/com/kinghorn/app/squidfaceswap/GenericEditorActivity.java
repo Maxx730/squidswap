@@ -3,6 +3,7 @@ package com.kinghorn.app.squidfaceswap;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
@@ -82,11 +83,11 @@ public class GenericEditorActivity extends AppCompatActivity {
             if(prev.hasExtra("tmp")){
                 focusedBitmap = fil.load_cached_file();
             }else if(prev.hasExtra("BackgroundImage") && prev.hasExtra("FrontImage")){
-                backImage = fil.open_first(Uri.parse(prev.getStringExtra("BackgroundImage")));
+                backImage = fil.open_first(Uri.parse(prev.getStringExtra("BackgroundImage")),new BitmapFactory.Options());
                 frontImage = fil.load_cached_file();
                 focusedUri = Uri.parse(prev.getExtras().getString("FrontImage"));
             }else{
-                focusedBitmap = fil.open_first(focusedUri);
+                focusedBitmap = fil.open_first(focusedUri,new BitmapFactory.Options());
             }
 
             //Initialize the rest of the editor if the file that was sent has been found.
@@ -358,8 +359,9 @@ public class GenericEditorActivity extends AppCompatActivity {
 
                             focusedBitmap = b;
                             c.set_img(focusedBitmap);
-
                             c.reset_vals();
+                            c.get_foc().set_scale_x(1);
+                            c.get_foc().set_scale_y(1);
                             c.drawing = false;
                         }
                         break;
