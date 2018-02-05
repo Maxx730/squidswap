@@ -11,25 +11,27 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <RelativeLayout
-                android:id="@+id/canvas_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            </RelativeLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
             android:id="@+id/upper_tool_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="true"
             android:orientation="vertical"></LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/canvas_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="false">
+
+            </RelativeLayout>
+
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/editor_confirm_btns"
@@ -38,6 +40,7 @@
             android:layout_gravity="bottom"
             android:animateLayoutChanges="true"
             android:background="@android:color/transparent"
+            android:clickable="false"
             android:orientation="vertical"
             android:padding="2dp">
 
@@ -71,6 +74,65 @@
                     app:srcCompat="@drawable/ic_close_image_crop_24dp" />
             </LinearLayout>
         </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/cropping_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_weight="1"
+                android:background="@drawable/round_squid_button"
+                android:padding="15dp"
+                android:text="@string/crop_hint"
+                android:textColor="@android:color/background_light" />
+
+            <TextView
+                android:id="@+id/scaling_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center"
+                android:layout_marginBottom="70dp"
+                android:layout_weight="1"
+                android:background="@drawable/round_squid_button"
+                android:padding="15dp"
+                android:text="@string/scale_hint"
+                android:textColor="@android:color/background_light" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/colorAccent"
+                    android:text="@string/hint_confirm"
+                    android:textColor="@android:color/background_light" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/painting_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:background="@drawable/editor_dark_background"
+                android:padding="15dp"
+                android:text="@string/painting_hint"
+                android:textColor="@android:color/background_light" />
+        </FrameLayout>
 
     </FrameLayout>
 
