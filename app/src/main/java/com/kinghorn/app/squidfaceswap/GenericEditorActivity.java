@@ -6,14 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
-import android.graphics.Paint;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.LayerDrawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -30,9 +22,8 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
-
-import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 
 //Generic activity class that will be loaded everytime a tool to
@@ -53,6 +44,10 @@ public class GenericEditorActivity extends AppCompatActivity {
     private SquidPainter p;
     private Intent i;
     private EditText meme_text;
+
+    //Hinting tool objects are intialized below.
+    private Button got_it;
+    private TextView scal_hint,paint_hint,crop_hint;
     //Integer that handles which layer we are focused on when using the swapping tool. 1 - front 2 - back
     private int focused_layer = 1;
 
@@ -226,6 +221,8 @@ public class GenericEditorActivity extends AppCompatActivity {
         r.addView(p);
         this.upper_layout.addView(tools);
 
+        handle_hints("paint");
+
         //Set the touch events for the paint canvas.
         p.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -316,6 +313,8 @@ public class GenericEditorActivity extends AppCompatActivity {
         c.invalidate();
 
         r.addView(c);
+
+        handle_hints("crop");
 
         c.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -582,5 +581,52 @@ public class GenericEditorActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    //Hides/shows hints based on the context and if the saved pref for if they have been seen
+    //or not is set to true.
+    private void handle_hints(String context){
+        scal_hint = (TextView)findViewById(R.id.scaling_hint);
+        crop_hint = (TextView) findViewById(R.id.cropping_hint);
+        got_it = (Button) findViewById(R.id.got_it_btn);
+
+        switch(context){
+            case "crop":
+                if(this.settings.load_pref("hint_crop") == 1){
+                    crop_hint.setVisibility(View.VISIBLE);
+                    scal_hint.setVisibility(View.VISIBLE);
+
+                    got_it.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            crop_hint.setVisibility(View.GONE);
+                            scal_hint.setVisibility(View.GONE);
+                            got_it.setVisibility(View.GONE);
+                        }
+                    });
+                }
+                break;
+            case "paint":
+                if(this.settings.load_pref("hint_paint") == 1){
+                    paint_hint = (TextView) findViewById(R.id.painting_hint);
+                    paint_hint.setVisibility(View.VISIBLE);
+                    scal_hint.setVisibility(View.VISIBLE);
+
+                    got_it.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            paint_hint.setVisibility(View.GONE);
+                            scal_hint.setVisibility(View.GONE);
+                            got_it.setVisibility(View.GONE);
+                        }
+                    });
+                }
+                break;
+            case "swap":
+                if(this.settings.load_pref("hint_swap") == 1){
+
+                }
+                break;
+        }
     }
 }

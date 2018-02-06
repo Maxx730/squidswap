@@ -47,6 +47,7 @@ public class SquidSettingsHandler {
             this.save_pref("watermark",0);
         }
 
+        //Crops the image to the original size when painting and when the
         if(!prefs.contains("crop_to_original")){
             this.save_pref("crop_to_original",0);
         }
@@ -54,5 +55,23 @@ public class SquidSettingsHandler {
         if(!prefs.contains("dark_theme")){
             this.save_pref("dark_theme",0);
         }
+
+        //Checks the preferences to see if the user has already seen the hints or not,
+        //Once the GOT IT button on these activitys are clicked it will be set to false and
+        //they will no longer show.
+        if(!prefs.contains("hint_paint")){
+            this.save_pref("hint_paint",0);
+        }
+
+        if(!prefs.contains("hint_crop")){
+            this.save_pref("hint_crop",0);
+        }
+
+        if(!prefs.contains("hint_swap")){
+            this.save_pref("hint_swap",0);
+        }
+
+        this.save_pref("hint_crop",1);
+        this.save_pref("hint_paint",1);
     }
 }

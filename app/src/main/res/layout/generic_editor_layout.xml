@@ -81,7 +81,7 @@
 
             <TextView
                 android:id="@+id/cropping_hint"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
                 android:layout_marginLeft="20dp"
@@ -90,7 +90,8 @@
                 android:background="@drawable/round_squid_button"
                 android:padding="15dp"
                 android:text="@string/crop_hint"
-                android:textColor="@android:color/background_light" />
+                android:textColor="@android:color/background_light"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/scaling_hint"
@@ -102,7 +103,8 @@
                 android:background="@drawable/round_squid_button"
                 android:padding="15dp"
                 android:text="@string/scale_hint"
-                android:textColor="@android:color/background_light" />
+                android:textColor="@android:color/background_light"
+                android:visibility="gone" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -113,7 +115,7 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/button"
+                    android:id="@+id/got_it_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -127,11 +129,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
                 android:layout_weight="1"
                 android:background="@drawable/editor_dark_background"
                 android:padding="15dp"
                 android:text="@string/painting_hint"
-                android:textColor="@android:color/background_light" />
+                android:textColor="@android:color/background_light"
+                android:visibility="gone" />
         </FrameLayout>
 
     </FrameLayout>

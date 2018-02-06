@@ -52,7 +52,7 @@ public class SquidCanvas extends View{
         select_paint.setAntiAlias(true);
         select_paint.setStyle(Paint.Style.FILL);
         select_paint.setColor(Color.parseColor("#800080"));
-        select_paint.setAlpha(50);
+        select_paint.setAlpha(70);
 
         paths = new ArrayList<SquidPath>();
 
