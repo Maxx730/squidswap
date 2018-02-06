@@ -11,13 +11,6 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/upper_tool_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:orientation="vertical"></LinearLayout>
-
-        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="false"
@@ -34,6 +27,64 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/upper_tool_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/painting_hint"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:background="@drawable/editor_dark_background"
+                        android:padding="15dp"
+                        android:text="@string/painting_hint"
+                        android:textColor="@android:color/background_light"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/cropping_hint"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top"
+                        android:layout_weight="1"
+                        android:background="@drawable/editor_dark_background"
+                        android:padding="15dp"
+                        android:text="@string/crop_hint"
+                        android:textColor="@android:color/background_light"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/got_it_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:backgroundTint="@color/colorAccent"
+                    android:text="@string/hint_confirm"
+                    android:textColor="@android:color/background_light"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/editor_confirm_btns"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -41,8 +92,19 @@
             android:animateLayoutChanges="true"
             android:background="@android:color/transparent"
             android:clickable="false"
-            android:orientation="vertical"
-            android:padding="2dp">
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/scaling_hint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center"
+                android:layout_weight="1"
+                android:background="@drawable/editor_dark_background"
+                android:paddingLeft="25dp"
+                android:text="@string/scale_hint"
+                android:textColor="@android:color/background_light"
+                android:visibility="visible" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -64,7 +126,8 @@
                     android:layout_weight="1"
                     android:background="@drawable/editor_dark_background"
                     android:max="500"
-                    android:progressTint="@color/colorPrimary" />
+                    android:progressTint="@color/green_alt_accent"
+                    android:thumbTint="@color/green_alt" />
 
                 <ImageButton
                     android:id="@+id/editor_cancel"
@@ -76,35 +139,10 @@
         </LinearLayout>
 
         <FrameLayout
+            android:id="@+id/hint_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/cropping_hint"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_weight="1"
-                android:background="@drawable/round_squid_button"
-                android:padding="15dp"
-                android:text="@string/crop_hint"
-                android:textColor="@android:color/background_light"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/scaling_hint"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|center"
-                android:layout_marginBottom="70dp"
-                android:layout_weight="1"
-                android:background="@drawable/round_squid_button"
-                android:padding="15dp"
-                android:text="@string/scale_hint"
-                android:textColor="@android:color/background_light"
-                android:visibility="gone" />
+            android:layout_height="match_parent"
+            android:visibility="visible">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -114,29 +152,8 @@
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/got_it_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:backgroundTint="@color/colorAccent"
-                    android:text="@string/hint_confirm"
-                    android:textColor="@android:color/background_light" />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/painting_hint"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_weight="1"
-                android:background="@drawable/editor_dark_background"
-                android:padding="15dp"
-                android:text="@string/painting_hint"
-                android:textColor="@android:color/background_light"
-                android:visibility="gone" />
         </FrameLayout>
 
     </FrameLayout>

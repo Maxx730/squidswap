@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -48,6 +49,7 @@ public class GenericEditorActivity extends AppCompatActivity {
     //Hinting tool objects are intialized below.
     private Button got_it;
     private TextView scal_hint,paint_hint,crop_hint;
+    private FrameLayout hints;
     //Integer that handles which layer we are focused on when using the swapping tool. 1 - front 2 - back
     private int focused_layer = 1;
 
@@ -589,16 +591,20 @@ public class GenericEditorActivity extends AppCompatActivity {
         scal_hint = (TextView)findViewById(R.id.scaling_hint);
         crop_hint = (TextView) findViewById(R.id.cropping_hint);
         got_it = (Button) findViewById(R.id.got_it_btn);
+        hints = (FrameLayout) findViewById(R.id.hint_layout);
 
         switch(context){
             case "crop":
                 if(this.settings.load_pref("hint_crop") == 1){
+                    got_it.setVisibility(View.VISIBLE);
+                    hints.setVisibility(View.VISIBLE);
                     crop_hint.setVisibility(View.VISIBLE);
                     scal_hint.setVisibility(View.VISIBLE);
 
                     got_it.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
+                            hints.setVisibility(View.GONE);
                             crop_hint.setVisibility(View.GONE);
                             scal_hint.setVisibility(View.GONE);
                             got_it.setVisibility(View.GONE);
@@ -608,6 +614,8 @@ public class GenericEditorActivity extends AppCompatActivity {
                 break;
             case "paint":
                 if(this.settings.load_pref("hint_paint") == 1){
+                    got_it.setVisibility(View.VISIBLE);
+                    hints.setVisibility(View.VISIBLE);
                     paint_hint = (TextView) findViewById(R.id.painting_hint);
                     paint_hint.setVisibility(View.VISIBLE);
                     scal_hint.setVisibility(View.VISIBLE);
@@ -615,6 +623,7 @@ public class GenericEditorActivity extends AppCompatActivity {
                     got_it.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
+                            hints.setVisibility(View.GONE);
                             paint_hint.setVisibility(View.GONE);
                             scal_hint.setVisibility(View.GONE);
                             got_it.setVisibility(View.GONE);
