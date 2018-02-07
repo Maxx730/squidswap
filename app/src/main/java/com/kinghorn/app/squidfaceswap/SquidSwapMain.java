@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -15,6 +16,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -35,6 +37,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -47,7 +50,7 @@ import java.util.ArrayList;
  */
 public class SquidSwapMain extends AppCompatActivity {
 
-    private ImageButton  settings_close,paint,crop,swit,settings,save,open,restart,main_up,close_main,meme_men;
+    private ImageButton  settings_close,paint,crop,swit,settings,save,open,restart,main_up,close_main,meme_men,camera_cap;
     private int SQUID_SWAP_PERMISIONS;
     private Intent sett_int,open_int,settings_int;
     private SquidFileService squidFiles;
@@ -56,6 +59,7 @@ public class SquidSwapMain extends AppCompatActivity {
     private static final int PAINT_INT = 2;
     private static final int CROP_INT = 3;
     private static final int PICK_SWAP_IMAGE = 5;
+    private static final int CAMERA_DATA = 7;
     private static final int MEME_GEN = 6;
     private static int HAS_IMAGE = 0;
     private ImageView focusedImage,tapImage;
@@ -92,7 +96,7 @@ public class SquidSwapMain extends AppCompatActivity {
 
                 tapImage.setVisibility(View.GONE);
             } catch (FileNotFoundException e) {
-
+                System.out.println("there was an error opening this");
             }
         }else if(chec.getExtras() != null && chec.hasExtra("FocusedFileName")){
             Bitmap b = squidFiles.load_cached_file();
@@ -146,6 +150,22 @@ public class SquidSwapMain extends AppCompatActivity {
 
                     startActivity(n);
                     break;
+                case CAMERA_DATA:
+                    Bundle extras = data.getExtras();
+                    Bitmap b = (Bitmap) extras.get("data");
+                    focusedImage.setImageBitmap(b);
+                    ByteArrayOutputStream out = new ByteArrayOutputStream();
+                    b.compress(Bitmap.CompressFormat.JPEG,10,out);
+                    String path = MediaStore.Images.Media.insertImage(getApplicationContext().getContentResolver(),b,"squidswap_capture",null);
+                    focusedUri = Uri.parse(path);
+                    squidFiles.save_tmp(b);
+
+                    //Hide the tap to open image.
+                    tapImage.setVisibility(View.GONE);
+                    //Set our has image variable to true so that the other buttons can be used.
+                    HAS_IMAGE = 1;
+                    main_adapt.set_has_img(1);
+                    break;
             }
         }
     }
@@ -164,7 +184,17 @@ public class SquidSwapMain extends AppCompatActivity {
         close_main = (ImageButton) findViewById(R.id.close_main_menu);
         tapImage = (ImageView) findViewById(R.id.tap_image);
         settings_close = (ImageButton) findViewById(R.id.close_settings_slider);
+        camera_cap = (ImageButton) findViewById(R.id.main_camera_capture);
 
+        camera_cap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if(intent.resolveActivity(getPackageManager()) != null) {
+                    startActivityForResult(intent,CAMERA_DATA);
+                }
+            }
+        });
 
         tapImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -219,7 +249,6 @@ public class SquidSwapMain extends AppCompatActivity {
                 if(focusedUri != null){
                     Intent edit = new Intent(getApplicationContext(),GenericEditorActivity.class);
                     edit.putExtra("SquidContext",CROP_INT);
-                    //Pass the focused image on to the next intent.
                     edit.putExtra("FocusedBitmap",focusedUri.toString());
 
                     //Pass on to the next activity that we are now dealing with a
@@ -382,6 +411,7 @@ public class SquidSwapMain extends AppCompatActivity {
         items.add(0,new SquidMenuItem(this,"SquidSwap Ink. (Version 1.0)",file.load_drawable(this,R.drawable.ic_info_black_24dp),new Intent(this,SquidAboutPage.class),"Link",""));
         items.add(0,new SquidMenuItem(this,"High Image Quaility",file.load_drawable(this,R.drawable.ic_image_black_24dp),new Intent(this,SquidAboutPage.class),"Toggle","save_high_res"));
         items.add(0,new SquidMenuItem(this,"Autocrop Paint/Swap",file.load_drawable(this,R.drawable.ic_image_black_24dp),new Intent(this,SquidAboutPage.class),"Toggle","crop_to_original"));
+        items.add(0,new SquidMenuItem(this,"Autoscale Background",file.load_drawable(this,R.drawable.ic_image_black_24dp),new Intent(this,SquidAboutPage.class),"Toggle","autocrop_back"));
         items.add(0,new SquidMenuItem(this,"Watermark",file.load_drawable(this,R.drawable.ic_image_black_24dp),new Intent(this,SquidAboutPage.class),"Toggle","watermark"));
         adapt = new SquidListAdapter(getApplicationContext(),R.layout.squidswap_menu_layout,items,HAS_IMAGE);
         settings_list.setAdapter(adapt);
@@ -407,7 +437,7 @@ public class SquidSwapMain extends AppCompatActivity {
                     Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             } else {
                 ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA},
                         SQUID_SWAP_PERMISIONS);
             }
         }

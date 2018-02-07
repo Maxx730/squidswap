@@ -7,8 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
+import java.util.ArrayList;
+
 public class SquidToolMenuAdapter extends ArrayAdapter {
     private SquidSettingsHandler squid_settings;
+    private ArrayList<> items = new ArrayList<>();
 
     public SquidToolMenuAdapter(@NonNull Context context, int resource) {
         super(context, resource);
@@ -21,6 +24,7 @@ public class SquidToolMenuAdapter extends ArrayAdapter {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         return super.getView(position, convertView, parent);
+
 
     }
 }

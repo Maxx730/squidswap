@@ -84,6 +84,7 @@ public class GenericEditorActivity extends AppCompatActivity {
                 frontImage = fil.load_cached_file();
                 focusedUri = Uri.parse(prev.getExtras().getString("FrontImage"));
             }else{
+                System.out.println(focusedUri.getPath());
                 focusedBitmap = fil.open_first(focusedUri,new BitmapFactory.Options());
             }
 
@@ -102,7 +103,6 @@ public class GenericEditorActivity extends AppCompatActivity {
 
                     break;
                 case 5:
-                    Toast.makeText(getApplicationContext(),"made ti to swapping",Toast.LENGTH_SHORT).show();
                     break;
                 case 6:
                     init_meme_gen();
@@ -190,7 +190,8 @@ public class GenericEditorActivity extends AppCompatActivity {
 
                 //Change the name of the extra based on the context of where we are going back
                 //from.
-                if(context == 1){
+                if(context == 1 || context == 3){
+                    bac.putExtra("tmp",true);
                     bac.putExtra("FocusedFileName",focusedUri.toString());
                 }else{
                     bac.putExtra("FocusedUri",focusedUri.toString());
@@ -608,6 +609,7 @@ public class GenericEditorActivity extends AppCompatActivity {
                             crop_hint.setVisibility(View.GONE);
                             scal_hint.setVisibility(View.GONE);
                             got_it.setVisibility(View.GONE);
+                            settings.save_pref("hint_crop",0);
                         }
                     });
                 }
@@ -627,6 +629,7 @@ public class GenericEditorActivity extends AppCompatActivity {
                             paint_hint.setVisibility(View.GONE);
                             scal_hint.setVisibility(View.GONE);
                             got_it.setVisibility(View.GONE);
+                            settings.save_pref("hint_paint",0);
                         }
                     });
                 }

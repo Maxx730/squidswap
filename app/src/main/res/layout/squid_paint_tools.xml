@@ -108,7 +108,9 @@
             android:layout_marginRight="10dp"
             android:background="@drawable/blur_seeker"
             android:padding="0dp"
-            android:paddingLeft="10dp" />
+            android:paddingLeft="10dp"
+            android:progressTint="@color/green_alt_accent"
+            android:thumbTint="@color/green_alt" />
 
         <ImageButton
             android:id="@+id/paint_back"

@@ -82,13 +82,12 @@ public class SquidFileService {
 
                 Paint p = new Paint();
                 p.setColor(Color.WHITE);
-                p.setAlpha(90);
-                p.setTextSize(40);
+                p.setTextSize(30);
                 p.setAntiAlias(true);
 
                 if(settings.load_pref("watermark") == 1){
                     //Draw the watermark over the completed image.
-                    c.drawText("SquidSwap",(image_data.getWidth() / 2)- 50,image_data.getHeight() / 2,p);
+                    c.drawText("SquidSwap",15,15,p);
                 }
                 //Set the completed image to the new image with the watermark.
                 image_data = b;

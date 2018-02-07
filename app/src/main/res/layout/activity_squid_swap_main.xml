@@ -138,6 +138,14 @@
                     app:srcCompat="@drawable/ic_rotate_left_black_24dp" />
 
                 <ImageButton
+                    android:id="@+id/main_camera_capture"
+                    android:layout_width="wrap_content"
+                    android:layout_height="70dp"
+                    android:layout_weight="0.75"
+                    android:background="@drawable/squid_ui_btn"
+                    app:srcCompat="@drawable/ic_camera_black_24dp" />
+
+                <ImageButton
                     android:id="@+id/main_crop"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
