@@ -11,7 +11,6 @@ import java.util.ArrayList;
 
 public class SquidToolMenuAdapter extends ArrayAdapter {
     private SquidSettingsHandler squid_settings;
-    private ArrayList<> items = new ArrayList<>();
 
     public SquidToolMenuAdapter(@NonNull Context context, int resource) {
         super(context, resource);

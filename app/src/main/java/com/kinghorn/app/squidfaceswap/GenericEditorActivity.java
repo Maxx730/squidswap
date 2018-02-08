@@ -473,20 +473,20 @@ public class GenericEditorActivity extends AppCompatActivity {
                 switch(motionEvent.getAction()){
                     case MotionEvent.ACTION_DOWN:
                         if(focused_layer == 2) {
-                            b.get_foc().x = motionEvent.getX() - (b.get_foc().bit.getWidth() / 2);
-                            b.get_foc().y = motionEvent.getY() - (b.get_foc().bit.getHeight() / 2);
+                            b.get_foc().x = motionEvent.getX();
+                            b.get_foc().y = motionEvent.getY();
                         }else{
-                            c.get_foc().x = motionEvent.getX() - (c.get_foc().bit.getWidth() / 2);
-                            c.get_foc().y = motionEvent.getY() - (c.get_foc().bit.getHeight() / 2);
+                            c.get_foc().x = motionEvent.getX();
+                            c.get_foc().y = motionEvent.getY();
                         }
                         break;
                     case MotionEvent.ACTION_MOVE:
                         if(focused_layer == 2) {
-                            b.get_foc().x = motionEvent.getX() - (b.get_foc().bit.getWidth() / 2);
-                            b.get_foc().y = motionEvent.getY() - (b.get_foc().bit.getHeight() / 2);
+                            b.get_foc().x = motionEvent.getX();
+                            b.get_foc().y = motionEvent.getY();
                         }else{
-                            c.get_foc().x = motionEvent.getX() - (c.get_foc().bit.getWidth() / 2);
-                            c.get_foc().y = motionEvent.getY() - (c.get_foc().bit.getHeight() / 2);
+                            c.get_foc().x = motionEvent.getX();
+                            c.get_foc().y = motionEvent.getY();
                         }
                         break;
                     case MotionEvent.ACTION_UP:

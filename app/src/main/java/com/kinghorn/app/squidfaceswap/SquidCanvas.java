@@ -108,9 +108,10 @@ public class SquidCanvas extends View{
                 canvas.drawBitmap(scale,((getWidth() - scale.getWidth()) / 2),((getHeight() - scale.getHeight()) / 2),null);
             }else{
                if(foc.is_fade){
-                   canvas.drawBitmap(matrix_rotate(get_faded_img("circle")),foc.x,foc.y,null);
+                   Bitmap faded_image = get_faded_img("circle");
+                   canvas.drawBitmap(faded_image,(foc.x - (faded_image.getWidth() / 2)),(foc.y - (faded_image.getHeight() / 2)),null);
                }else {
-                   canvas.drawBitmap(scale,(foc.x - (scale.getWidth() / 4)),(foc.y - (scale.getHeight() / 4)), null);
+                   canvas.drawBitmap(scale,(foc.x - (scale.getWidth() / 2)),(foc.y - (scale.getHeight() / 2)), null);
                }
             }
         }
@@ -197,7 +198,7 @@ public class SquidCanvas extends View{
     //Returns the image after the fading on the edge differences have been applied.
     //As of now we are still working on the circular duffer fade functionality.
     public Bitmap get_faded_img(String type){
-        Bitmap orig = foc.bit;
+        Bitmap orig = matrix_scale(foc.bit,foc.get_scale_x(),foc.get_scale_y());
         Bitmap b = Bitmap.createBitmap(orig.getWidth(),orig.getHeight(),Bitmap.Config.ARGB_8888);
 
         //Create a new transparent bitmap to start drawing multiple layers onto.
@@ -207,7 +208,7 @@ public class SquidCanvas extends View{
         p.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
         //Color array of the shader. also with the anchor points for when to start and stop colors.
         final int[] cols = {Color.TRANSPARENT,Color.BLACK,Color.BLACK};
-        final float[] ancs = {.4f,.7f,1f};
+        final float[] ancs = {.6f,.9f,1f};
         //Create the gradient shader using the color and anchor arrays.
         RadialGradient r = new RadialGradient((orig.getWidth()) / 2,orig.getHeight() / 2,(orig.getWidth() / fade_val) * 2f,cols,ancs, Shader.TileMode.CLAMP);
         p.setShader(r);
