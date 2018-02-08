@@ -33,9 +33,9 @@ import java.io.FileNotFoundException;
 public class GenericEditorActivity extends AppCompatActivity {
 
     private static int context;
-    private ImageButton suc_btn,can_btn;
+    private ImageButton suc_btn,can_btn,tool_drawer;
     private Button front_foc,back_foc;
-    private LinearLayout meme_layout,upper_layout;
+    private LinearLayout meme_layout,upper_layout,drawer_layout;
     private SeekBar fade_seek,rotate_seek,crop_scale;
     private Uri focusedUri;
     private Bitmap focusedBitmap,frontImage,backImage;
@@ -46,6 +46,7 @@ public class GenericEditorActivity extends AppCompatActivity {
     private Intent i;
     private EditText meme_text;
     private SquidSwapTouchup d;
+    private boolean DRAWER_OPEN = false;
 
     //Hinting tool objects are intialized below.
     private Button got_it;
@@ -124,6 +125,27 @@ public class GenericEditorActivity extends AppCompatActivity {
     private void init_bottom_btns(){
         suc_btn = (ImageButton) findViewById(R.id.editor_apply);
         can_btn = (ImageButton) findViewById(R.id.editor_cancel);
+        tool_drawer = (ImageButton) findViewById(R.id.swap_drawer_toggle_);
+        drawer_layout = (LinearLayout) findViewById(R.id.side_tools_layout);
+
+        tool_drawer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ViewGroup.LayoutParams par = drawer_layout.getLayoutParams();
+
+                if(DRAWER_OPEN){
+                    par.width = 700;
+                    tool_drawer.setImageResource(R.drawable.ic_chevron_right_black_24dp);
+                    DRAWER_OPEN = false;
+                }else{
+                    par.width = 0;
+                    tool_drawer.setImageResource(R.drawable.ic_chevron_left_black_24dp);
+                    DRAWER_OPEN = true;
+                }
+
+                drawer_layout.setLayoutParams(par);
+            }
+        });
 
         suc_btn.setOnClickListener(new View.OnClickListener() {
             @Override

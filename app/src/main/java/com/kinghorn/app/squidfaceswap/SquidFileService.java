@@ -87,7 +87,7 @@ public class SquidFileService {
 
                 if(settings.load_pref("watermark") == 1){
                     //Draw the watermark over the completed image.
-                    c.drawText("SquidSwap",15,15,p);
+                    c.drawText("SquidSwap",35,35,p);
                 }
                 //Set the completed image to the new image with the watermark.
                 image_data = b;

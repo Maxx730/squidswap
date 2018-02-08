@@ -74,7 +74,5 @@ public class SquidSettingsHandler {
         if(!prefs.contains("hint_swap")){
             this.save_pref("hint_swap",1);
         }
-
-        save_pref("hint_crop",1);
     }
 }

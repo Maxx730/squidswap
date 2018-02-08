@@ -13,4 +13,5 @@
     <string name="scale_hint">Use this slider to scale the image up and down.</string>
     <string name="cropping_hint">Touch and dragging to crop the image.</string>
     <string name="painting_hint">Touch a circle above to change the color of the brush, the slider below can be used to adjust the brush size.</string>
+    <string name="drawer_title">Tools</string>
 </resources>

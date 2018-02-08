@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#800080</color>
-    <color name="colorPrimaryDark">#690069</color>
+    <color name="colorPrimaryDark">#610061</color>
     <color name="colorAccent">#ba00ba</color>
     <color name="splashScreenPurple">#510051</color>
     <color name="black_overlay">#66000000</color>
     <color name="black_back">#1c1c1c</color>
-    <color name="green_alt">#53b200</color>
-    <color name="green_alt_accent">#53b200</color>
+    <color name="green_alt">#67b622</color>
+    <color name="green_alt_accent">#588d2a</color>
 </resources>
