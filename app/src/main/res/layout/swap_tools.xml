@@ -75,28 +75,19 @@
                             android:progress="1"
                             android:progressTint="@color/green_alt_accent"
                             android:thumbTint="@color/green_alt" />
+
+                        <SeekBar
+                            android:id="@+id/rotation_seek"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:layout_weight="1"
+                            android:max="360"
+                            android:theme="@android:style/Widget.Holo.Light.SeekBar" />
                     </LinearLayout>
                 </LinearLayout>
 
             </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:padding="5dp"
-            android:visibility="gone">
-
-            <SeekBar
-                android:id="@+id/rotation_seek"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:layout_weight="1"
-                android:max="360"
-                android:theme="@android:style/Widget.Holo.Light.SeekBar" />
 
         </LinearLayout>
 
