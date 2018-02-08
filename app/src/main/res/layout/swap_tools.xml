@@ -26,8 +26,6 @@
                     android:id="@+id/foreground_toggle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="2dp"
-                    android:layout_marginTop="2dp"
                     android:layout_weight="1"
                     android:background="@drawable/editor_dark_background"
                     android:text="Foreground"
@@ -75,7 +73,8 @@
                             android:layout_weight="1"
                             android:max="10"
                             android:progress="1"
-                            android:progressTint="@color/colorPrimaryDark" />
+                            android:progressTint="@color/green_alt_accent"
+                            android:thumbTint="@color/green_alt" />
                     </LinearLayout>
                 </LinearLayout>
 

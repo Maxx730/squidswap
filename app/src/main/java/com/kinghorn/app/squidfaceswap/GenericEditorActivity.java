@@ -45,6 +45,7 @@ public class GenericEditorActivity extends AppCompatActivity {
     private SquidPainter p;
     private Intent i;
     private EditText meme_text;
+    private SquidSwapTouchup d;
 
     //Hinting tool objects are intialized below.
     private Button got_it;
@@ -133,13 +134,21 @@ public class GenericEditorActivity extends AppCompatActivity {
                         //the main menu.
                         Bitmap bp = Bitmap.createBitmap(b.getWidth(),b.getHeight(), Bitmap.Config.ARGB_8888);
                         Canvas en = new Canvas(bp);
-
+                        Intent in = new Intent(getApplicationContext(),SquidSwapMain.class);
+                        //If scaled up to be larger then we want to just grab the drawing cache normally.
                         en.drawBitmap(b.getDrawingCache(),0,0,null);
                         en.drawBitmap(c.getDrawingCache(),0,0,null);
+                        //Here we want to check the size of the image, if the image width is larger than the screen
+                        //then we want to just use the drawing cache, otherwise we want to crop the image to the size of the back
+                        //ground image.
+                        if(backImage.getWidth() * b.get_foc().get_scale_x() < getWindowManager().getDefaultDisplay().getWidth()){
+                            System.out.println(b.get_foc().y - (b.get_foc().get_scale_y() * backImage.getHeight()) / 2);
+                            Bitmap cropped_bp = Bitmap.createBitmap(bp,Math.round(b.get_foc().x - ((backImage.getWidth() * b.get_foc().get_scale_x()) / 2)),Math.round(b.get_foc().y - (b.get_foc().get_scale_y() * backImage.getHeight()) / 2),Math.round(backImage.getWidth() * b.get_foc().get_scale_x()),Math.round(backImage.getHeight() * b.get_foc().get_scale_y()));
 
-                        Intent in = new Intent(getApplicationContext(),SquidSwapMain.class);
-
-                        in.putExtra("FocusedFileName",fil.save_tmp(bp));
+                            in.putExtra("FocusedFileName",fil.save_tmp(cropped_bp));
+                        }else{
+                            in.putExtra("FocusedFileName",fil.save_tmp(bp));
+                        }
                         in.putExtra("tmp",true);
 
                         startActivity(in);
@@ -401,6 +410,7 @@ public class GenericEditorActivity extends AppCompatActivity {
     private void init_swapper(){
         c = new SquidCanvas(getApplicationContext(),new SquidBitmapData(getApplicationContext()));
         b = new SquidCanvas(getApplicationContext(),new SquidBitmapData(getApplicationContext()));
+        d = new SquidSwapTouchup(getApplicationContext(),new SquidBitmapData(getApplicationContext()));
 
         RelativeLayout r = (RelativeLayout) findViewById(R.id.canvas_layout);
         LayoutInflater inflate = getLayoutInflater();
@@ -422,9 +432,11 @@ public class GenericEditorActivity extends AppCompatActivity {
 
         b.invalidate();
         c.invalidate();
+        d.invalidate();
 
         r.addView(b);
         r.addView(c);
+        r.addView(d);
         r.addView(l);
 
         fade_seek = (SeekBar) l.findViewById(R.id.fade_seeker);
@@ -435,7 +447,7 @@ public class GenericEditorActivity extends AppCompatActivity {
                 focused_layer = 1;
                 c.setAlpha(1f);
                 back_foc.setTextColor(Color.WHITE);
-                front_foc.setTextColor(getResources().getColor(R.color.colorAccent));
+                front_foc.setTextColor(getResources().getColor(R.color.green_alt));
             }
         });
 
@@ -445,7 +457,7 @@ public class GenericEditorActivity extends AppCompatActivity {
                 focused_layer = 2;
                 c.setAlpha(.3f);
                 front_foc.setTextColor(Color.WHITE);
-                back_foc.setTextColor(getResources().getColor(R.color.colorAccent));
+                back_foc.setTextColor(getResources().getColor(R.color.green_alt));
             }
         });
 
@@ -464,6 +476,20 @@ public class GenericEditorActivity extends AppCompatActivity {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
 
+            }
+        });
+
+        d.setVisibility(View.GONE);
+        d.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch(motionEvent.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+
+                        break;
+                }
+
+                return true;
             }
         });
 
