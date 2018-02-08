@@ -216,7 +216,9 @@ public class SquidCanvas extends View{
         c.drawBitmap(orig,0,0,null);
         //c.drawCircle(orig.getWidth() / 2f,orig.getHeight() / 2f,larger_dimen(orig.getWidth(),orig.getHeight()) / .4f,p);
         c.drawOval(new RectF((orig.getWidth() / 2) * -1,(orig.getHeight()) * -1,orig.getWidth() + (orig.getWidth() / 2),orig.getHeight() + (orig.getHeight() / 2)),p);
-        return b;
+
+        //Here we need to apply any rotation to the given image.
+        return matrix_rotate(b);
     }
 
     //Checks the size of the selection.  If large enough then it returns true.

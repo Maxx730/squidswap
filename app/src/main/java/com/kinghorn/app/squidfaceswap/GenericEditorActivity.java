@@ -440,8 +440,8 @@ public class GenericEditorActivity extends AppCompatActivity {
         LinearLayout.LayoutParams par = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         l.setLayoutParams(par);
 
-        front_foc = (Button) l.findViewById(R.id.foreground_toggle);
-        back_foc = (Button) l.findViewById(R.id.background_toggle);
+        front_foc = (Button) findViewById(R.id.foreground_toggle);
+        back_foc = (Button) findViewById(R.id.background_toggle);
         rotate_seek = (SeekBar) l.findViewById(R.id.rotation_seek);
 
         b.set_img(backImage);
