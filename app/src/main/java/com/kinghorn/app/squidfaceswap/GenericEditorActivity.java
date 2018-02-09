@@ -33,7 +33,7 @@ import java.io.FileNotFoundException;
 public class GenericEditorActivity extends AppCompatActivity {
 
     private static int context;
-    private ImageButton suc_btn,can_btn,tool_drawer;
+    private ImageButton suc_btn,can_btn,tool_drawer,crop_back;
     private Button front_foc,back_foc;
     private LinearLayout meme_layout,upper_layout,drawer_layout;
     private SeekBar fade_seek,rotate_seek,crop_scale;
@@ -340,6 +340,12 @@ public class GenericEditorActivity extends AppCompatActivity {
 
     //Initializes the cropping tool
     private void init_cropper(){
+        //Create a layout inflator to bring back the undo button if there is a miscrop.
+        LayoutInflater inflate = getLayoutInflater();
+        LinearLayout crop_tools = (LinearLayout) inflate.inflate(R.layout.cropping_tools,null);
+        LinearLayout.LayoutParams par =  new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        crop_tools.setLayoutParams(par);
+        crop_back = (ImageButton) crop_tools.findViewById(R.id.crop_back);
         c = new SquidCanvas(getApplicationContext(),new SquidBitmapData(getApplicationContext()));
         RelativeLayout r = (RelativeLayout) findViewById(R.id.canvas_layout);
 
@@ -347,8 +353,20 @@ public class GenericEditorActivity extends AppCompatActivity {
         c.invalidate();
 
         r.addView(c);
+        r.addView(crop_tools);
 
         handle_hints("crop");
+
+        crop_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(c.get_foc().undo_bit != null){
+                    c.set_img(c.get_foc().get_undo());
+                    c.can_select = true;
+                    c.invalidate();
+                }
+            }
+        });
 
         c.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -470,6 +488,11 @@ public class GenericEditorActivity extends AppCompatActivity {
                 c.setAlpha(1f);
                 back_foc.setTextColor(Color.WHITE);
                 front_foc.setTextColor(getResources().getColor(R.color.green_alt));
+                ViewGroup.LayoutParams par = drawer_layout.getLayoutParams();
+                par.width = 0;
+                tool_drawer.setImageResource(R.drawable.ic_chevron_left_black_24dp);
+                DRAWER_OPEN = false;
+                drawer_layout.setLayoutParams(par);
             }
         });
 
@@ -480,6 +503,11 @@ public class GenericEditorActivity extends AppCompatActivity {
                 c.setAlpha(.3f);
                 front_foc.setTextColor(Color.WHITE);
                 back_foc.setTextColor(getResources().getColor(R.color.green_alt));
+                ViewGroup.LayoutParams par = drawer_layout.getLayoutParams();
+                par.width = 0;
+                tool_drawer.setImageResource(R.drawable.ic_chevron_left_black_24dp);
+                DRAWER_OPEN = false;
+                drawer_layout.setLayoutParams(par);
             }
         });
 

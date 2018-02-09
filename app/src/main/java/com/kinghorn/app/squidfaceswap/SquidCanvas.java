@@ -174,6 +174,8 @@ public class SquidCanvas extends View{
         select_paint.setColor(Color.TRANSPARENT);
         Bitmap orig = getDrawingCache();
 
+        get_foc().set_undo(orig);
+
         boolean x_check,y_check;
 
         x_check = check_x();
@@ -190,7 +192,8 @@ public class SquidCanvas extends View{
             cropped = Bitmap.createBitmap(orig,(Integer) Math.round((float) start_x),(Integer) Math.round((float) start_y),(Integer) Math.round((float) end_x) - (Integer) Math.round((float) start_x),(Integer) Math.round((float) end_y) - (Integer) Math.round((float) start_y));
         }
 
-        select_paint.setColor(Color.WHITE);
+        select_paint.setColor(Color.parseColor("#800080"));
+        select_paint.setAlpha(70);
         can_select = false;
         return cropped;
     }
@@ -208,7 +211,7 @@ public class SquidCanvas extends View{
         p.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
         //Color array of the shader. also with the anchor points for when to start and stop colors.
         final int[] cols = {Color.TRANSPARENT,Color.BLACK,Color.BLACK};
-        final float[] ancs = {.6f,.9f,1f};
+        final float[] ancs = {.8f,.9f,1f};
         //Create the gradient shader using the color and anchor arrays.
         RadialGradient r = new RadialGradient((orig.getWidth()) / 2,orig.getHeight() / 2,(orig.getWidth() / fade_val) * 2f,cols,ancs, Shader.TileMode.CLAMP);
         p.setShader(r);
