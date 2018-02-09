@@ -189,9 +189,30 @@ public class SquidSwapMain extends AppCompatActivity {
         camera_cap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if(intent.resolveActivity(getPackageManager()) != null) {
-                    startActivityForResult(intent,CAMERA_DATA);
+
+                if(focusedUri == null){
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    if(intent.resolveActivity(getPackageManager()) != null) {
+                        startActivityForResult(intent,CAMERA_DATA);
+                    }
+                }else{
+                    //Check if the user want to discard the previous picture.
+                    AlertDialog.Builder d = new AlertDialog.Builder(SquidSwapMain.this);
+
+                    d.setTitle("Discard currently edited image?").setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            if(intent.resolveActivity(getPackageManager()) != null) {
+                                startActivityForResult(intent,CAMERA_DATA);
+                            }
+                        }
+                    }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    }).show();
                 }
             }
         });
