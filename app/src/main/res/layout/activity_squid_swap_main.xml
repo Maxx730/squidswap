@@ -64,12 +64,19 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:background="@drawable/squid_card_left"
-                            android:paddingBottom="45dp"
-                            android:paddingLeft="35dp"
-                            android:paddingRight="35dp"
-                            android:paddingTop="45dp">
+                            android:background="@drawable/squid_card_left">
 
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:background="@drawable/start_card_inside"
+                                android:paddingBottom="45dp"
+                                android:paddingLeft="35dp"
+                                android:paddingRight="35dp"
+                                android:paddingTop="45dp">
+
+                            </RelativeLayout>
                         </RelativeLayout>
 
                         <RelativeLayout
