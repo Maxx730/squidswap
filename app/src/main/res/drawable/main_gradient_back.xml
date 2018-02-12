@@ -5,9 +5,9 @@
 
             <gradient
                 android:angle="90"
-                android:centerColor="#8B00B2"
-                android:endColor="#8B00B2"
-                android:startColor="#C700FF"
+                android:endColor="#830091"
+                android:startColor="#3B0042
+"
                 android:type="linear" />
 
             <corners
@@ -16,6 +16,6 @@
         </shape>
     </item>
     <item>
-        <bitmap android:src="@drawable/transparent_earth" android:gravity="center"></bitmap>
+        <bitmap android:src="@drawable/transparent_earth" android:alpha=".5" android:gravity="center"></bitmap>
     </item>
 </layer-list>

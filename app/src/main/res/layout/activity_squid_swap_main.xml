@@ -131,14 +131,21 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginBottom="6dp"
                             android:orientation="horizontal">
 
                             <Button
                                 android:id="@+id/save_button"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginLeft="6dp"
+                                android:layout_marginRight="3dp"
                                 android:layout_weight="1"
-                                android:text="Save" />
+                                android:background="@drawable/save_button_draw"
+                                android:elevation="2dp"
+                                android:text="Save"
+                                android:textColor="@android:color/background_light"
+                                android:textStyle="bold" />
 
                             <Button
                                 android:id="@+id/reset_button"
@@ -147,8 +154,10 @@
                                 android:layout_marginLeft="6dp"
                                 android:layout_marginRight="6dp"
                                 android:layout_weight="1"
-                                android:background="@drawable/main_search_bar"
-                                android:text="Reset" />
+                                android:background="@drawable/reset_button_draw"
+                                android:text="Reset"
+                                android:textColor="@android:color/background_light"
+                                android:textStyle="bold" />
                         </LinearLayout>
                     </RelativeLayout>
 
