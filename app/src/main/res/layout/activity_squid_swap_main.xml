@@ -48,7 +48,7 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="150dp"
                     android:layout_marginLeft="6dp"
                     android:layout_marginRight="6dp">
 
@@ -63,19 +63,29 @@
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_gravity="center_horizontal"
                             android:layout_weight="1"
-                            android:background="@drawable/squid_card_left">
+                            android:background="@drawable/squid_card_left"
+                            android:padding="10dp">
 
                             <RelativeLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="1dp"
                                 android:layout_weight="1"
-                                android:background="@drawable/start_card_inside"
-                                android:paddingBottom="45dp"
-                                android:paddingLeft="35dp"
-                                android:paddingRight="35dp"
-                                android:paddingTop="45dp">
+                                android:background="@drawable/shadow_circle"
+                                android:elevation="2dp"
+                                android:padding="10dp">
 
+                                <TextView
+                                    android:id="@+id/textView10"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_centerVertical="true"
+                                    android:text="Open File"
+                                    android:textColor="@android:color/background_light" />
                             </RelativeLayout>
                         </RelativeLayout>
 
@@ -91,11 +101,11 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="250dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="6dp"
                     android:layout_marginRight="6dp"
                     android:layout_marginTop="6dp"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -104,7 +114,8 @@
                         android:layout_marginLeft="6dp"
                         android:layout_marginRight="6dp"
                         android:layout_marginTop="6dp"
-                        android:background="@drawable/main_search_bar">
+                        android:background="@drawable/main_search_bar"
+                        android:visibility="gone">
 
                         <ImageView
                             android:id="@+id/imageView6"
@@ -112,6 +123,35 @@
                             android:layout_height="wrap_content"
                             app:srcCompat="@drawable/defaultphoto" />
                     </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:id="@+id/save_button"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Save" />
+
+                            <Button
+                                android:id="@+id/reset_button"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="6dp"
+                                android:layout_marginRight="6dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/main_search_bar"
+                                android:text="Reset" />
+                        </LinearLayout>
+                    </RelativeLayout>
+
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -120,7 +160,9 @@
                     android:layout_marginLeft="6dp"
                     android:layout_marginRight="6dp"
                     android:layout_marginTop="6dp"
-                    android:alpha=".5"
+                    android:alpha="1"
+                    android:elevation="13dp"
+                    android:gravity="right"
                     android:paddingBottom="6dp">
 
                     <FrameLayout
@@ -147,9 +189,10 @@
                             android:id="@+id/imageView8"
                             android:layout_width="65dp"
                             android:layout_height="match_parent"
-                            android:alpha=".3"
+                            android:elevation="2dp"
                             android:padding="15dp"
                             app:srcCompat="@drawable/ic_search_black_24dp" />
+
                     </FrameLayout>
 
                 </RelativeLayout>
@@ -157,7 +200,6 @@
                 <HorizontalScrollView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:alpha=".5"
                     android:paddingBottom="10dp">
 
                     <LinearLayout
@@ -194,6 +236,7 @@
                                             android:id="@+id/textView4"
                                             android:layout_width="200dp"
                                             android:layout_height="match_parent"
+                                            android:elevation="3dp"
                                             android:paddingLeft="15dp"
                                             android:paddingTop="15dp"
                                             android:text="Card Title"

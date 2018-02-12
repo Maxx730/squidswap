@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape android:top="50px" android:shape="rectangle">
 
-            <gradient
-                android:angle="0"
-                android:centerColor="#EBEBEB"
-                android:endColor="#FAFAFA"
-                android:startColor="#DBDBDB"
-                android:type="linear" />
-            <corners android:bottomRightRadius="4dp" />
+            <solid  android:color="#99EFEFEF"></solid>
+            <corners
+                android:bottomRightRadius="4dp" />
         </shape>
     </item><!-- default -->
-    <item android:drawable="@drawable/camera_lens" />
-</selector>
+    <item android:top="-2dp" android:left="-2dp">
+        <shape>
+            <solid android:color="@android:color/transparent" />
+            <stroke android:color="#88FFFFFF" android:width="1dp"></stroke>
+            <corners
+                android:bottomRightRadius="4dp" />
+        </shape>
+    </item>
+</layer-list>
