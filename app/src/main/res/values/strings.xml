@@ -14,4 +14,7 @@
     <string name="cropping_hint">Touch and dragging to crop the image.</string>
     <string name="painting_hint">Touch a circle above to change the color of the brush, the slider below can be used to adjust the brush size.</string>
     <string name="drawer_title">Tools</string>
+    <string name= "card_open_file">Open File</string>
+    <string name= "card_capture_image">Take a Photo</string>
+    <string name="start_here">Start Here</string>
 </resources>

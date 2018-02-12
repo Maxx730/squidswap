@@ -78,6 +78,7 @@ public class SquidSwapMain extends AppCompatActivity {
         squidFiles = new SquidFileService(getApplicationContext());
         squidsettings = new SquidSettingsHandler(getApplicationContext());
 
+        getSupportActionBar().setElevation(0);
         //Check if there is already a focused button.
         chec = getIntent();
 
@@ -173,6 +174,7 @@ public class SquidSwapMain extends AppCompatActivity {
     //Initializes all the buttons that will  be used in the main
     //menu to interact with the application.
     private void init_buttons(){
+        /*
         open = (ImageButton) findViewById(R.id.image_btn_one);
         paint = (ImageButton) findViewById(R.id.main_paint);
         crop = (ImageButton) findViewById(R.id.main_crop);
@@ -182,7 +184,6 @@ public class SquidSwapMain extends AppCompatActivity {
         restart = (ImageButton) findViewById(R.id.restart_main);
         main_up = (ImageButton) findViewById(R.id.main_menu_up);
         close_main = (ImageButton) findViewById(R.id.close_main_menu);
-        tapImage = (ImageView) findViewById(R.id.tap_image);
         settings_close = (ImageButton) findViewById(R.id.close_settings_slider);
         camera_cap = (ImageButton) findViewById(R.id.main_camera_capture);
 
@@ -217,20 +218,6 @@ public class SquidSwapMain extends AppCompatActivity {
             }
         });
 
-        tapImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getApplicationContext(),"Please choose a file to open...",Toast.LENGTH_SHORT).show();
-
-                chec.removeExtra("tmp");
-
-                open_int = new Intent();
-                open_int.setType("image/*");
-                open_int.setAction(Intent.ACTION_GET_CONTENT);
-
-                startActivityForResult(Intent.createChooser(open_int, "Select Picture"), PICK_IMAGE);
-            }
-        });
 
         paint.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -404,7 +391,7 @@ public class SquidSwapMain extends AppCompatActivity {
                 tapImage.setClickable(false);
                 set_all_false();
             }
-        });
+        });*/
     }
 
     //Check the size of the uri image before trying to load it into memory, if it is too large
@@ -417,7 +404,7 @@ public class SquidSwapMain extends AppCompatActivity {
     //Initializes the rest of the elements on the page that are not buttons
     //in particular.
     private void init_elements(){
-        focusedImage = (ImageView) findViewById(R.id.focused_image);
+        /*
         main_men = (FrameLayout) findViewById(R.id.main_menu);
         settings_lay = (FrameLayout) findViewById(R.id.settings_slide_up);
         opening_layout = (FrameLayout) findViewById(R.id.opening_layout);
@@ -447,6 +434,7 @@ public class SquidSwapMain extends AppCompatActivity {
         main_items.add(0,new SquidMenuItem(this,"Swap",file.load_drawable(this,R.drawable.ic_image_black_24dp),new Intent(this,SquidAboutPage.class),"Link","watermark"));
         main_adapt = new SquidListAdapter(getApplicationContext(),R.layout.squidswap_menu_layout,main_items,HAS_IMAGE);
         main_list.setAdapter(main_adapt);
+        */
     }
 
     //Make sure the application has the correct permissions.

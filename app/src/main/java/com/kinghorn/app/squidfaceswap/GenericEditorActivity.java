@@ -430,7 +430,6 @@ public class GenericEditorActivity extends AppCompatActivity {
                 float scal = (float)(1 + (float)(i/100f));
                 c.foc.set_scale_x(scal);
                 c.foc.set_scale_y(scal);
-                System.out.println(i);
                 c.invalidate();
             }
 

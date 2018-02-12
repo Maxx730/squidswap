@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:top="50px" android:shape="rectangle">
+
+            <solid  android:color="#EFEFEF"></solid>
+            <corners android:bottomRightRadius="4dp" />
+        </shape>
+    </item><!-- default -->
+    <item android:drawable="@drawable/camera_lens" />
+</selector>
