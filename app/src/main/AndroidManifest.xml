@@ -4,7 +4,7 @@
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA"> </uses-permission>
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -13,25 +13,24 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".SquidSwapMain"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/app_title"
-            android:theme="@style/FullscreenTheme">
+            android:name=".SquidSwapSettings"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
+        <activity
+            android:name=".SquidAboutPage"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
+        <activity
+            android:name=".GenericEditorActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
+        <activity
+            android:name=".SquidSwapStart"
+            android:label="@string/title_activity_squid_swap_start"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".SquidSwapSettings"
-            android:configChanges="orientation|keyboardHidden|screenSize"></activity>
-        <activity
-            android:name=".SquidAboutPage"
-            android:configChanges="orientation|keyboardHidden|screenSize"></activity>
-        <activity
-            android:name=".GenericEditorActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"></activity>
     </application>
 
 </manifest>
