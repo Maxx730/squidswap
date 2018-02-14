@@ -219,12 +219,7 @@ public class GenericEditorActivity extends AppCompatActivity {
 
                 //Change the name of the extra based on the context of where we are going back
                 //from.
-                if(context == 3){
                     bac.putExtra("tmp",true);
-                    bac.putExtra("FocusedFileName",focusedUri.toString());
-                }else{
-                    bac.putExtra("FocusedUri",focusedUri.toString());
-                }
 
                 startActivity(bac);
             }

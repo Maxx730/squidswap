@@ -74,11 +74,10 @@ public class SquidSwapStart extends AppCompatActivity {
         snac.show();
 
         //Check here if we have been editing a file.
-        if(prev.hasExtra("FocusedFileName") || prev.hasExtra("FocusedUri")){
-            if(prev.hasExtra("FocusedFileName")){
+        if(prev.hasExtra("tmp") || prev.hasExtra("FocusedUri")){
+            if(prev.hasExtra("tmp")){
                 Bitmap b = squid_files.load_cached_file();
                 image_preview.setImageBitmap(b);
-                focused_image = Uri.parse(prev.getStringExtra("FocusedFileName"));
                 EDITED = true;
                 set_for_image();
             }else if(prev.hasExtra("FocusedUri")){
@@ -138,10 +137,9 @@ public class SquidSwapStart extends AppCompatActivity {
         switch(id){
             case R.id.action_reset:
                 AlertDialog.Builder al = new AlertDialog.Builder(this);
-
-
                 focused_image = null;
                 image_preview.setImageBitmap(null);
+                EDITED = false;
                 this.set_for_choice();
                 break;
             case R.id.action_settings:
