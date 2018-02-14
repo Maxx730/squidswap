@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorButtonNormal"
+    android:background="#E0E0E0"
     android:orientation="vertical">
 
     <LinearLayout
@@ -14,39 +14,10 @@
         android:layout_marginBottom="1dp"
         android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/settings_cog_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:padding="10dp"
-            app:srcCompat="@drawable/ic_settings_black_24dp" />
-
-        <TextView
-            android:id="@+id/settings_title"
+        <ListView
+            android:id="@+id/settings_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:paddingLeft="18dp"
-            android:paddingTop="14dp"
-            android:text="Settings"
-            android:textColor="@android:color/background_light"
-            android:textSize="20sp" />
-
-        <ImageView
-            android:id="@+id/settings_back"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="end"
-            android:background="@drawable/squid_ui_btn"
-            android:padding="8dp"
-            app:srcCompat="@drawable/ic_close_image_crop_24dp" />
-
+            android:layout_height="match_parent" />
     </LinearLayout>
-
-    <ListView
-        android:id="@+id/squid_settings_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="10dp" />
 
 </LinearLayout>

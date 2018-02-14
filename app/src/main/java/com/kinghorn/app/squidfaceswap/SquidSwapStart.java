@@ -2,6 +2,7 @@ package com.kinghorn.app.squidfaceswap;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -22,6 +23,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.Button;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -32,14 +35,21 @@ import java.io.FileNotFoundException;
 
 public class SquidSwapStart extends AppCompatActivity {
     private static int SQUID_SWAP_PERMISIONS;
-    private static CardView open_file, open_camera;
+    private static CardView open_file, open_camera,meme_card,paint_card,swap_card,crop_card;
     private static Uri focused_image;
     private static final int CAMERA_PHOTO = 1;
     private static final int IMAGE_FROM_GALLERY = 2;
+    private static final int CROP_ID = 3;
+    private static final int PAINT_ID = 2;
+    private static final int SWAP_ID = 1;
     private static LinearLayout choice_view;
     private static RelativeLayout image_view;
     private static ImageView image_preview;
     private static SquidFileService squid_files;
+    private static HorizontalScrollView squid_tools;
+    private static boolean EDITED = false;
+    private static boolean FROM_CAM = false;
+    private static Button save_btn,pre_btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +65,31 @@ public class SquidSwapStart extends AppCompatActivity {
         this.check_permissions();
         this.init_click_events();
         this.init_layouts();
+        this.init_tool_cards();
         this.set_for_choice();
+
+        Intent prev = getIntent();
+
+        Snackbar snac = Snackbar.make(findViewById(R.id.main_content),"No Image Selected",Snackbar.LENGTH_LONG);
+        snac.show();
+
+        //Check here if we have been editing a file.
+        if(prev.hasExtra("FocusedFileName") || prev.hasExtra("FocusedUri")){
+            if(prev.hasExtra("FocusedFileName")){
+                Bitmap b = squid_files.load_cached_file();
+                image_preview.setImageBitmap(b);
+                focused_image = Uri.parse(prev.getStringExtra("FocusedFileName"));
+                EDITED = true;
+                set_for_image();
+            }else if(prev.hasExtra("FocusedUri")){
+                try {
+                    image_preview.setImageBitmap(squid_files.open_first(Uri.parse(prev.getStringExtra("FocusedUri")),new BitmapFactory.Options()));
+                    set_for_image();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     @Override
@@ -101,8 +135,24 @@ public class SquidSwapStart extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch(id){
+            case R.id.action_reset:
+                AlertDialog.Builder al = new AlertDialog.Builder(this);
+
+
+                focused_image = null;
+                image_preview.setImageBitmap(null);
+                this.set_for_choice();
+                break;
+            case R.id.action_settings:
+                //Start the settings activity.
+                Intent in = new Intent(getApplicationContext(),SquidSwapSettings.class);
+                startActivity(in);
+                break;
+            case R.id.action_about:
+                //Start the about activity.
+
+                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -127,6 +177,16 @@ public class SquidSwapStart extends AppCompatActivity {
     private void init_click_events(){
         open_file = (CardView) findViewById(R.id.open_by_file);
         open_camera = (CardView) findViewById(R.id.open_by_camera);
+        save_btn = (Button) findViewById(R.id.save_button);
+        pre_btn = (Button) findViewById(R.id.preview_button);
+
+        save_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar snac = Snackbar.make(findViewById(R.id.main_content),"Saving Image...", Snackbar.LENGTH_SHORT);
+                snac.show();
+            }
+        });
 
         open_camera.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -154,6 +214,37 @@ public class SquidSwapStart extends AppCompatActivity {
 
         //ImageViews
         image_preview = (ImageView) findViewById(R.id.preview_image);
+
+        //Scroll layouts
+        squid_tools = (HorizontalScrollView) findViewById(R.id.squidswap_tools_scroller);
+    }
+
+    private void init_tool_cards(){
+        meme_card = (CardView) findViewById(R.id.meme_card);
+        paint_card = (CardView) findViewById(R.id.paint_card);
+        swap_card = (CardView) findViewById(R.id.swap_card);
+        crop_card = (CardView) findViewById(R.id.crop_card);
+
+        crop_card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(build_editor_intent(CROP_ID));
+            }
+        });
+
+        paint_card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(build_editor_intent(PAINT_ID));
+            }
+        });
+
+        swap_card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(build_editor_intent(SWAP_ID));
+            }
+        });
     }
 
     //Swap the layout depending on the context of what is happening in the application,
@@ -161,10 +252,25 @@ public class SquidSwapStart extends AppCompatActivity {
     private void set_for_choice(){
         choice_view.setVisibility(View.VISIBLE);
         image_view.setVisibility(View.GONE);
+        squid_tools.setAlpha(.3f);
     }
 
     private void set_for_image(){
         choice_view.setVisibility(View.GONE);
         image_view.setVisibility(View.VISIBLE);
+        squid_tools.setAlpha(1);
+    }
+
+    private Intent build_editor_intent(int context){
+        Intent in = new Intent(getApplicationContext(),GenericEditorActivity.class);
+        in.putExtra("SquidContext",context);
+
+        if(EDITED){
+            in.putExtra("tmp",true);
+        }else{
+            in.putExtra("FocusedBitmap",focused_image.toString());
+        }
+
+        return in;
     }
 }

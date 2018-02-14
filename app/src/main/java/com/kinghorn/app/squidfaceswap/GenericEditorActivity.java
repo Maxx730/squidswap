@@ -33,8 +33,8 @@ import java.io.FileNotFoundException;
 public class GenericEditorActivity extends AppCompatActivity {
 
     private static int context;
-    private ImageButton suc_btn,can_btn,tool_drawer,crop_back;
-    private Button front_foc,back_foc;
+    private ImageButton tool_drawer,crop_back;
+    private Button front_foc,back_foc,suc_btn,can_btn;
     private LinearLayout meme_layout,upper_layout,drawer_layout;
     private SeekBar fade_seek,rotate_seek,crop_scale;
     private Uri focusedUri;
@@ -86,7 +86,6 @@ public class GenericEditorActivity extends AppCompatActivity {
                 frontImage = fil.load_cached_file();
                 focusedUri = Uri.parse(prev.getExtras().getString("FrontImage"));
             }else{
-                System.out.println(focusedUri.getPath());
                 focusedBitmap = fil.open_first(focusedUri,new BitmapFactory.Options());
             }
 
@@ -123,8 +122,8 @@ public class GenericEditorActivity extends AppCompatActivity {
 
     //Initializes the bottom buttons based on the context of the editor.
     private void init_bottom_btns(){
-        suc_btn = (ImageButton) findViewById(R.id.editor_apply);
-        can_btn = (ImageButton) findViewById(R.id.editor_cancel);
+        suc_btn = (Button) findViewById(R.id.editor_apply);
+        can_btn = (Button) findViewById(R.id.editor_cancel);
         tool_drawer = (ImageButton) findViewById(R.id.swap_drawer_toggle_);
         drawer_layout = (LinearLayout) findViewById(R.id.side_tools_layout);
 
@@ -156,7 +155,7 @@ public class GenericEditorActivity extends AppCompatActivity {
                         //the main menu.
                         Bitmap bp = Bitmap.createBitmap(b.getWidth(),b.getHeight(), Bitmap.Config.ARGB_8888);
                         Canvas en = new Canvas(bp);
-                        Intent in = new Intent(getApplicationContext(),SquidSwapMain.class);
+                        Intent in = new Intent(getApplicationContext(),SquidSwapStart.class);
                         //If scaled up to be larger then we want to just grab the drawing cache normally.
                         en.drawBitmap(b.getDrawingCache(),0,0,null);
                         en.drawBitmap(c.getDrawingCache(),0,0,null);
@@ -179,15 +178,14 @@ public class GenericEditorActivity extends AppCompatActivity {
                         //Here we want to apply the paint paths from the squid painter and
                         //apply them over the bitmap, then we want to convert the bitmap
                         //to a byte array and send it back to the main activity.
-                        i = new Intent(getApplicationContext(),SquidSwapMain.class);
+                        i = new Intent(getApplicationContext(),SquidSwapStart.class);
                         i.putExtra("FocusedFileName",fil.save_tmp(p.apply_paint(c)));
                         //Set tmp to true if the image has been changed etc.
                         i.putExtra("tmp",true);
-
                         startActivity(i);
                         break;
                     case 3:
-                        i = new Intent(getApplicationContext(),SquidSwapMain.class);
+                        i = new Intent(getApplicationContext(),SquidSwapStart.class);
 
                         i.putExtra("FocusedFileName",fil.save_tmp(focusedBitmap));
                         //Set tmp to true if the image has been changed etc.
@@ -196,7 +194,7 @@ public class GenericEditorActivity extends AppCompatActivity {
                         startActivity(i);
                         break;
                     case 4:
-                        i = new Intent(getApplicationContext(),SquidSwapMain.class);
+                        i = new Intent(getApplicationContext(),SquidSwapStart.class);
 
                         focusedBitmap = c.getDrawingCache();
 
@@ -217,11 +215,11 @@ public class GenericEditorActivity extends AppCompatActivity {
         can_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent bac = new Intent(getApplicationContext(),SquidSwapMain.class);
+                Intent bac = new Intent(getApplicationContext(),SquidSwapStart.class);
 
                 //Change the name of the extra based on the context of where we are going back
                 //from.
-                if(context == 1 || context == 3){
+                if(context == 3){
                     bac.putExtra("tmp",true);
                     bac.putExtra("FocusedFileName",focusedUri.toString());
                 }else{

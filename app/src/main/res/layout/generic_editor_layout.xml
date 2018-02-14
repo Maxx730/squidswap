@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/checkered_background"
+    android:background="#E0E0E0"
     android:orientation="vertical">
 
     <FrameLayout
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:animateLayoutChanges="true"
-            android:background="@android:color/transparent"
+            android:background="@color/cardview_light_background"
             android:clickable="false"
             android:orientation="vertical">
 
@@ -51,32 +51,32 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@android:color/transparent"
                 android:orientation="horizontal">
 
-                <ImageButton
+                <Button
                     android:id="@+id/editor_apply"
-                    android:layout_width="52dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/editor_dark_background"
-                    app:srcCompat="@drawable/ic_image_crop_success_24dp" />
+                    android:layout_weight="0"
+                    android:background="?attr/selectableItemBackground"
+                    android:text="Apply" />
 
                 <SeekBar
                     android:id="@+id/general_scaling_bar"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@drawable/editor_dark_background"
-                    android:max="500"
+                    android:max="300"
                     android:progressTint="@color/green_alt_accent"
                     android:thumbTint="@color/green_alt" />
 
-                <ImageButton
+                <Button
                     android:id="@+id/editor_cancel"
-                    android:layout_width="52dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/editor_dark_background"
-                    app:srcCompat="@drawable/ic_close_image_crop_24dp" />
+                    android:layout_weight="0"
+                    android:background="?attr/selectableItemBackground"
+                    android:text="Cancel" />
             </LinearLayout>
         </LinearLayout>
 
@@ -142,7 +142,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="right|center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <ImageButton
                 android:id="@+id/swap_drawer_toggle_"

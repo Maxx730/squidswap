@@ -5,6 +5,7 @@
     android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#E0E0E0"
     android:fitsSystemWindows="true"
     tools:context="com.kinghorn.app.squidfaceswap.SquidSwapStart">
 
@@ -57,14 +58,42 @@
                     android:layout_width="wrap_content"
                     android:layout_height="200dp"
                     android:layout_weight="1"
-                    app:cardUseCompatPadding="true" />
+                    app:cardUseCompatPadding="true">
+
+                    <TextView
+                        android:id="@+id/textView5"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical|center_horizontal"
+                        android:background="?attr/selectableItemBackground"
+                        android:fontFamily="sans-serif-condensed"
+                        android:gravity="center_vertical"
+                        android:text="Open a File"
+                        android:textAlignment="center"
+                        android:textSize="18sp"
+                        android:typeface="normal" />
+                </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView
                     android:id="@+id/open_by_camera"
                     android:layout_width="wrap_content"
                     android:layout_height="200dp"
                     android:layout_weight="1"
-                    app:cardUseCompatPadding="true" />
+                    app:cardUseCompatPadding="true">
+
+                    <TextView
+                        android:id="@+id/textView7"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical|center_horizontal"
+                        android:background="?attr/selectableItemBackground"
+                        android:fontFamily="sans-serif-condensed"
+                        android:gravity="center_vertical"
+                        android:text="Take a Photo"
+                        android:textAlignment="center"
+                        android:textSize="18sp"
+                        android:typeface="normal" />
+                </android.support.v7.widget.CardView>
             </LinearLayout>
 
             <RelativeLayout
@@ -92,6 +121,30 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:layout_editor_absoluteX="8dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:background="@color/cardview_light_background"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/preview_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="?attr/selectableItemBackground"
+                            android:text="Preview" />
+
+                        <Button
+                            android:id="@+id/save_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="?attr/selectableItemBackground"
+                            android:text="Save" />
+                    </LinearLayout>
 
                 </android.support.v7.widget.CardView>
             </RelativeLayout>
@@ -125,6 +178,7 @@
                                 android:layout_width="100dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
+                                android:background="?attr/selectableItemBackground"
                                 android:paddingBottom="7dp"
                                 android:paddingTop="7dp"
                                 android:src="@drawable/ic_search_black_24dp" />
@@ -135,11 +189,12 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:background="@android:color/transparent"
+                                android:background="?attr/selectableItemBackground"
                                 android:ems="10"
                                 android:hint="Search Tools"
                                 android:inputType="none"
                                 android:paddingBottom="10dp"
+                                android:paddingLeft="10dp"
                                 android:paddingTop="10dp" />
                         </LinearLayout>
 
@@ -148,7 +203,7 @@
                     <HorizontalScrollView
                         android:id="@+id/squidswap_tools_scroller"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_marginTop="4dp">
 
                         <LinearLayout
@@ -157,9 +212,10 @@
                             android:orientation="horizontal">
 
                             <android.support.v7.widget.CardView
-                                android:layout_width="250dp"
+                                android:id="@+id/meme_card"
+                                android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:minHeight="150dp"
+                                android:minHeight="200dp"
                                 android:padding="10dp"
                                 app:cardUseCompatPadding="true">
 
@@ -176,19 +232,137 @@
                                         android:paddingBottom="10dp"
                                         android:paddingLeft="15dp"
                                         android:paddingTop="10dp"
-                                        android:text="Card Title"
+                                        android:text="Meme Tool"
                                         android:textSize="18sp"
                                         android:textStyle="bold" />
 
                                     <TextView
                                         android:id="@+id/tool_descrip"
                                         android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
+                                        android:layout_height="match_parent"
+                                        android:background="?attr/selectableItemBackground"
                                         android:paddingBottom="15dp"
                                         android:paddingLeft="15dp"
                                         android:paddingRight="15dp"
                                         android:paddingTop="10dp"
-                                        android:text="Card Description Goes Here" />
+                                        android:text="Add text to the image." />
+                                </LinearLayout>
+
+                            </android.support.v7.widget.CardView>
+
+                            <android.support.v7.widget.CardView
+                                android:id="@+id/crop_card"
+                                android:layout_width="200dp"
+                                android:layout_height="match_parent"
+                                android:minHeight="200dp"
+                                android:padding="10dp"
+                                app:cardUseCompatPadding="true">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:id="@+id/tool_title"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:background="@drawable/card_title_bottom_border"
+                                        android:paddingBottom="10dp"
+                                        android:paddingLeft="15dp"
+                                        android:paddingTop="10dp"
+                                        android:text="Crop Tool"
+                                        android:textSize="18sp"
+                                        android:textStyle="bold" />
+
+                                    <TextView
+                                        android:id="@+id/tool_descrip"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:background="?attr/selectableItemBackground"
+                                        android:paddingBottom="15dp"
+                                        android:paddingLeft="15dp"
+                                        android:paddingRight="15dp"
+                                        android:paddingTop="10dp"
+                                        android:text="Use this tool to select a specific part of an image." />
+                                </LinearLayout>
+
+                            </android.support.v7.widget.CardView>
+
+                            <android.support.v7.widget.CardView
+                                android:id="@+id/paint_card"
+                                android:layout_width="200dp"
+                                android:layout_height="match_parent"
+                                android:minHeight="200dp"
+                                android:padding="10dp"
+                                app:cardUseCompatPadding="true">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:id="@+id/tool_title"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:background="@drawable/card_title_bottom_border"
+                                        android:paddingBottom="10dp"
+                                        android:paddingLeft="15dp"
+                                        android:paddingTop="10dp"
+                                        android:text="Paint Tool"
+                                        android:textSize="18sp"
+                                        android:textStyle="bold" />
+
+                                    <TextView
+                                        android:id="@+id/tool_descrip"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:background="?attr/selectableItemBackground"
+                                        android:paddingBottom="15dp"
+                                        android:paddingLeft="15dp"
+                                        android:paddingRight="15dp"
+                                        android:paddingTop="10dp"
+                                        android:text="Paint on an image with different colors and brush sizes." />
+                                </LinearLayout>
+
+                            </android.support.v7.widget.CardView>
+
+                            <android.support.v7.widget.CardView
+                                android:id="@+id/swap_card"
+                                android:layout_width="250dp"
+                                android:layout_height="match_parent"
+                                android:minHeight="200dp"
+                                android:padding="10dp"
+                                app:cardUseCompatPadding="true">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:id="@+id/tool_title"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:background="@drawable/card_title_bottom_border"
+                                        android:paddingBottom="10dp"
+                                        android:paddingLeft="15dp"
+                                        android:paddingTop="10dp"
+                                        android:text="Swap Tool"
+                                        android:textSize="18sp"
+                                        android:textStyle="bold" />
+
+                                    <TextView
+                                        android:id="@+id/tool_descrip"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:background="?attr/selectableItemBackground"
+                                        android:paddingBottom="15dp"
+                                        android:paddingLeft="15dp"
+                                        android:paddingRight="15dp"
+                                        android:paddingTop="10dp"
+                                        android:text="Choose another photo to swap this one onto." />
                                 </LinearLayout>
 
                             </android.support.v7.widget.CardView>

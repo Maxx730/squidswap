@@ -110,7 +110,8 @@
             android:padding="0dp"
             android:paddingLeft="10dp"
             android:progressTint="@color/green_alt_accent"
-            android:thumbTint="@color/green_alt" />
+            android:thumbTint="@color/green_alt"
+            android:visibility="gone" />
 
         <ImageButton
             android:id="@+id/paint_back"
