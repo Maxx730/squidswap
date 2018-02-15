@@ -186,6 +186,15 @@ public class SquidSwapStart extends AppCompatActivity {
             }
         });
 
+        pre_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent in = new Intent(getApplicationContext(),SquidSwapPreview.class);
+                in.putExtra("tmp",true);
+                startActivity(in);
+            }
+        });
+
         open_camera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
