@@ -2,8 +2,7 @@
 <android.widget.LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="10dp">
+    android:layout_height="match_parent">
 
     <EditText
         android:id="@+id/meme_gen_txt"
@@ -12,7 +11,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:background="@drawable/meme_text_input"
+        android:background="@color/cardview_light_background"
         android:ems="10"
         android:hint="@string/meme_gen_txt"
         android:inputType="textPersonName"

@@ -42,7 +42,9 @@ public class SquidSwapStart extends AppCompatActivity {
     private static final int CROP_ID = 3;
     private static final int PAINT_ID = 2;
     private static final int SWAP_ID = 1;
-    private static LinearLayout choice_view;
+    private static final int PICK_SWAP_IMAGE = 5;
+    private static final int MEME_ID = 6;
+    private static LinearLayout choice_view,previous_swap;
     private static RelativeLayout image_view;
     private static ImageView image_preview;
     private static SquidFileService squid_files;
@@ -114,6 +116,18 @@ public class SquidSwapStart extends AppCompatActivity {
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
+                    break;
+                case PICK_SWAP_IMAGE:
+                    //Once they have picked a swap image, we want to then send them to the generic activity
+                    //to move around the swapping tool, we need to send the uri for the chosen image in the intent.
+                    Uri u = data.getData();
+                    Intent n = new Intent(getApplicationContext(),GenericEditorActivity.class);
+
+                    n.putExtra("BackgroundImage",u.toString());
+                    n.putExtra("FrontImage",focused_image.toString());
+                    n.putExtra("SquidContext",1);
+
+                    startActivity(n);
                     break;
             }
         }
@@ -218,6 +232,7 @@ public class SquidSwapStart extends AppCompatActivity {
     private void init_layouts(){
         choice_view = (LinearLayout) findViewById(R.id.choice_view);
         image_view = (RelativeLayout) findViewById(R.id.image_view);
+        previous_swap = (LinearLayout) findViewById(R.id.previous_swaps);
 
         //ImageViews
         image_preview = (ImageView) findViewById(R.id.preview_image);
@@ -249,7 +264,21 @@ public class SquidSwapStart extends AppCompatActivity {
         swap_card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(build_editor_intent(SWAP_ID));
+                Intent open_int;
+
+                open_int = new Intent();
+                open_int.setType("image/*");
+                open_int.setAction(Intent.ACTION_GET_CONTENT);
+
+                startActivityForResult(Intent.createChooser(open_int, "Select Picture"), PICK_SWAP_IMAGE);
+            }
+        });
+
+        meme_card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EDITED = true;
+                startActivity(build_editor_intent(MEME_ID));
             }
         });
     }
@@ -259,11 +288,13 @@ public class SquidSwapStart extends AppCompatActivity {
     private void set_for_choice(){
         choice_view.setVisibility(View.VISIBLE);
         image_view.setVisibility(View.GONE);
+        previous_swap.setVisibility(View.VISIBLE);
         squid_tools.setAlpha(.3f);
     }
 
     private void set_for_image(){
         choice_view.setVisibility(View.GONE);
+        previous_swap.setVisibility(View.GONE);
         image_view.setVisibility(View.VISIBLE);
         squid_tools.setAlpha(1);
     }

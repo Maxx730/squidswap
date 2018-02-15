@@ -4,8 +4,10 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.widget.Toast;
 
 //Class that will inherit from the squidcanvas but will also generate meme stuff over it
 //rather than just be a standard squid canvas.
@@ -14,6 +16,7 @@ public class SquidMemeGenerator extends SquidCanvas {
     private Paint meme_paint,text_paint;
     private Bitmap meme_img;
     private String meme_text;
+    private Context c;
 
     //Constructor.
     public SquidMemeGenerator(Context con, SquidBitmapData f) {
@@ -29,6 +32,8 @@ public class SquidMemeGenerator extends SquidCanvas {
         text_paint.setStyle(Paint.Style.FILL);
         text_paint.setTextSize(40);
         text_paint.setAntiAlias(true);
+
+        c = con;
     }
 
     //Override our ondraw method.
@@ -36,8 +41,9 @@ public class SquidMemeGenerator extends SquidCanvas {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         draw_meme_back(canvas);
-        canvas.drawBitmap(meme_img,(getWidth() - meme_img.getWidth()) / 2,((getHeight() - meme_img.getHeight()) / 2) - 20,null);
-        canvas.drawText(meme_text,400,400,text_paint);
+        Bitmap scaled = scale_to_size(meme_img);
+        canvas.drawBitmap(scaled,(getWidth() - scaled.getWidth()) / 2,((getHeight() - scaled.getHeight()) / 2) - 20,null);
+
     }
 
     //Getter and setter methods here.
@@ -52,6 +58,10 @@ public class SquidMemeGenerator extends SquidCanvas {
 
     //Takes in a bitmap and scales to the correct width of the meme border using a matrix.
     private Bitmap scale_to_size(Bitmap b){
-        return null;
+        Matrix m = new Matrix();
+        int rat = (getWidth() / b.getWidth());
+        m.postScale(rat,rat);
+        Bitmap bit = Bitmap.createBitmap(meme_img,0,0,meme_img.getWidth(),meme_img.getHeight(),m,true);
+        return bit;
     }
 }
