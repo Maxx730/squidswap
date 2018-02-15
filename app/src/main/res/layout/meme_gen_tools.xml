@@ -10,7 +10,7 @@
         android:layout_height="wrap_content" >
 
         <EditText
-            android:id="@+id/meme_gen_txt"
+            android:id="@+id/meme_gen_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -18,9 +18,11 @@
             android:layout_alignParentTop="true"
             android:background="@color/cardview_light_background"
             android:ems="10"
-            android:hint="@string/meme_gen_txt"
+            android:hint="Text Content"
             android:inputType="textPersonName"
-            android:padding="10dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="15dp"
+            android:paddingTop="10dp"
             android:textColor="@android:color/darker_gray"
             tools:layout_editor_absoluteX="95dp"
             tools:layout_editor_absoluteY="120dp" />

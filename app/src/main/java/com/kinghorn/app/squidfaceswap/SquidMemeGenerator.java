@@ -31,10 +31,11 @@ public class SquidMemeGenerator extends SquidCanvas {
         text_paint = new Paint();
         text_paint.setColor(Color.WHITE);
         text_paint.setStyle(Paint.Style.FILL);
-        text_paint.setTextSize(40);
+        text_paint.setTextSize(90);
         text_paint.setAntiAlias(true);
 
         c = con;
+        meme_text = "Text Content";
     }
 
     //Override our ondraw method.
@@ -50,6 +51,7 @@ public class SquidMemeGenerator extends SquidCanvas {
         rect_paint.setStyle(Paint.Style.FILL);
         rect_paint.setColor(Color.BLACK);
         canvas.drawRect(new Rect((getWidth() - scaled.getWidth()) / 2,((getHeight() - scaled.getHeight()) / 2) + scaled.getHeight(),((getWidth() - scaled.getWidth()) / 2) + scaled.getWidth(),(((getHeight() - scaled.getHeight()) / 2) + scaled.getHeight())+200),rect_paint);
+        canvas.drawText(meme_text,((getWidth() - scaled.getWidth()) / 2) + 30,(((getHeight() - scaled.getHeight()) / 2) + scaled.getHeight()) + 90,text_paint);
     }
 
     //Getter and setter methods here.
@@ -69,5 +71,12 @@ public class SquidMemeGenerator extends SquidCanvas {
         m.postScale(rat,rat);
         Bitmap bit = Bitmap.createBitmap(meme_img,0,0,meme_img.getWidth(),meme_img.getHeight(),m,true);
         return bit;
+    }
+
+    //Once everything has been set we want to get the canvas drawing cache and save it as a temp file and
+    //go back to the main activity.
+    public Bitmap build_meme(){
+        //Determine the size of the image plus the size of the box containing the text content.
+        return null;
     }
 }

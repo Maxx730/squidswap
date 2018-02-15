@@ -626,7 +626,7 @@ public class GenericEditorActivity extends AppCompatActivity {
         meme_layout = (FrameLayout) inflate.inflate(R.layout.meme_gen_tools,null);
         LinearLayout.LayoutParams par = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT);
         meme_layout.setLayoutParams(par);
-        meme_text = (EditText) meme_layout.findViewById(R.id.meme_gen_txt);
+        meme_text = (EditText) meme_layout.findViewById(R.id.meme_gen_text);
 
         r.addView(c);
         r.addView(meme_layout);
