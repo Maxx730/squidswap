@@ -35,7 +35,8 @@ public class GenericEditorActivity extends AppCompatActivity {
     private static int context;
     private ImageButton tool_drawer,crop_back;
     private Button front_foc,back_foc,suc_btn,can_btn;
-    private LinearLayout meme_layout,upper_layout,drawer_layout;
+    private LinearLayout upper_layout,drawer_layout;
+    private FrameLayout meme_layout;
     private SeekBar fade_seek,rotate_seek,crop_scale;
     private Uri focusedUri;
     private Bitmap focusedBitmap,frontImage,backImage;
@@ -622,8 +623,8 @@ public class GenericEditorActivity extends AppCompatActivity {
         final SquidMemeGenerator c = new SquidMemeGenerator(getApplicationContext(),new SquidBitmapData(getApplicationContext()));
         RelativeLayout r = (RelativeLayout) findViewById(R.id.canvas_layout);
         LayoutInflater inflate = getLayoutInflater();
-        meme_layout = (LinearLayout) inflate.inflate(R.layout.meme_gen_tools,null);
-        LinearLayout.LayoutParams par = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
+        meme_layout = (FrameLayout) inflate.inflate(R.layout.meme_gen_tools,null);
+        LinearLayout.LayoutParams par = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT);
         meme_layout.setLayoutParams(par);
         meme_text = (EditText) meme_layout.findViewById(R.id.meme_gen_txt);
 

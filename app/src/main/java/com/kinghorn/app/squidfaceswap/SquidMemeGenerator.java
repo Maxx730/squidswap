@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.widget.Toast;
 
 //Class that will inherit from the squidcanvas but will also generate meme stuff over it
@@ -42,8 +43,13 @@ public class SquidMemeGenerator extends SquidCanvas {
         super.onDraw(canvas);
         draw_meme_back(canvas);
         Bitmap scaled = scale_to_size(meme_img);
-        canvas.drawBitmap(scaled,(getWidth() - scaled.getWidth()) / 2,((getHeight() - scaled.getHeight()) / 2) - 20,null);
+        canvas.drawBitmap(scaled,(getWidth() - scaled.getWidth()) / 2,((getHeight() - scaled.getHeight()) / 2),null);
 
+        //Next we want to draw the black over the bottom of the image.
+        Paint rect_paint = new Paint();
+        rect_paint.setStyle(Paint.Style.FILL);
+        rect_paint.setColor(Color.BLACK);
+        canvas.drawRect(new Rect((getWidth() - scaled.getWidth()) / 2,((getHeight() - scaled.getHeight()) / 2) + scaled.getHeight(),((getWidth() - scaled.getWidth()) / 2) + scaled.getWidth(),(((getHeight() - scaled.getHeight()) / 2) + scaled.getHeight())+200),rect_paint);
     }
 
     //Getter and setter methods here.

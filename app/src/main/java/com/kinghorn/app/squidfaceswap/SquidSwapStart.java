@@ -72,9 +72,6 @@ public class SquidSwapStart extends AppCompatActivity {
 
         Intent prev = getIntent();
 
-        Snackbar snac = Snackbar.make(findViewById(R.id.main_content),"No Image Selected",Snackbar.LENGTH_LONG);
-        snac.show();
-
         //Check here if we have been editing a file.
         if(prev.hasExtra("tmp") || prev.hasExtra("FocusedUri")){
             if(prev.hasExtra("tmp")){
