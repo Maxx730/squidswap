@@ -51,7 +51,7 @@ public class SquidMemeGenerator extends SquidCanvas {
         rect_paint.setStyle(Paint.Style.FILL);
         rect_paint.setColor(Color.BLACK);
         canvas.drawRect(new Rect((getWidth() - scaled.getWidth()) / 2,((getHeight() - scaled.getHeight()) / 2) + scaled.getHeight(),((getWidth() - scaled.getWidth()) / 2) + scaled.getWidth(),(((getHeight() - scaled.getHeight()) / 2) + scaled.getHeight())+200),rect_paint);
-        canvas.drawText(meme_text,((getWidth() - scaled.getWidth()) / 2) + 30,(((getHeight() - scaled.getHeight()) / 2) + scaled.getHeight()) + 90,text_paint);
+        canvas.drawText(meme_text,((getWidth() - scaled.getWidth()) / 2) + 30,(((getHeight() - scaled.getHeight()) / 2) + scaled.getHeight()) + 130,text_paint);
     }
 
     //Getter and setter methods here.
@@ -77,6 +77,8 @@ public class SquidMemeGenerator extends SquidCanvas {
     //go back to the main activity.
     public Bitmap build_meme(){
         //Determine the size of the image plus the size of the box containing the text content.
-        return null;
+        Bitmap cached = getDrawingCache();
+        Bitmap fin = Bitmap.createBitmap(cached,0,0,cached.getWidth(),cached.getHeight());
+        return fin;
     }
 }

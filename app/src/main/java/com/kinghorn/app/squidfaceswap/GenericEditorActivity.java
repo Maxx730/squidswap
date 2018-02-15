@@ -48,7 +48,7 @@ public class GenericEditorActivity extends AppCompatActivity {
     private EditText meme_text;
     private SquidSwapTouchup d;
     private boolean DRAWER_OPEN = false;
-
+    private Bitmap meme_gen_tmp;
     //Hinting tool objects are intialized below.
     private Button got_it;
     private TextView scal_hint,paint_hint,crop_hint;
@@ -207,6 +207,17 @@ public class GenericEditorActivity extends AppCompatActivity {
                         break;
                     case 5:
                         Toast.makeText(getApplicationContext(),"made it to the swapper",Toast.LENGTH_SHORT).show();
+                        break;
+                    case 6:
+                        if(meme_gen_tmp != null){
+                            i = new Intent(getApplicationContext(),SquidSwapStart.class);
+
+                            i.putExtra("FocusedFileName",fil.save_tmp(meme_gen_tmp));
+                            //Set tmp to true if the image has been changed etc.
+                            i.putExtra("tmp",true);
+
+                            startActivity(i);
+                        }
                         break;
                 }
             }
@@ -646,6 +657,7 @@ public class GenericEditorActivity extends AppCompatActivity {
                 //Change the value of what will be printed on the canvas.
                 c.set_meme_text(charSequence.toString());
                 c.invalidate();
+                meme_gen_tmp = c.build_meme();
             }
 
             @Override
