@@ -243,7 +243,7 @@ public class GenericEditorActivity extends AppCompatActivity {
         c = new SquidCanvas(getApplicationContext(),new SquidBitmapData(getApplicationContext()));
         p = new SquidPainter(getApplicationContext());
         LayoutInflater l = getLayoutInflater();
-        LinearLayout tools = (LinearLayout) l.inflate(R.layout.squid_paint_tools,null);
+        FrameLayout tools = (FrameLayout) l.inflate(R.layout.squid_paint_tools,null);
         LinearLayout.LayoutParams par = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
         RelativeLayout r = (RelativeLayout) findViewById(R.id.canvas_layout);
         SeekBar bar = tools.findViewById(R.id.brush_size);
