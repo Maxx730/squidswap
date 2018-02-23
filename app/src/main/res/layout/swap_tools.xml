@@ -37,6 +37,15 @@
                         android:paddingRight="0dp"
                         android:paddingTop="12dp">
 
+                        <TextView
+                            android:id="@+id/textView11"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="10dp"
+                            android:paddingTop="7dp"
+                            android:text="Rotation"
+                            android:textSize="8sp" />
+
                         <SeekBar
                             android:id="@+id/rotation_seek"
                             android:layout_width="match_parent"
@@ -46,6 +55,15 @@
                             android:progress="1"
                             android:progressTint="@color/green_alt_accent"
                             android:thumbTint="@color/green_alt" />
+
+                        <TextView
+                            android:id="@+id/textView10"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="10dp"
+                            android:text="Fade Amount"
+                            android:textSize="8sp"
+                            android:paddingTop="7dp" />
 
                         <SeekBar
                             android:id="@+id/fade_seeker"
