@@ -2,11 +2,12 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/black_overlay"
     android:clickable="false"
     android:focusable="false"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingBottom="10dp">
 
     <LinearLayout
         android:id="@+id/color_choices"
@@ -102,7 +103,7 @@
         android:layout_gravity="right"
         android:layout_marginTop="75dp"
         android:gravity="right"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:weightSum="1">
 
         <android.support.design.widget.FloatingActionButton
@@ -160,23 +161,5 @@
             app:elevation="2dp"
             app:srcCompat="@drawable/ic_do_not_disturb_on_black_24dp" />
 
-        <SeekBar
-            android:id="@+id/brush_size"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_marginTop="10dp"
-            android:progressTint="@color/green_alt_accent"
-            android:rotation="-90"
-            android:thumbTint="@color/green_alt"
-            android:visibility="gone" />
-
-        <ImageButton
-            android:id="@+id/paint_back"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/round_squid_button"
-            app:srcCompat="@drawable/ic_history_black_24dp" />
     </LinearLayout>
 </FrameLayout>

@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -240,22 +241,27 @@ public class GenericEditorActivity extends AppCompatActivity {
         LayoutInflater l = getLayoutInflater();
         FrameLayout tools = (FrameLayout) l.inflate(R.layout.squid_paint_tools,null);
         LinearLayout.LayoutParams par = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        FloatingActionButton brush_up;
+        FloatingActionButton brush_down;
+
         RelativeLayout r = (RelativeLayout) findViewById(R.id.canvas_layout);
-        SeekBar bar = tools.findViewById(R.id.brush_size);
-        ImageButton revert = (ImageButton) tools.findViewById(R.id.paint_back);
         LinearLayout choice = tools.findViewById(R.id.color_choices);
 
         tools.setLayoutParams(par);
-
+        //Determine if we need to scale up the image.
+        if(settings.load_pref("autoscale_back") == 1){
+            c.AUTOSCALE = true;
+        }
         c.set_img(focusedBitmap);
         c.invalidate();
+
+        p.set_stroke_width(20);
 
         //Add our canvases to the layout.
         r.addView(c);
         r.addView(p);
         this.upper_layout.addView(tools);
-
-        handle_hints("paint");
 
         //Set the touch events for the paint canvas.
         p.setOnTouchListener(new View.OnTouchListener() {
@@ -279,26 +285,8 @@ public class GenericEditorActivity extends AppCompatActivity {
             }
         });
 
-        //Brush size events are listened to here.
-        bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                p.set_stroke_width(i);
-                p.invalidate();
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                p.width_change = true;
-                p.invalidate();
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                p.width_change = false;
-                p.invalidate();
-            }
-        });
+        //Select white to begin with.
+        choice.getChildAt(0).setAlpha(1);
 
         //Loop through the color choices and set onclick listeners to change the color of
         //the painting canvas.
