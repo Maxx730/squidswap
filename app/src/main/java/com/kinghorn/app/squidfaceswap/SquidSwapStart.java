@@ -3,6 +3,7 @@ package com.kinghorn.app.squidfaceswap;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -177,7 +178,16 @@ public class SquidSwapStart extends AppCompatActivity {
                 break;
             case R.id.action_about:
                 //Start the about activity.
-
+                AlertDialog alertDialog = new AlertDialog.Builder(SquidSwapStart.this).create();
+                alertDialog.setTitle("Thank you for using Squidswap!");
+                alertDialog.setMessage("Please visit www.squidswap.com for more information.");
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.show();
                 break;
         }
 
