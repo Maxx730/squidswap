@@ -86,7 +86,8 @@ public class SquidPainter extends View {
     public SquidBitmapData get_foc(){return foc_btn;}
     public void set_paint(Paint p){brush_paint = p;}
     public Paint get_paint(){return brush_paint;}
-    public void set_stroke_width(int width){pat.setBrushsize(width);}
+    public void set_stroke_width(int width){this.stroke_width = width;pat.setBrushsize(width);}
+    public float get_stroke_width(){return this.stroke_width;}
     public void set_brush_color(int col){pat.setColor(col);}
     public int path_length(){return paths.size();}
     public void clear_paint(){paths.clear();

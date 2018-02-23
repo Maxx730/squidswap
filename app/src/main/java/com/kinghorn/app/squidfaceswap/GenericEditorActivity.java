@@ -242,8 +242,8 @@ public class GenericEditorActivity extends AppCompatActivity {
         FrameLayout tools = (FrameLayout) l.inflate(R.layout.squid_paint_tools,null);
         LinearLayout.LayoutParams par = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
 
-        FloatingActionButton brush_up;
-        FloatingActionButton brush_down;
+        FloatingActionButton brush_up = (FloatingActionButton) tools.findViewById(R.id.brush_size_up);
+        FloatingActionButton brush_down = (FloatingActionButton) tools.findViewById(R.id.brush_size_down);
 
         RelativeLayout r = (RelativeLayout) findViewById(R.id.canvas_layout);
         LinearLayout choice = tools.findViewById(R.id.color_choices);
@@ -303,6 +303,22 @@ public class GenericEditorActivity extends AppCompatActivity {
                 }
             });
         }
+
+        brush_up.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                p.set_stroke_width(Math.round(p.get_stroke_width() + 5));
+            }
+        });
+
+        brush_down.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(p.get_stroke_width() > 5){
+                    p.set_stroke_width(Math.round(p.get_stroke_width() - 5));
+                }
+            }
+        });
 
         crop_scale.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
