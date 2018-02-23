@@ -401,8 +401,6 @@ public class GenericEditorActivity extends AppCompatActivity {
                         if(c.can_select){
                             int xUpCheck,yUpCheck;
 
-                            System.out.println("UPX: "+motionEvent.getX()+" UPY: "+motionEvent.getY());
-
                             if((int) motionEvent.getY() > 0){
                                 yUpCheck = (int) motionEvent.getY();
                             }else{
@@ -421,6 +419,9 @@ public class GenericEditorActivity extends AppCompatActivity {
 
                             focusedBitmap = b;
                             c.set_img(focusedBitmap);
+                            crop_scale.setProgress(1);
+                            c.foc.set_scale_x(1);
+                            c.foc.set_scale_y(1);
                             c.reset_vals();
                             crop_back.setVisibility(View.VISIBLE);
                             c.drawing = false;

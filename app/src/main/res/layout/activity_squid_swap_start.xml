@@ -232,6 +232,7 @@
                                     android:layout_height="match_parent"
                                     android:minHeight="200dp"
                                     android:padding="10dp"
+                                    android:visibility="gone"
                                     app:cardUseCompatPadding="true">
 
                                     <LinearLayout

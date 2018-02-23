@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.media.Image;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -112,7 +113,19 @@ public class SquidSwapStart extends AppCompatActivity {
                         this.set_for_image();
                         squid_files.save_tmp(b);
                         HAS_IMAGE = true;
-                        image_preview.setImageBitmap(b);
+                        //Here we want to check the resolution of the image, if it is really large then we want to scale it down
+                        //automatically to about half the size.
+                        Bitmap fin = null;
+
+                        if(b.getWidth() > 1500){
+                            Matrix m = new Matrix();
+                            m.setScale(.5f,.5f);
+                            fin = Bitmap.createBitmap(b,0,0,b.getWidth(),b.getHeight(),m,true);
+                        }else{
+                            fin = b;
+                        }
+
+                        image_preview.setImageBitmap(fin);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
@@ -200,6 +213,7 @@ public class SquidSwapStart extends AppCompatActivity {
                 Snackbar snac = Snackbar.make(findViewById(R.id.main_content),"Saving Image...", Snackbar.LENGTH_SHORT);
                 snac.show();
 
+                HAS_IMAGE = false;
                 set_for_choice();
             }
         });
@@ -290,14 +304,6 @@ public class SquidSwapStart extends AppCompatActivity {
                     Snackbar snac = Snackbar.make(findViewById(R.id.main_content),"No image has been opened.", Snackbar.LENGTH_SHORT);
                     snac.show();
                 }
-            }
-        });
-
-        meme_card.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                EDITED = true;
-                startActivity(build_editor_intent(MEME_ID));
             }
         });
     }

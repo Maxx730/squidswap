@@ -227,7 +227,7 @@ public class SquidCanvas extends View{
         final int[] cols = {Color.TRANSPARENT,Color.BLACK,Color.BLACK};
         final float[] ancs = {.7f,.9f,1f};
         //Create the gradient shader using the color and anchor arrays.
-        RadialGradient r = new RadialGradient((orig.getWidth()) / 2,orig.getHeight() / 2,(orig.getWidth() / fade_val) * 2f,cols,ancs, Shader.TileMode.CLAMP);
+        RadialGradient r = new RadialGradient((orig.getWidth()) / 2,orig.getHeight() / 2,(orig.getWidth() / fade_val) * 3f,cols,ancs, Shader.TileMode.CLAMP);
         p.setShader(r);
         //Draw the original bitmap then draw the shader over it.
         c.drawBitmap(orig,0,0,null);
