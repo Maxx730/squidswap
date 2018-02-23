@@ -30,9 +30,11 @@ public class SquidSwapSettings extends AppCompatActivity {
         ArrayList<SquidMenuItem> items = new ArrayList<SquidMenuItem>();
         items.add(0,new SquidMenuItem(this,"Show Paintbrush Sizing Slider",file.load_drawable(this,R.drawable.ic_image_black_24dp),new Intent(this,SquidAboutPage.class),"Toggle","save_high_res"));
         items.add(0,new SquidMenuItem(this,"Autocrop Paint/Swap",file.load_drawable(this,R.drawable.ic_image_black_24dp),new Intent(this,SquidAboutPage.class),"Toggle","crop_to_original"));
-        items.add(0,new SquidMenuItem(this,"Autoscale Background",file.load_drawable(this,R.drawable.ic_image_black_24dp),new Intent(this,SquidAboutPage.class),"Toggle","autocrop_back"));
+        items.add(0,new SquidMenuItem(this,"Autoscale Background",file.load_drawable(this,R.drawable.ic_image_black_24dp),new Intent(this,SquidAboutPage.class),"Toggle","autoscale_back"));
         items.add(0,new SquidMenuItem(this,"Watermark",file.load_drawable(this,R.drawable.ic_image_black_24dp),new Intent(this,SquidAboutPage.class),"Toggle","watermark"));
         adapt = new SquidListAdapter(getApplicationContext(),R.layout.squidswap_menu_layout,items,1);
         settings_list.setAdapter(adapt);
     }
 }
+
+

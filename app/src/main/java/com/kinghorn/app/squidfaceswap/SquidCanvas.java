@@ -12,7 +12,10 @@ import android.graphics.RadialGradient;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.util.DisplayMetrics;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,6 +36,7 @@ public class SquidCanvas extends View{
     public boolean WATERMARK = false;
     public boolean REDICULES = true;
     public String CANVAS_STATE = "IDLE";
+    public boolean AUTOSCALE;
 
     //Check to see if the user is drawing to the canvas or not.
     public boolean drawing = false;
@@ -54,6 +58,7 @@ public class SquidCanvas extends View{
         select_paint.setColor(Color.parseColor("#800080"));
         select_paint.setAlpha(70);
 
+
         paths = new ArrayList<SquidPath>();
 
         //Grab caching information here.
@@ -71,15 +76,26 @@ public class SquidCanvas extends View{
         //We are going to want to check the width of the chosen image compared to the
         //width of the given squid canvas.
         if(b.getWidth() > d.widthPixels){
-            double scale = (double) d.widthPixels / (double) b.getWidth();
+            double scale = Math.ceil((double) d.widthPixels / (double) b.getWidth());
             //Now we need to check how much to scale the image down from its original size
             //to fit within the canvas.
             Matrix m = new Matrix();
             m.setScale((float) scale,(float) scale);
             final_bit = Bitmap.createBitmap(b,0,0,b.getWidth(),b.getHeight(),m,true);
         }else{
-            //Otherwise keep the size of the bitmap the same as it was.
-            final_bit = b;
+            //Scale the image up if the image is smaller and the pref is set.
+            if(this.AUTOSCALE){
+                Matrix m = new Matrix();
+                Toast.makeText(cn,"Scaling background up...",Toast.LENGTH_SHORT).show();
+                double scale = Math.ceil((double) d.widthPixels / b.getWidth());
+                Toast.makeText(cn,String.valueOf(scale),Toast.LENGTH_SHORT).show();
+                m.setScale((float) scale,(float) scale);
+                final_bit = Bitmap.createBitmap(b,0,0,b.getWidth(),b.getHeight(),m,true);
+
+            }else{
+                //Otherwise keep the size of the bitmap the same as it was.
+                final_bit = b;
+            }
         }
 
         foc.set_undo(foc.bit);
@@ -190,7 +206,7 @@ public class SquidCanvas extends View{
             cropped = Bitmap.createBitmap(orig,(Integer) Math.round((float) start_x),(Integer) Math.round((float) end_y),(Integer) Math.round((float) end_x) - (Integer) Math.round((float) start_x),(Integer) Math.round((float) start_y) - (Integer) Math.round((float) end_y));
         }else{
             cropped = Bitmap.createBitmap(orig,(Integer) Math.round((float) start_x),(Integer) Math.round((float) start_y),(Integer) Math.round((float) end_x) - (Integer) Math.round((float) start_x),(Integer) Math.round((float) end_y) - (Integer) Math.round((float) start_y));
-        }
+u        }
 
         select_paint.setColor(Color.parseColor("#800080"));
         select_paint.setAlpha(70);
@@ -273,5 +289,13 @@ public class SquidCanvas extends View{
         m.setRotate(foc.rotation_angle);
         b = Bitmap.createBitmap(orig,0,0,orig.getWidth(),orig.getHeight(),m,true);
         return b;
+    }
+
+    private class SquidGesturListener extends GestureDetector.SimpleOnGestureListener{
+        @Override
+        public boolean onDoubleTap(MotionEvent e) {
+            Toast.makeText(cn,"testing",Toast.LENGTH_SHORT).show();
+            return super.onDoubleTap(e);
+        }
     }
 }

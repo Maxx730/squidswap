@@ -31,7 +31,7 @@ public class SquidMemeGenerator extends SquidCanvas {
         text_paint = new Paint();
         text_paint.setColor(Color.WHITE);
         text_paint.setStyle(Paint.Style.FILL);
-        text_paint.setTextSize(90);
+        text_paint.setTextSize(60);
         text_paint.setAntiAlias(true);
 
         c = con;
@@ -60,8 +60,8 @@ public class SquidMemeGenerator extends SquidCanvas {
     public void set_meme_text(String t){meme_text = t;}
     public String get_meme_text(){return meme_text;}
 
-    private void draw_meme_back(Canvas c){
-        c.drawRect(new Rect(((c.getWidth() - meme_img.getWidth()) / 2) - 20,((c.getHeight() - meme_img.getHeight()) / 2) - 40,((c.getWidth() + meme_img.getWidth()) / 2) + 20,c.getHeight() - (meme_img.getHeight() / 2) + 320),meme_paint);
+    private void draw_meme_back(Canvas can){
+        can.drawRect(new Rect(((can.getWidth() - meme_img.getWidth()) / 2) - 0,((can.getHeight() - meme_img.getHeight()) / 2),((can.getWidth() + meme_img.getWidth()) / 2) + 20,can.getHeight() - (meme_img.getHeight() / 2) + 320),meme_paint);
     }
 
     //Takes in a bitmap and scales to the correct width of the meme border using a matrix.
@@ -70,6 +70,7 @@ public class SquidMemeGenerator extends SquidCanvas {
         int rat = (getWidth() / b.getWidth());
         m.postScale(rat,rat);
         Bitmap bit = Bitmap.createBitmap(meme_img,0,0,meme_img.getWidth(),meme_img.getHeight(),m,true);
+
         return bit;
     }
 

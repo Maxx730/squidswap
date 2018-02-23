@@ -192,8 +192,11 @@ public class SquidSwapStart extends AppCompatActivity {
         save_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                squid_files.save_image(squid_files.load_cached_file());
                 Snackbar snac = Snackbar.make(findViewById(R.id.main_content),"Saving Image...", Snackbar.LENGTH_SHORT);
                 snac.show();
+
+                set_for_choice();
             }
         });
 

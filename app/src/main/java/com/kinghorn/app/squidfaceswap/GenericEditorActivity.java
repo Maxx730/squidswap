@@ -101,11 +101,6 @@ public class GenericEditorActivity extends AppCompatActivity {
                 case 3:
                     init_cropper();
                     break;
-                case 4:
-
-                    break;
-                case 5:
-                    break;
                 case 6:
                     init_meme_gen();
                     break;
@@ -165,7 +160,7 @@ public class GenericEditorActivity extends AppCompatActivity {
                         //ground image.
                         if(backImage.getWidth() * b.get_foc().get_scale_x() < getWindowManager().getDefaultDisplay().getWidth()){
                             System.out.println(b.get_foc().y - (b.get_foc().get_scale_y() * backImage.getHeight()) / 2);
-                            Bitmap cropped_bp = Bitmap.createBitmap(bp,Math.round(b.get_foc().x - ((backImage.getWidth() * b.get_foc().get_scale_x()) / 2)),Math.round(b.get_foc().y - (b.get_foc().get_scale_y() * backImage.getHeight()) / 2),Math.round(backImage.getWidth() * b.get_foc().get_scale_x()),Math.round(backImage.getHeight() * b.get_foc().get_scale_y()));
+                            Bitmap cropped_bp = Bitmap.createBitmap(bp,0,0,bp.getWidth(),bp.getHeight());
 
                             in.putExtra("FocusedFileName",fil.save_tmp(cropped_bp));
                         }else{
@@ -465,11 +460,14 @@ public class GenericEditorActivity extends AppCompatActivity {
         front_foc = (Button) findViewById(R.id.foreground_toggle);
         back_foc = (Button) findViewById(R.id.background_toggle);
         rotate_seek = (SeekBar) l.findViewById(R.id.rotation_seek);
-
+        if(settings.load_pref("autoscale_back") == 1){
+            b.AUTOSCALE = true;
+        }
         b.set_img(backImage);
         c.set_img(frontImage);
 
-        b.CENTER_IMAGE = false;
+        b.CENTER_IMAGE = true;
+
         c.CENTER_IMAGE = false;
         c.get_foc().is_fade = true;
         b.get_foc().is_fade = false;
