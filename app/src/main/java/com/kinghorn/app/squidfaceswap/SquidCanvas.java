@@ -86,9 +86,7 @@ public class SquidCanvas extends View{
             //Scale the image up if the image is smaller and the pref is set.
             if(this.AUTOSCALE){
                 Matrix m = new Matrix();
-                Toast.makeText(cn,"Scaling background up...",Toast.LENGTH_SHORT).show();
                 double scale = Math.ceil((double) d.widthPixels / b.getWidth());
-                Toast.makeText(cn,String.valueOf(scale),Toast.LENGTH_SHORT).show();
                 m.setScale((float) scale,(float) scale);
                 final_bit = Bitmap.createBitmap(b,0,0,b.getWidth(),b.getHeight(),m,true);
 

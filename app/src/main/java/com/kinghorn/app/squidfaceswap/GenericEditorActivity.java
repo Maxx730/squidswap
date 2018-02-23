@@ -342,12 +342,18 @@ public class GenericEditorActivity extends AppCompatActivity {
     private void init_cropper(){
         //Create a layout inflator to bring back the undo button if there is a miscrop.
         LayoutInflater inflate = getLayoutInflater();
-        LinearLayout crop_tools = (LinearLayout) inflate.inflate(R.layout.cropping_tools,null);
+        final LinearLayout crop_tools = (LinearLayout) inflate.inflate(R.layout.cropping_tools,null);
         LinearLayout.LayoutParams par =  new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         crop_tools.setLayoutParams(par);
         crop_back = (ImageButton) crop_tools.findViewById(R.id.crop_back);
+        crop_back.setVisibility(View.GONE);
         c = new SquidCanvas(getApplicationContext(),new SquidBitmapData(getApplicationContext()));
         RelativeLayout r = (RelativeLayout) findViewById(R.id.canvas_layout);
+
+        //Determine if we need to scale up the image.
+        if(settings.load_pref("autoscale_back") == 1){
+            c.AUTOSCALE = true;
+        }
 
         c.set_img(focusedBitmap);
         c.invalidate();
@@ -363,6 +369,7 @@ public class GenericEditorActivity extends AppCompatActivity {
                 if(c.get_foc().undo_bit != null){
                     c.set_img(c.get_foc().get_undo());
                     c.can_select = true;
+                    crop_back.setVisibility(View.GONE);
                     c.invalidate();
                 }
             }
@@ -411,8 +418,7 @@ public class GenericEditorActivity extends AppCompatActivity {
                             focusedBitmap = b;
                             c.set_img(focusedBitmap);
                             c.reset_vals();
-                            c.get_foc().set_scale_x(1);
-                            c.get_foc().set_scale_y(1);
+                            crop_back.setVisibility(View.VISIBLE);
                             c.drawing = false;
                         }
                         break;

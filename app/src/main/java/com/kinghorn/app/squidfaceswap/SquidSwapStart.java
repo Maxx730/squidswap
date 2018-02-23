@@ -44,6 +44,7 @@ public class SquidSwapStart extends AppCompatActivity {
     private static final int SWAP_ID = 1;
     private static final int PICK_SWAP_IMAGE = 5;
     private static final int MEME_ID = 6;
+    private static boolean HAS_IMAGE = false;
     private static LinearLayout choice_view,previous_swap;
     private static RelativeLayout image_view;
     private static ImageView image_preview;
@@ -109,6 +110,8 @@ public class SquidSwapStart extends AppCompatActivity {
                         focused_image = data.getData();
                         Bitmap b = squid_files.open_first(data.getData(),new BitmapFactory.Options());
                         this.set_for_image();
+                        squid_files.save_tmp(b);
+                        HAS_IMAGE = true;
                         image_preview.setImageBitmap(b);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
@@ -151,6 +154,7 @@ public class SquidSwapStart extends AppCompatActivity {
                 focused_image = null;
                 image_preview.setImageBitmap(null);
                 EDITED = false;
+                HAS_IMAGE = false;
                 this.set_for_choice();
                 break;
             case R.id.action_settings:
@@ -250,27 +254,42 @@ public class SquidSwapStart extends AppCompatActivity {
         crop_card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(build_editor_intent(CROP_ID));
+                if(HAS_IMAGE){
+                    startActivity(build_editor_intent(CROP_ID));
+                }else{
+                    Snackbar snac = Snackbar.make(findViewById(R.id.main_content),"No image has been opened.", Snackbar.LENGTH_SHORT);
+                    snac.show();
+                }
             }
         });
 
         paint_card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(build_editor_intent(PAINT_ID));
-            }
+                if(HAS_IMAGE){
+                    startActivity(build_editor_intent(PAINT_ID));
+                }else{
+                    Snackbar snac = Snackbar.make(findViewById(R.id.main_content),"No image has been opened.", Snackbar.LENGTH_SHORT);
+                    snac.show();
+                }
+        }
         });
 
         swap_card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent open_int;
+                if(HAS_IMAGE){
+                    Intent open_int;
 
-                open_int = new Intent();
-                open_int.setType("image/*");
-                open_int.setAction(Intent.ACTION_GET_CONTENT);
+                    open_int = new Intent();
+                    open_int.setType("image/*");
+                    open_int.setAction(Intent.ACTION_GET_CONTENT);
 
-                startActivityForResult(Intent.createChooser(open_int, "Select Picture"), PICK_SWAP_IMAGE);
+                    startActivityForResult(Intent.createChooser(open_int, "Select Picture"), PICK_SWAP_IMAGE);
+                }else{
+                    Snackbar snac = Snackbar.make(findViewById(R.id.main_content),"No image has been opened.", Snackbar.LENGTH_SHORT);
+                    snac.show();
+                }
             }
         });
 
@@ -294,7 +313,7 @@ public class SquidSwapStart extends AppCompatActivity {
 
     private void set_for_image(){
         choice_view.setVisibility(View.GONE);
-        previous_swap.setVisibility(View.GONE);
+
         image_view.setVisibility(View.VISIBLE);
         squid_tools.setAlpha(1);
     }
