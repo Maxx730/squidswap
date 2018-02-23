@@ -187,11 +187,8 @@ public class SquidFileService {
     //Deletes the temp file stored in the cached directory when the user starts the
     //application over and or when the user finishes and saves the file.
     public void delete_tmp(){
-        File f = new File(con.getCacheDir(),"squidswap_tmp.png");
-
-        if(f.delete()){
-            System.out.println("Temp file deleted successfully.");
-        }
-
+       //Delete the temporary file from the temp cache
+        File deleted = new File(save.getAbsoluteFile().toString());
+        deleted.delete();
     }
 }

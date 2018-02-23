@@ -206,7 +206,7 @@ public class SquidCanvas extends View{
             cropped = Bitmap.createBitmap(orig,(Integer) Math.round((float) start_x),(Integer) Math.round((float) end_y),(Integer) Math.round((float) end_x) - (Integer) Math.round((float) start_x),(Integer) Math.round((float) start_y) - (Integer) Math.round((float) end_y));
         }else{
             cropped = Bitmap.createBitmap(orig,(Integer) Math.round((float) start_x),(Integer) Math.round((float) start_y),(Integer) Math.round((float) end_x) - (Integer) Math.round((float) start_x),(Integer) Math.round((float) end_y) - (Integer) Math.round((float) start_y));
-u        }
+        }
 
         select_paint.setColor(Color.parseColor("#800080"));
         select_paint.setAlpha(70);
