@@ -111,6 +111,7 @@ public class SquidCanvas extends View{
     public void set_end(int x,int y){this.end_x = x;this.end_y = y;}
     public void reset_vals(){this.start_x = 0;this.end_x = 0;this.start_y =0;this.end_y = 0;}
     public void set_scale_factor(float fac){this.scale_factor = fac;}
+    public float get_scale_factor(){return this.scale_factor;}
 
     @Override
     protected void onDraw(Canvas canvas) {
