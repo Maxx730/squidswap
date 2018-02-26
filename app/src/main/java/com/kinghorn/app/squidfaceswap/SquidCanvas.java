@@ -27,6 +27,7 @@ public class SquidCanvas extends View{
     public SquidBitmapData foc;
     private Paint select_paint;
     private ArrayList<SquidPath> paths;
+    private float scale_factor;
 
     //Public variables that can be edited from outsite the
     //object.
@@ -76,39 +77,40 @@ public class SquidCanvas extends View{
         //We are going to want to check the width of the chosen image compared to the
         //width of the given squid canvas.
         if(b.getWidth() > d.widthPixels){
-            double scale = Math.ceil((double) d.widthPixels / (double) b.getWidth());
+            float scale = (float) Math.ceil((double) d.widthPixels / (double) b.getWidth());
             //Now we need to check how much to scale the image down from its original size
             //to fit within the canvas.
             Matrix m = new Matrix();
             m.setScale((float) scale,(float) scale);
+            this.scale_factor = scale;
             final_bit = Bitmap.createBitmap(b,0,0,b.getWidth(),b.getHeight(),m,true);
         }else{
             //Scale the image up if the image is smaller and the pref is set.
             if(this.AUTOSCALE){
                 Matrix m = new Matrix();
                 float scale = (float) ((double) d.widthPixels / b.getWidth());
+                this.scale_factor = scale;
                 m.setScale((float) scale,(float) scale);
                 final_bit = Bitmap.createBitmap(b,0,0,b.getWidth(),b.getHeight(),m,true);
-
             }else{
                 //Otherwise keep the size of the bitmap the same as it was.
+                this.scale_factor = 1;
                 final_bit = b;
             }
         }
+
+        Toast.makeText(this.cn,String.valueOf(this.scale_factor),Toast.LENGTH_LONG).show();
 
         foc.set_undo(foc.bit);
         foc.set_bitmap(final_bit);
         invalidate();
     }
 
-    public Bitmap get_img(){
-        return foc.bit;
-    }
     public SquidBitmapData get_foc(){return foc;};
     public void set_start(int x,int y){this.start_x = x;this.start_y = y;}
     public void set_end(int x,int y){this.end_x = x;this.end_y = y;}
     public void reset_vals(){this.start_x = 0;this.end_x = 0;this.start_y =0;this.end_y = 0;}
-    public void set_paint_paths(ArrayList<SquidPath> p){paths = p;}
+    public void set_scale_factor(float fac){this.scale_factor = fac;}
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -116,7 +118,7 @@ public class SquidCanvas extends View{
 
         //If the focused image has any data then write the data to the canvas.
         if (foc.bit != null) {
-            Bitmap scale = matrix_scale(foc.bit,.25f,.25f);
+            Bitmap scale = matrix_scale(foc.bit,scale_factor,scale_factor);
 
             if(CENTER_IMAGE){
                 canvas.drawBitmap(scale,((getWidth() - scale.getWidth()) / 2),((getHeight() - scale.getHeight()) / 2),null);
@@ -158,28 +160,6 @@ public class SquidCanvas extends View{
                 }
             }
         }
-    }
-
-    //Returns where the values to place the image in the center should be.
-    private HashMap return_center(HashMap source){
-        Canvas c = (Canvas) source.get("canvas");
-
-        float w = (float) source.get("width");
-        float h = (float) source.get("height");
-
-        HashMap re = new HashMap<String,Float>();
-
-        re.put("x",(c.getWidth() - w) / 2);
-        re.put("y",(c.getHeight() - h) / 2);
-
-        return re;
-    }
-
-    public int center_x(Canvas c){
-        return (getWidth() - foc.bit.getWidth()) / 2;
-    }
-    public int center_y(Canvas c){
-        return (getHeight() - foc.bit.getHeight()) / 2;
     }
 
     //Returns the bitmap data that was obtained from the image selection based
@@ -240,20 +220,6 @@ public class SquidCanvas extends View{
         return matrix_rotate(b);
     }
 
-    //Checks the size of the selection.  If large enough then it returns true.
-    private boolean check_select_size(){
-        //Make sure we have values.
-        if(this.start_x > 0 && this.start_y > 0 && this.end_x > 0 && this.end_y > 0){
-            if(this.end_x - this.start_x > 10 && this.end_y - this.start_y > 10){
-                return true;
-            }else{
-                return false;
-            }
-        }else{
-            return false;
-        }
-    }
-
     //Checks the values of the start and end points and converts them based on
     //what they are.
     private boolean check_x(){
@@ -275,10 +241,8 @@ public class SquidCanvas extends View{
     //solve the issues we have with scaling and selection on a bitmap.
     private Bitmap matrix_scale(Bitmap orig,float scale_x,float scale_y){
         Matrix m = new Matrix();
-        m.postScale(foc.get_scale_x(),foc.get_scale_y());
-
+        m.postScale(scale_x,scale_y);
         Bitmap b = Bitmap.createBitmap(orig,0,0,orig.getWidth(),orig.getHeight(),m,true);
-
         return b;
     }
 
@@ -289,13 +253,5 @@ public class SquidCanvas extends View{
         m.setRotate(foc.rotation_angle);
         b = Bitmap.createBitmap(orig,0,0,orig.getWidth(),orig.getHeight(),m,true);
         return b;
-    }
-
-    private class SquidGesturListener extends GestureDetector.SimpleOnGestureListener{
-        @Override
-        public boolean onDoubleTap(MotionEvent e) {
-            Toast.makeText(cn,"testing",Toast.LENGTH_SHORT).show();
-            return super.onDoubleTap(e);
-        }
     }
 }

@@ -67,7 +67,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:max="150"
+                    android:max="300"
+                    android:min="50"
                     android:progressTint="@color/green_alt_accent"
                     android:thumbTint="@color/green_alt" />
 

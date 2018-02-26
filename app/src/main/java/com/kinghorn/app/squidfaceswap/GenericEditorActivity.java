@@ -432,8 +432,7 @@ public class GenericEditorActivity extends AppCompatActivity {
                             focusedBitmap = b;
                             c.set_img(focusedBitmap);
                             crop_scale.setProgress(1);
-                            c.foc.set_scale_x(1);
-                            c.foc.set_scale_y(1);
+
                             c.reset_vals();
                             crop_back.setVisibility(View.VISIBLE);
                             c.drawing = false;
@@ -449,10 +448,7 @@ public class GenericEditorActivity extends AppCompatActivity {
         crop_scale.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                int scal_max = 5;
-                float scal = (float)(1 + (float)(i/100f));
-                c.foc.set_scale_x(scal);
-                c.foc.set_scale_y(scal);
+                c.set_scale_factor((float) i / 100);
                 c.invalidate();
             }
 
