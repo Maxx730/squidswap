@@ -71,7 +71,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
                             android:max="10"
-                            android:progress="1"
+                            android:progress="3"
                             android:progressTint="@color/green_alt_accent"
                             android:thumbTint="@color/green_alt" />
 

@@ -111,14 +111,13 @@ public class SquidSwapStart extends AppCompatActivity {
                     try {
                         focused_image = data.getData();
                         Bitmap b = squid_files.open_first(data.getData(),new BitmapFactory.Options());
-                        this.set_for_image();
-                        squid_files.save_tmp(b);
-                        HAS_IMAGE = true;
                         //Here we want to check the resolution of the image, if it is really large then we want to scale it down
                         //automatically to about half the size.
                         Bitmap fin = null;
 
                         if(b.getWidth() > 1500){
+
+                            Toast.makeText(getApplicationContext(),"testing",Toast.LENGTH_SHORT).show();
                             Matrix m = new Matrix();
                             m.setScale(.5f,.5f);
                             fin = Bitmap.createBitmap(b,0,0,b.getWidth(),b.getHeight(),m,true);
@@ -126,6 +125,10 @@ public class SquidSwapStart extends AppCompatActivity {
                             fin = b;
                         }
 
+                        this.set_for_image();
+                        squid_files.save_tmp(fin);
+                        HAS_IMAGE = true;
+                        EDITED = true;
                         image_preview.setImageBitmap(fin);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();

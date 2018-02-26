@@ -86,7 +86,7 @@ public class SquidCanvas extends View{
             //Scale the image up if the image is smaller and the pref is set.
             if(this.AUTOSCALE){
                 Matrix m = new Matrix();
-                double scale = Math.ceil((double) d.widthPixels / b.getWidth());
+                float scale = (float) ((double) d.widthPixels / b.getWidth());
                 m.setScale((float) scale,(float) scale);
                 final_bit = Bitmap.createBitmap(b,0,0,b.getWidth(),b.getHeight(),m,true);
 
@@ -116,7 +116,7 @@ public class SquidCanvas extends View{
 
         //If the focused image has any data then write the data to the canvas.
         if (foc.bit != null) {
-            Bitmap scale = matrix_scale(foc.bit,foc.get_scale_x(),foc.get_scale_y());
+            Bitmap scale = matrix_scale(foc.bit,.25f,.25f);
 
             if(CENTER_IMAGE){
                 canvas.drawBitmap(scale,((getWidth() - scale.getWidth()) / 2),((getHeight() - scale.getHeight()) / 2),null);
@@ -223,16 +223,18 @@ public class SquidCanvas extends View{
         Paint p = new Paint();
         //DST out layer mode to hide black and show trans.
         p.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
+
         //Color array of the shader. also with the anchor points for when to start and stop colors.
-        final int[] cols = {Color.TRANSPARENT,Color.BLACK,Color.BLACK};
-        final float[] ancs = {.7f,.9f,1f};
+        final int[] cols = {Color.TRANSPARENT,Color.parseColor("#00000055"),Color.parseColor("#00000077"),Color.BLACK};
+        final float[] ancs = {.3f,.5f,.6f,1f};
+
         //Create the gradient shader using the color and anchor arrays.
-        RadialGradient r = new RadialGradient((orig.getWidth()) / 2,orig.getHeight() / 2,(orig.getWidth() / fade_val) * 3f,cols,ancs, Shader.TileMode.CLAMP);
+        RadialGradient r = new RadialGradient((orig.getWidth()) / 2,orig.getHeight() / 2,(orig.getHeight() / fade_val),cols,ancs, Shader.TileMode.CLAMP);
         p.setShader(r);
+
         //Draw the original bitmap then draw the shader over it.
         c.drawBitmap(orig,0,0,null);
-        //c.drawCircle(orig.getWidth() / 2f,orig.getHeight() / 2f,larger_dimen(orig.getWidth(),orig.getHeight()) / .4f,p);
-        c.drawOval(new RectF((orig.getWidth() / 2) * -1,(orig.getHeight()) * -1,orig.getWidth() + (orig.getWidth() / 2),orig.getHeight() + (orig.getHeight() / 2)),p);
+        c.drawCircle(orig.getWidth() / 2f,orig.getHeight() / 2f,orig.getHeight() / .7f,p);
 
         //Here we need to apply any rotation to the given image.
         return matrix_rotate(b);

@@ -3,6 +3,7 @@ package com.kinghorn.app.squidfaceswap;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
 import android.widget.ImageView;
 
 /**
@@ -26,6 +27,13 @@ public class SquidSwapPreview extends AppCompatActivity {
         if(prev.hasExtra("tmp")){
             preview_image.setImageBitmap(squid_files.load_cached_file());
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_squid_swap_start, menu);
+        return true;
     }
 
 }

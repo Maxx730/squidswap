@@ -244,6 +244,7 @@ public class GenericEditorActivity extends AppCompatActivity {
 
         FloatingActionButton brush_up = (FloatingActionButton) tools.findViewById(R.id.brush_size_up);
         FloatingActionButton brush_down = (FloatingActionButton) tools.findViewById(R.id.brush_size_down);
+        FloatingActionButton paint_back = (FloatingActionButton) tools.findViewById(R.id.paint_revert);
 
         RelativeLayout r = (RelativeLayout) findViewById(R.id.canvas_layout);
         LinearLayout choice = tools.findViewById(R.id.color_choices);
@@ -304,10 +305,12 @@ public class GenericEditorActivity extends AppCompatActivity {
             });
         }
 
+        //Increase and decrease the size of the paintbrush.
         brush_up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 p.set_stroke_width(Math.round(p.get_stroke_width() + 5));
+                p.width_change = true;
             }
         });
 
@@ -316,7 +319,16 @@ public class GenericEditorActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(p.get_stroke_width() > 5){
                     p.set_stroke_width(Math.round(p.get_stroke_width() - 5));
+                    p.width_change = true;
                 }
+            }
+        });
+
+        //Removes last painted object.
+        paint_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                p.undo_last_paint();
             }
         });
 
@@ -541,6 +553,8 @@ public class GenericEditorActivity extends AppCompatActivity {
 
             }
         });
+
+        c.fade_val = fade_seek.getProgress();
 
         d.setVisibility(View.GONE);
         d.setOnTouchListener(new View.OnTouchListener() {
