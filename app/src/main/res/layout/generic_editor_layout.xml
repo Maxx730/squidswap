@@ -11,6 +11,78 @@
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="right|center_vertical"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <ImageButton
+                android:id="@+id/swap_drawer_toggle_"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:alpha=".7"
+                android:background="@color/green_alt_accent"
+                android:padding="5dp"
+                app:srcCompat="@drawable/ic_chevron_left_black_24dp" />
+
+            <LinearLayout
+                android:id="@+id/side_tools_layout"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/editor_dark_background"
+                android:orientation="vertical"
+                android:padding="0dp">
+
+                <TextView
+                    android:id="@+id/tools_drawer_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorPrimaryDark"
+                    android:paddingBottom="7dp"
+                    android:paddingLeft="12dp"
+                    android:paddingTop="7dp"
+                    android:text="@string/drawer_title"
+                    android:textColor="@android:color/background_light"
+                    android:textSize="22sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:padding="0dp">
+
+                    <Button
+                        android:id="@+id/foreground_toggle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/editor_dark_background"
+                        android:text="Foreground"
+                        android:textColor="@color/green_alt"
+                        android:textSize="12sp" />
+
+                    <Button
+                        android:id="@+id/background_toggle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/editor_dark_background"
+                        android:text="Background"
+                        android:textColor="@android:color/background_light"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/tools_canvas"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -82,77 +154,19 @@
             </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:id="@+id/scaling_confirm_overlay"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="right|center_vertical"
-            android:orientation="horizontal"
-            android:visibility="gone">
+            android:layout_gravity="center_vertical|center_horizontal">
 
             <ImageButton
-                android:id="@+id/swap_drawer_toggle_"
+                android:id="@+id/scaling_confirm_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:alpha=".7"
-                android:background="@color/green_alt_accent"
-                android:padding="5dp"
-                app:srcCompat="@drawable/ic_chevron_left_black_24dp" />
-
-            <LinearLayout
-                android:id="@+id/side_tools_layout"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:background="@drawable/editor_dark_background"
-                android:orientation="vertical"
-                android:padding="0dp">
-
-                <TextView
-                    android:id="@+id/tools_drawer_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorPrimaryDark"
-                    android:paddingBottom="7dp"
-                    android:paddingLeft="12dp"
-                    android:paddingTop="7dp"
-                    android:text="@string/drawer_title"
-                    android:textColor="@android:color/background_light"
-                    android:textSize="22sp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:padding="0dp">
-
-                    <Button
-                        android:id="@+id/foreground_toggle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/editor_dark_background"
-                        android:text="Foreground"
-                        android:textColor="@color/green_alt"
-                        android:textSize="12sp" />
-
-                    <Button
-                        android:id="@+id/background_toggle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/editor_dark_background"
-                        android:text="Background"
-                        android:textColor="@android:color/background_light"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <ListView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-            </LinearLayout>
-
-        </LinearLayout>
+                android:layout_centerInParent="true"
+                app:srcCompat="@drawable/ic_image_crop_success_24dp" />
+        </RelativeLayout>
 
     </FrameLayout>
 
