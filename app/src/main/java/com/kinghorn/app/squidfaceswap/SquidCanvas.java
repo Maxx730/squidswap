@@ -12,7 +12,10 @@ import android.graphics.RadialGradient;
 import android.graphics.Shader;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
+import android.widget.Toast;
 
 //Canvas class that we will use in this view to draw on top of the given image.
 public class SquidCanvas extends View{
@@ -21,6 +24,7 @@ public class SquidCanvas extends View{
     protected Bitmap focused,last;
     protected SeekBar scaling_bar;
     protected boolean overwrite_focused = false;
+    protected RelativeLayout success_layout;
     //Public variables that can be edited from outsite the
     //object.
     public float fade_val = .025f,scale_factor = 1,rotation = 0;
@@ -155,8 +159,25 @@ public class SquidCanvas extends View{
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+                success_layout.setVisibility(View.VISIBLE);
                 invalidate();
             }
         });
+    }
+
+    //Generates the success layout so that we can
+    public void set_success_layout(RelativeLayout lay){
+        this.success_layout = lay;
+
+        ImageButton success_btn = lay.findViewById(R.id.scaling_confirm_button);
+
+        if(success_btn != null){
+            success_btn.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    success_layout.setVisibility(View.GONE);
+                }
+            });
+        }
     }
 }

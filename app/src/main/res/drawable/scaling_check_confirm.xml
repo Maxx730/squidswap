@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <shape xmlns:android="http://schemas.android.com/apk/res/android"
+            android:shape="rectangle">
+
+            <solid  android:color="@color/green_alt_accent"></solid>
+            <corners android:radius="500dp"></corners>
+            // Add your desired padding
+            <padding
+                android:left="30dp"
+                android:top="30dp"
+                android:right="30dp"
+                android:bottom="30dp"    >
+            </padding>
+
+        </shape>
+    </item><!-- pressed -->
+    <item android:state_focused="true">
+        <color android:color="@color/colorPrimaryDark"></color>
+    </item><!-- focused -->
+    <item>
+        <shape xmlns:android="http://schemas.android.com/apk/res/android"
+            android:shape="rectangle">
+
+            <solid  android:color="@color/green_alt"></solid>
+            <corners android:radius="500dp"></corners>
+
+            // Add your desired padding
+            <padding
+                android:left="25dp"
+                android:top="25dp"
+                android:right="25dp"
+                android:bottom="25dp"    >
+            </padding>
+
+        </shape>
+    </item><!-- default -->
+</selector>

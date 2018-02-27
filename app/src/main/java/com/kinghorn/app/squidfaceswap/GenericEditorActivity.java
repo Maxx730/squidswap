@@ -352,6 +352,7 @@ public class GenericEditorActivity extends AppCompatActivity {
         crop_back.setVisibility(View.GONE);
         c = new SquidCropper(getApplicationContext(),crop_back);
         RelativeLayout r = (RelativeLayout) findViewById(R.id.canvas_layout);
+        RelativeLayout suc = (RelativeLayout) findViewById(R.id.scaling_confirm_overlay);
 
         //Determine if we need to scale up the image.
         if(settings.load_pref("autoscale_back") == 1){
@@ -360,6 +361,8 @@ public class GenericEditorActivity extends AppCompatActivity {
 
         c.set_img(focusedBitmap);
         c.set_scaling_bar(crop_scale);
+        c.set_success_layout(suc);
+
         c.invalidate();
         r.addView(c);
         r.addView(crop_tools);
