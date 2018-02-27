@@ -11,6 +11,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.Image;
 import android.net.Uri;
+import android.opengl.Visibility;
 import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -33,6 +34,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.yalantis.ucrop.UCrop;
+
+import java.io.File;
 import java.io.FileNotFoundException;
 
 public class SquidSwapStart extends AppCompatActivity {
@@ -282,7 +286,18 @@ public class SquidSwapStart extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(HAS_IMAGE){
-                    startActivity(build_editor_intent(CROP_ID));
+
+                    //Set the ucrop options.
+                    UCrop.Options ops = new UCrop.Options();
+                    ops.setStatusBarColor(getResources().getColor(R.color.colorPrimary));
+                    ops.setToolbarColor(getResources().getColor(R.color.colorPrimary));
+                    ops.setLogoColor(getResources().getColor(R.color.colorPrimary));
+                    ops.setActiveWidgetColor(getResources().getColor(R.color.colorPrimary));
+                    ops.setFreeStyleCropEnabled(true);
+
+                    UCrop.of(focused_image, Uri.fromFile(new File("/sdcard/sample.jpg")))
+                            .withMaxResultSize(2000, 2000).withOptions(ops)
+                            .start(SquidSwapStart.this);
                 }else{
                     Snackbar snac = Snackbar.make(findViewById(R.id.main_content),"No image has been opened.", Snackbar.LENGTH_SHORT);
                     snac.show();

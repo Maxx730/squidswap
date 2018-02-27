@@ -25,6 +25,8 @@ public class SquidCanvas extends View{
     protected SeekBar scaling_bar;
     protected boolean overwrite_focused = false;
     protected RelativeLayout success_layout;
+    protected SquidFileService files;
+    protected Matrix image_matrix;
     //Public variables that can be edited from outsite the
     //object.
     public float fade_val = .025f,scale_factor = 1,rotation = 0;
@@ -36,7 +38,8 @@ public class SquidCanvas extends View{
         super(con);
         //Set our variables.
         cn = con;
-
+        files = new SquidFileService(cn);
+        image_matrix = new Matrix();
         //Grab caching information here.
         setDrawingCacheEnabled(true);
         setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
@@ -48,11 +51,6 @@ public class SquidCanvas extends View{
         focused = b;
         invalidate();
     }
-    //Getters and setters for our scaling and rotation.
-    public void set_scale_factor(float fac){this.scale_factor = fac;}
-    public float get_scale_factor(){return this.scale_factor;}
-    public void set_rotation(float rot){this.rotation = rot;}
-    public float get_rotation(){return this.rotation;}
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -60,10 +58,8 @@ public class SquidCanvas extends View{
 
         //If the focused image has any data then write the data to the canvas.
         if (this.focused != null) {
-            Bitmap scale = matrix_scale(this.focused,scale_factor,scale_factor,overwrite_focused);
-
             if(CENTER_IMAGE){
-                canvas.drawBitmap(scale,((getWidth() - scale.getWidth()) / 2),((getHeight() - scale.getHeight()) / 2),null);
+                canvas.drawBitmap(this.focused,image_matrix,null);
             }else{
 
             }
@@ -105,11 +101,6 @@ public class SquidCanvas extends View{
         m.setScale(scale_x,scale_y);
         Bitmap b = Bitmap.createBitmap(orig,0,0,orig.getWidth(),orig.getHeight(),m,true);
 
-        if(overwrite){
-            focused = b;
-            overwrite_focused = false;
-        }
-
         return b;
     }
 
@@ -148,7 +139,7 @@ public class SquidCanvas extends View{
         this.scaling_bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                set_scale_factor((float) i / 100);
+                image_matrix.setScale((float) i / 100,(float) i / 100);
                 invalidate();
             }
 
@@ -159,6 +150,7 @@ public class SquidCanvas extends View{
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+                //Show the confirm layout change button.
                 success_layout.setVisibility(View.VISIBLE);
                 invalidate();
             }
@@ -175,6 +167,9 @@ public class SquidCanvas extends View{
             success_btn.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    //Now we want to change the focused image to a new scaled version.
+
+                    invalidate();
                     success_layout.setVisibility(View.GONE);
                 }
             });

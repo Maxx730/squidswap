@@ -16,6 +16,10 @@
             android:name=".SquidSwapSettings"
             android:configChanges="orientation|keyboardHidden|screenSize" />
         <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity
             android:name=".SquidAboutPage"
             android:configChanges="orientation|keyboardHidden|screenSize" />
         <activity

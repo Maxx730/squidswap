@@ -4,6 +4,7 @@ package com.kinghorn.app.squidfaceswap;
         import android.graphics.Bitmap;
         import android.graphics.Canvas;
         import android.graphics.Color;
+        import android.graphics.Matrix;
         import android.graphics.Paint;
         import android.view.MotionEvent;
         import android.view.View;
@@ -16,6 +17,7 @@ public class SquidCropper extends SquidCanvas {
     private boolean can_crop = true,dragging = false;
     private ImageButton undo;
     private Paint select_paint;
+    private Bitmap selection_bit;
 
     public SquidCropper(Context con) {
         super(con);
@@ -23,8 +25,7 @@ public class SquidCropper extends SquidCanvas {
         select_paint = new Paint();
         select_paint.setAntiAlias(true);
         select_paint.setStyle(Paint.Style.FILL);
-        select_paint.setColor(Color.parseColor("#800080"));
-        select_paint.setAlpha(70);
+        select_paint.setColor(Color.parseColor("#000000"));
     }
 
     //Constructor that includes an undo button, might as well have an option to not require it.
@@ -34,9 +35,7 @@ public class SquidCropper extends SquidCanvas {
         select_paint = new Paint();
         select_paint.setAntiAlias(true);
         select_paint.setStyle(Paint.Style.FILL);
-        select_paint.setColor(Color.parseColor("#800080"));
-        select_paint.setAlpha(70);
-
+        select_paint.setColor(Color.parseColor("#000000"));
         this.undo = undo_crop;
         this.undo.setOnClickListener(new OnClickListener() {
             @Override
@@ -71,7 +70,6 @@ public class SquidCropper extends SquidCanvas {
                     this.undo.setVisibility(View.VISIBLE);
                 }
                 this.set_drag(false);
-                this.set_img(this.select_data());
                 this.reset_vals();
                 break;
             case MotionEvent.ACTION_MOVE:
@@ -85,12 +83,19 @@ public class SquidCropper extends SquidCanvas {
         return super.onTouchEvent(event);
     }
 
+    private Bitmap save_selection_bitmap(){
+
+        return null;
+    }
+
     //We want to check the points before we select the data from the parent
     //Squidcanvas class to make sure we are not trying to crop zero values.
     private Bitmap select_data(){
         //Now that we have checked our values we want to return a new value to the parent
         //Squidcanvas as a Bitmap based on these values.
-        Bitmap orig = focused;
+        Matrix m = new Matrix();
+        m.setScale(scale_factor,scale_factor);
+        Bitmap orig = Bitmap.createBitmap(focused,0,0,focused.getWidth(),focused.getHeight(),m,true);
 
         boolean x_check,y_check;
 
@@ -99,7 +104,7 @@ public class SquidCropper extends SquidCanvas {
         Bitmap cropped;
 
         if(x_check && y_check){
-            cropped = Bitmap.createBitmap(orig,(Integer) Math.round((float) end_x),(Integer) Math.round((float) end_y),(Integer) Math.round((float) start_x) - (Integer) Math.round((float) end_x),(Integer) Math.round((float) start_y) - (Integer) Math.round((float) end_y));
+            cropped = Bitmap.createBitmap(orig.getWidth(),orig.getHeight(),Bitmap.Config.ARGB_8888);
         }else if(x_check && !y_check){
             cropped = Bitmap.createBitmap(orig,(Integer) Math.round((float) end_x),(Integer) Math.round((float) start_y),(Integer) Math.round((float) start_x) - (Integer) Math.round((float) end_x),(Integer) Math.round((float) end_y) - (Integer) Math.round((float) start_y));
         }else if(!x_check && y_check){
