@@ -47,7 +47,6 @@ public class GenericEditorActivity extends AppCompatActivity {
     private SquidPainter p;
     private Intent i;
     private EditText meme_text;
-    private SquidSwapTouchup d;
     private boolean DRAWER_OPEN = false;
     private Bitmap meme_gen_tmp;
     //Hinting tool objects are intialized below.
@@ -69,8 +68,7 @@ public class GenericEditorActivity extends AppCompatActivity {
         settings = new SquidSettingsHandler(getApplicationContext());
 
         Intent prev = getIntent();
-        //Grab the layout of where different tools will be going.
-        upper_layout = (LinearLayout)findViewById(R.id.upper_tool_layout);
+
         crop_scale = (SeekBar) findViewById(R.id.general_scaling_bar);
         //Get the context of why this activity was opened and react accordingly to the
         //context integer.
@@ -111,9 +109,6 @@ public class GenericEditorActivity extends AppCompatActivity {
             init_bottom_btns();
         } catch (FileNotFoundException e) {
             Toast.makeText(getApplicationContext(),"Error opening chosen file...",Toast.LENGTH_SHORT).show();
-
-            Intent bac = new Intent(getApplicationContext(),SquidSwapMain.class);
-            startActivity(bac);
         }
     }
 
@@ -159,14 +154,7 @@ public class GenericEditorActivity extends AppCompatActivity {
                         //Here we want to check the size of the image, if the image width is larger than the screen
                         //then we want to just use the drawing cache, otherwise we want to crop the image to the size of the back
                         //ground image.
-                        if(backImage.getWidth() * b.get_foc().get_scale_x() < getWindowManager().getDefaultDisplay().getWidth()){
-                            System.out.println(b.get_foc().y - (b.get_foc().get_scale_y() * backImage.getHeight()) / 2);
-                            Bitmap cropped_bp = Bitmap.createBitmap(bp,0,0,bp.getWidth(),bp.getHeight());
 
-                            in.putExtra("FocusedFileName",fil.save_tmp(cropped_bp));
-                        }else{
-                            in.putExtra("FocusedFileName",fil.save_tmp(bp));
-                        }
                         in.putExtra("tmp",true);
 
                         startActivity(in);
@@ -236,7 +224,7 @@ public class GenericEditorActivity extends AppCompatActivity {
 
     //Initializes the painting tool within this layout.
     private void init_painter(){
-        c = new SquidCanvas(getApplicationContext(),new SquidBitmapData(getApplicationContext()));
+        c = new SquidCanvas(getApplicationContext());
         p = new SquidPainter(getApplicationContext());
         LayoutInflater l = getLayoutInflater();
         FrameLayout tools = (FrameLayout) l.inflate(R.layout.squid_paint_tools,null);
@@ -337,8 +325,7 @@ public class GenericEditorActivity extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 int scal_max = 5;
                 float scal = (float)(1 + (float)(i/100f));
-                c.foc.set_scale_x(scal);
-                c.foc.set_scale_y(scal);
+
                 c.invalidate();
             }
 
@@ -363,7 +350,7 @@ public class GenericEditorActivity extends AppCompatActivity {
         crop_tools.setLayoutParams(par);
         crop_back = (ImageButton) crop_tools.findViewById(R.id.crop_back);
         crop_back.setVisibility(View.GONE);
-        c = new SquidCanvas(getApplicationContext(),new SquidBitmapData(getApplicationContext()));
+        c = new SquidCropper(getApplicationContext(),crop_back);
         RelativeLayout r = (RelativeLayout) findViewById(R.id.canvas_layout);
 
         //Determine if we need to scale up the image.
@@ -372,102 +359,16 @@ public class GenericEditorActivity extends AppCompatActivity {
         }
 
         c.set_img(focusedBitmap);
+        c.set_scaling_bar(crop_scale);
         c.invalidate();
-
         r.addView(c);
         r.addView(crop_tools);
-
-        handle_hints("crop");
-
-        crop_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(c.get_foc().undo_bit != null){
-                    c.set_img(c.get_foc().get_undo());
-                    c.can_select = true;
-                    crop_back.setVisibility(View.GONE);
-                    c.invalidate();
-                }
-            }
-        });
-
-        c.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                switch(motionEvent.getAction()){
-                    case MotionEvent.ACTION_DOWN:
-
-                            c.set_start((int) motionEvent.getX(),(int) motionEvent.getY());
-                            c.drawing = true;
-
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-
-                            c.set_end((int) motionEvent.getX(),(int) motionEvent.getY());
-                            c.drawing = true;
-
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        //We need to write logic to check if there even is a value for when
-                        //just in case they dragged to off of the screen.
-                        if(c.can_select){
-                            int xUpCheck,yUpCheck;
-
-                            if((int) motionEvent.getY() > 0){
-                                yUpCheck = (int) motionEvent.getY();
-                            }else{
-                                yUpCheck = 0;
-                            }
-
-                            if((int) motionEvent.getX() > 0){
-                                xUpCheck = (int) motionEvent.getX();
-                            }else{
-                                xUpCheck = 0;
-                            }
-
-                            c.set_end(xUpCheck,yUpCheck);
-                            Bitmap b = c.select_data();
-                            focusedBitmap = b;
-                            c.set_img(focusedBitmap);
-                            c.reset_vals();
-                            crop_back.setVisibility(View.VISIBLE);
-                            crop_scale.setProgress(Math.round(c.get_scale_factor() * 100));
-                            c.drawing = false;
-                        }
-                        break;
-                }
-
-                c.invalidate();
-                return true;
-            }
-        });
-
-        //Default the scaling bar to whatever is generated by the canvas when we set the image.
-        crop_scale.setProgress(Math.round(c.get_scale_factor() * 100));
-        crop_scale.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                c.set_scale_factor((float) i / 100);
-                c.invalidate();
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
     }
 
     //Initializes the face swapping tool.
     private void init_swapper(){
-        c = new SquidCanvas(getApplicationContext(),new SquidBitmapData(getApplicationContext()));
-        b = new SquidCanvas(getApplicationContext(),new SquidBitmapData(getApplicationContext()));
-        d = new SquidSwapTouchup(getApplicationContext(),new SquidBitmapData(getApplicationContext()));
+        c = new SquidCanvas(getApplicationContext());
+        b = new SquidCanvas(getApplicationContext());
 
         RelativeLayout r = (RelativeLayout) findViewById(R.id.canvas_layout);
         LayoutInflater inflate = getLayoutInflater();
@@ -487,16 +388,13 @@ public class GenericEditorActivity extends AppCompatActivity {
         b.CENTER_IMAGE = true;
 
         c.CENTER_IMAGE = false;
-        c.get_foc().is_fade = true;
-        b.get_foc().is_fade = false;
+
 
         b.invalidate();
         c.invalidate();
-        d.invalidate();
 
         r.addView(b);
         r.addView(c);
-        r.addView(d);
         r.addView(l);
 
         fade_seek = (SeekBar) l.findViewById(R.id.fade_seeker);
@@ -551,20 +449,7 @@ public class GenericEditorActivity extends AppCompatActivity {
 
         c.fade_val = fade_seek.getProgress();
 
-        d.setVisibility(View.GONE);
-        d.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                switch(motionEvent.getAction()){
-                    case MotionEvent.ACTION_DOWN:
-
-                        break;
-                }
-
-                return true;
-            }
-        });
-
+        /*
         c.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -597,19 +482,12 @@ public class GenericEditorActivity extends AppCompatActivity {
                 return true;
             }
         });
+        */
 
         crop_scale.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean bol) {
                 float scal = (float)(1 + (float)(i/100f));
-
-                if(focused_layer == 2){
-                    b.foc.set_scale_x(scal);
-                    b.foc.set_scale_y(scal);
-                }else{
-                    c.foc.set_scale_x(scal);
-                    c.foc.set_scale_y(scal);
-                }
 
                 b.invalidate();
                 c.invalidate();
@@ -631,8 +509,6 @@ public class GenericEditorActivity extends AppCompatActivity {
         rotate_seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                c.get_foc().rotation_angle = i;
-                c.invalidate();
             }
 
             @Override
@@ -649,7 +525,7 @@ public class GenericEditorActivity extends AppCompatActivity {
 
     //Creates the meme generator superclass of
     private void init_meme_gen(){
-        final SquidMemeGenerator c = new SquidMemeGenerator(getApplicationContext(),new SquidBitmapData(getApplicationContext()));
+        final SquidMemeGenerator c = new SquidMemeGenerator(getApplicationContext());
         RelativeLayout r = (RelativeLayout) findViewById(R.id.canvas_layout);
         LayoutInflater inflate = getLayoutInflater();
         meme_layout = (FrameLayout) inflate.inflate(R.layout.meme_gen_tools,null);
@@ -685,59 +561,4 @@ public class GenericEditorActivity extends AppCompatActivity {
         });
     }
 
-    //Hides/shows hints based on the context and if the saved pref for if they have been seen
-    //or not is set to true.
-    private void handle_hints(String context){
-        scal_hint = (TextView)findViewById(R.id.scaling_hint);
-        crop_hint = (TextView) findViewById(R.id.cropping_hint);
-        got_it = (Button) findViewById(R.id.got_it_btn);
-        hints = (FrameLayout) findViewById(R.id.hint_layout);
-
-        switch(context){
-            case "crop":
-                if(this.settings.load_pref("hint_crop") == 1){
-                    got_it.setVisibility(View.VISIBLE);
-                    hints.setVisibility(View.VISIBLE);
-                    crop_hint.setVisibility(View.VISIBLE);
-                    scal_hint.setVisibility(View.VISIBLE);
-
-                    got_it.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            hints.setVisibility(View.GONE);
-                            crop_hint.setVisibility(View.GONE);
-                            scal_hint.setVisibility(View.GONE);
-                            got_it.setVisibility(View.GONE);
-                            settings.save_pref("hint_crop",0);
-                        }
-                    });
-                }
-                break;
-            case "paint":
-                if(this.settings.load_pref("hint_paint") == 1){
-                    got_it.setVisibility(View.VISIBLE);
-                    hints.setVisibility(View.VISIBLE);
-                    paint_hint = (TextView) findViewById(R.id.painting_hint);
-                    paint_hint.setVisibility(View.VISIBLE);
-                    scal_hint.setVisibility(View.VISIBLE);
-
-                    got_it.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            hints.setVisibility(View.GONE);
-                            paint_hint.setVisibility(View.GONE);
-                            scal_hint.setVisibility(View.GONE);
-                            got_it.setVisibility(View.GONE);
-                            settings.save_pref("hint_paint",0);
-                        }
-                    });
-                }
-                break;
-            case "swap":
-                if(this.settings.load_pref("hint_swap") == 1){
-
-                }
-                break;
-        }
-    }
 }

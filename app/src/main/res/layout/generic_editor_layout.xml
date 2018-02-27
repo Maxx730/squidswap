@@ -83,64 +83,6 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/upper_tool_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/painting_hint"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:background="@drawable/editor_dark_background"
-                        android:padding="15dp"
-                        android:text="@string/painting_hint"
-                        android:textColor="@android:color/background_light"
-                        android:visibility="gone" />
-
-                    <TextView
-                        android:id="@+id/cropping_hint"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="top"
-                        android:layout_weight="1"
-                        android:background="@drawable/editor_dark_background"
-                        android:padding="15dp"
-                        android:text="@string/crop_hint"
-                        android:textColor="@android:color/background_light"
-                        android:visibility="gone" />
-                </LinearLayout>
-
-                <Button
-                    android:id="@+id/got_it_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:background="@drawable/squid_ui_btn"
-                    android:text="@string/hint_confirm"
-                    android:textColor="@android:color/background_light"
-                    android:visibility="gone" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="right|center_vertical"
@@ -209,24 +151,6 @@
                     android:layout_height="match_parent" />
 
             </LinearLayout>
-
-        </LinearLayout>
-
-    </FrameLayout>
-
-    <FrameLayout
-        android:id="@+id/hint_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="visible">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal">
 
         </LinearLayout>
 

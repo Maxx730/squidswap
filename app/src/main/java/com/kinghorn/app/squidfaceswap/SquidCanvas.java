@@ -9,58 +9,29 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RadialGradient;
-import android.graphics.RectF;
 import android.graphics.Shader;
-import android.util.DisplayMetrics;
-import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.HashMap;
+import android.widget.SeekBar;
 
 //Canvas class that we will use in this view to draw on top of the given image.
 public class SquidCanvas extends View{
     //Private variables.
-    private Context cn;
-    public SquidBitmapData foc;
-    private Paint select_paint;
-    private ArrayList<SquidPath> paths;
-    private float scale_factor;
-
+    protected Context cn;
+    protected Bitmap focused,last;
+    protected SeekBar scaling_bar;
+    protected boolean overwrite_focused = false;
     //Public variables that can be edited from outsite the
     //object.
-    public float fade_val = .025f;
+    public float fade_val = .025f,scale_factor = 1,rotation = 0;
     public boolean CENTER_IMAGE = true;
-    public boolean DEBUG_CAN = true;
-    public boolean WATERMARK = false;
-    public boolean REDICULES = true;
-    public String CANVAS_STATE = "IDLE";
-    public boolean AUTOSCALE;
+    public boolean AUTOSCALE = false;
 
-    //Check to see if the user is drawing to the canvas or not.
-    public boolean drawing = false;
-    public boolean draw_paint = true;
-    public boolean can_select = true;
-
-    //Selection data points.
-    private int start_x,start_y,end_x,end_y;
-
-    public SquidCanvas(Context con, SquidBitmapData f){
+    //Constructor
+    public SquidCanvas(Context con){
         super(con);
         //Set our variables.
         cn = con;
-        foc = f;
-
-        select_paint = new Paint();
-        select_paint.setAntiAlias(true);
-        select_paint.setStyle(Paint.Style.FILL);
-        select_paint.setColor(Color.parseColor("#800080"));
-        select_paint.setAlpha(70);
-
-
-        paths = new ArrayList<SquidPath>();
 
         //Grab caching information here.
         setDrawingCacheEnabled(true);
@@ -69,134 +40,36 @@ public class SquidCanvas extends View{
 
     //Getters and setters are below.
     public void set_img(Bitmap b){
-        Bitmap final_bit = null;
-        //Here we are going to want to check if we need to scale the image to the size of the canvas, if it is a background image
-        //that is.
-        DisplayMetrics d = cn.getResources().getDisplayMetrics();
-
-        //We are going to want to check the width of the chosen image compared to the
-        //width of the given squid canvas.
-        if(b.getWidth() > d.widthPixels){
-            float scale = (float) Math.ceil((double) d.widthPixels / (double) b.getWidth());
-            //Now we need to check how much to scale the image down from its original size
-            //to fit within the canvas.
-            Matrix m = new Matrix();
-            m.setScale((float) scale,(float) scale);
-            this.scale_factor = scale;
-            final_bit = Bitmap.createBitmap(b,0,0,b.getWidth(),b.getHeight(),m,true);
-        }else{
-            //Scale the image up if the image is smaller and the pref is set.
-            if(this.AUTOSCALE){
-                Matrix m = new Matrix();
-                float scale = (float) ((double) d.widthPixels / b.getWidth());
-                this.scale_factor = scale;
-                m.setScale((float) scale,(float) scale);
-                final_bit = Bitmap.createBitmap(b,0,0,b.getWidth(),b.getHeight(),m,true);
-            }else{
-                //Otherwise keep the size of the bitmap the same as it was.
-                this.scale_factor = 1;
-                final_bit = b;
-            }
-        }
-
-        Toast.makeText(this.cn,String.valueOf(this.scale_factor),Toast.LENGTH_LONG).show();
-
-        foc.set_undo(foc.bit);
-        foc.set_bitmap(final_bit);
+        last = focused;
+        focused = b;
         invalidate();
     }
-
-    public SquidBitmapData get_foc(){return foc;};
-    public void set_start(int x,int y){this.start_x = x;this.start_y = y;}
-    public void set_end(int x,int y){this.end_x = x;this.end_y = y;}
-    public void reset_vals(){this.start_x = 0;this.end_x = 0;this.start_y =0;this.end_y = 0;}
+    //Getters and setters for our scaling and rotation.
     public void set_scale_factor(float fac){this.scale_factor = fac;}
     public float get_scale_factor(){return this.scale_factor;}
+    public void set_rotation(float rot){this.rotation = rot;}
+    public float get_rotation(){return this.rotation;}
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
         //If the focused image has any data then write the data to the canvas.
-        if (foc.bit != null) {
-            Bitmap scale = matrix_scale(foc.bit,scale_factor,scale_factor);
+        if (this.focused != null) {
+            Bitmap scale = matrix_scale(this.focused,scale_factor,scale_factor,overwrite_focused);
 
             if(CENTER_IMAGE){
                 canvas.drawBitmap(scale,((getWidth() - scale.getWidth()) / 2),((getHeight() - scale.getHeight()) / 2),null);
             }else{
-               if(foc.is_fade){
-                   Bitmap faded_image = get_faded_img("circle");
-                   canvas.drawBitmap(faded_image,(foc.x - (faded_image.getWidth() / 2)),(foc.y - (faded_image.getHeight() / 2)),null);
-               }else {
-                   canvas.drawBitmap(scale,(foc.x - (scale.getWidth() / 2)),(foc.y - (scale.getHeight() / 2)), null);
-               }
+
             }
         }
-
-        //Logic that draws the paint to the canvas if we are using the canvas as a painting
-        //tool.
-        if(draw_paint){
-            for(SquidPath p : paths){
-                canvas.drawPath(p,p.getPaint());
-            }
-        }
-
-        //Selection tool logic that will draw the selection box to the screen.
-        if(can_select){
-            boolean x_check = check_x();
-            boolean y_check = check_y();
-
-            //Always draw the selection here.
-            //We also want to draw a crosshair when
-            //selecting to indicate that we are selecting.
-            if(drawing){
-                if(x_check && y_check){
-                    canvas.drawRect(end_x,end_y,start_x,start_y,select_paint);
-                }else if(x_check && !y_check){
-                    canvas.drawRect(end_x,start_y,start_x,end_y,select_paint);
-                }else if(!x_check && y_check){
-                    canvas.drawRect(start_x,end_y,end_x,start_y,select_paint);
-                }else{
-                    canvas.drawRect(start_x,start_y,end_x,end_y,select_paint);
-                }
-            }
-        }
-    }
-
-    //Returns the bitmap data that was obtained from the image selection based
-    //on the given values in the hashmap.
-    public Bitmap select_data(){
-        select_paint.setColor(Color.TRANSPARENT);
-        Bitmap orig = getDrawingCache();
-
-        get_foc().set_undo(orig);
-
-        boolean x_check,y_check;
-
-        x_check = check_x();
-        y_check = check_y();
-        Bitmap cropped;
-
-        if(x_check && y_check){
-            cropped = Bitmap.createBitmap(orig,(Integer) Math.round((float) end_x),(Integer) Math.round((float) end_y),(Integer) Math.round((float) start_x) - (Integer) Math.round((float) end_x),(Integer) Math.round((float) start_y) - (Integer) Math.round((float) end_y));
-        }else if(x_check && !y_check){
-            cropped = Bitmap.createBitmap(orig,(Integer) Math.round((float) end_x),(Integer) Math.round((float) start_y),(Integer) Math.round((float) start_x) - (Integer) Math.round((float) end_x),(Integer) Math.round((float) end_y) - (Integer) Math.round((float) start_y));
-        }else if(!x_check && y_check){
-            cropped = Bitmap.createBitmap(orig,(Integer) Math.round((float) start_x),(Integer) Math.round((float) end_y),(Integer) Math.round((float) end_x) - (Integer) Math.round((float) start_x),(Integer) Math.round((float) start_y) - (Integer) Math.round((float) end_y));
-        }else{
-            cropped = Bitmap.createBitmap(orig,(Integer) Math.round((float) start_x),(Integer) Math.round((float) start_y),(Integer) Math.round((float) end_x) - (Integer) Math.round((float) start_x),(Integer) Math.round((float) end_y) - (Integer) Math.round((float) start_y));
-        }
-
-        select_paint.setColor(Color.parseColor("#800080"));
-        select_paint.setAlpha(70);
-        can_select = false;
-        return cropped;
     }
 
     //Returns the image after the fading on the edge differences have been applied.
     //As of now we are still working on the circular duffer fade functionality.
     public Bitmap get_faded_img(String type){
-        Bitmap orig = matrix_scale(foc.bit,foc.get_scale_x(),foc.get_scale_y());
+        Bitmap orig = matrix_scale(focused,scale_factor,scale_factor,false);
         Bitmap b = Bitmap.createBitmap(orig.getWidth(),orig.getHeight(),Bitmap.Config.ARGB_8888);
 
         //Create a new transparent bitmap to start drawing multiple layers onto.
@@ -221,29 +94,18 @@ public class SquidCanvas extends View{
         return matrix_rotate(b);
     }
 
-    //Checks the values of the start and end points and converts them based on
-    //what they are.
-    private boolean check_x(){
-        if(start_x > end_x){
-            return true;
-        }else{
-            return false;
-        }
-    }
-    private boolean check_y(){
-        if(start_y > end_y){
-            return true;
-        }else{
-            return false;
-        }
-    }
-
     //Scales the image based on a matrix rather than scaling the canvas, this will probably
     //solve the issues we have with scaling and selection on a bitmap.
-    private Bitmap matrix_scale(Bitmap orig,float scale_x,float scale_y){
+    private Bitmap matrix_scale(Bitmap orig,float scale_x,float scale_y,boolean overwrite){
         Matrix m = new Matrix();
-        m.postScale(scale_x,scale_y);
+        m.setScale(scale_x,scale_y);
         Bitmap b = Bitmap.createBitmap(orig,0,0,orig.getWidth(),orig.getHeight(),m,true);
+
+        if(overwrite){
+            focused = b;
+            overwrite_focused = false;
+        }
+
         return b;
     }
 
@@ -251,8 +113,50 @@ public class SquidCanvas extends View{
     private Bitmap matrix_rotate(Bitmap orig){
         Matrix m = new Matrix();
         Bitmap b = null;
-        m.setRotate(foc.rotation_angle);
+        m.setRotate(rotation);
         b = Bitmap.createBitmap(orig,0,0,orig.getWidth(),orig.getHeight(),m,true);
         return b;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch(event.getAction()){
+            case MotionEvent.ACTION_DOWN:
+                System.out.println("SQUID CANVAS DOWN EVENT");
+
+                //Here we need to set the
+                break;
+            case MotionEvent.ACTION_UP:
+                System.out.println("SQUID CANVAS UP EVENT");
+                break;
+            case MotionEvent.ACTION_MOVE:
+                System.out.println("SQUID CANVAS MOVE EVENT");
+                break;
+        }
+        return true;
+    }
+
+    //When we want to set a scaling bar, just send a seekbar ui widget into this function and it will set
+    //the correct listenters.
+    public void set_scaling_bar(SeekBar bar){
+        this.scaling_bar = bar;
+
+        this.scaling_bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                set_scale_factor((float) i / 100);
+                invalidate();
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                invalidate();
+            }
+        });
     }
 }

@@ -20,8 +20,8 @@ public class SquidMemeGenerator extends SquidCanvas {
     private Context c;
 
     //Constructor.
-    public SquidMemeGenerator(Context con, SquidBitmapData f) {
-        super(con, f);
+    public SquidMemeGenerator(Context con) {
+        super(con);
 
         //Initialize the color for the background of the memed image.
         meme_paint = new Paint();
